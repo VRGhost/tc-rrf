@@ -43,7 +43,8 @@ M906 X1800 Y1800 Z1330 I30   						; Idle motion motors to 30%
 M906 E1000:1000:1000:1000 C500 I10     						; Idle extruder motors to 10%
 
 ; Endstops
-M574 X1 Y1 S3 					; Set X / Y endstop stall detection
+M574 X1 S1 P"xstop"   ; X min active high endstop switch
+M574 Y1 S1 P"ystop"   ; Y min active high endstop switch
 M574 C0 Z0  						; No C Z endstop
 
 ; Z probe
