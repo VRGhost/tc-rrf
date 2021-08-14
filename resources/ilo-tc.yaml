@@ -1,0 +1,9 @@
+---
+render:
+  # Output specs
+  - output:
+      directory: gcodes # Name of the OUTPUT directory files will be saved to
+    input:
+      directory: ./rrf3.x/gcodes
+      files: ["*"]
+    variables: {}
