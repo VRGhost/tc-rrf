@@ -28,7 +28,7 @@ variables:
       id: 1
       fan: 4
       park:
-        X: 94.8
+        X: 82.8
         Y: 226.6
     T2: &tool2
       id: 2
