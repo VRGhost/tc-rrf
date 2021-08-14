@@ -8,6 +8,7 @@ import fnmatch
 import datetime
 import posixpath as pp
 
+import yaml
 import duetwebapi
 
 
@@ -268,15 +269,25 @@ def execute_ledger(printer, ledger):
         )
 
 def main(args):
+    with open(args['index'], 'r') as fin:
+        index = yaml.load(fin, Loader=yaml.SafeLoader)
+
+    global_output_root = os.path.abspath(args['output_root'])
+    user_output_root = os.path.normpath(os.path.join(global_output_root, index['output_root']))
+
     printer = duetwebapi.DuetWebAPI(args['host'])
     printer.connect(args['password'])
     ledger = ActionLedger()
     try:
-        if args['sys']:
-            ledger.extend(sync_sys(printer, args['sys']))
-        if args['macros']:
-            ledger.extend(sync_macros(printer, args['macros']))
-
+        for (dirname, handler) in [
+            ('sys', sync_sys),
+            ('macros', sync_macros),
+        ]:
+            user_dir = os.path.join(user_output_root, dirname)
+            if os.path.exists(user_dir):
+                assert os.path.isdir(user_dir), user_dir
+                dir_ledger = handler(printer, user_dir)
+                ledger.extend(dir_ledger)
         if ledger:
             execute_ledger(printer, ledger)
 
@@ -288,12 +299,12 @@ def get_arg_parser():
         os.path.dirname(__file__),
         os.pardir
     ))
-    RRF_ROOT = os.path.join(PROJ_DIR, 'dist', 'ilo-tc')
+
     parser = argparse.ArgumentParser(description='Override DWC scripts with local copies')
-    parser.add_argument('--sys', help='Sys dir', default=os.path.join(RRF_ROOT, 'sys'))
-    parser.add_argument('--macros', help='Macros dir', default=os.path.join(RRF_ROOT, 'macros'))
+    parser.add_argument('--output-root', help='Output root', default=os.path.join(PROJ_DIR, 'dist'))
     parser.add_argument('--host', required=True, help='Duet Web Console (DWC) url. E.g "http://192.168.242.45"')
     parser.add_argument('--password', default='', help='DWC password')
+    parser.add_argument('index', help='Yaml file the files were generated from')
     return parser
 
 if __name__ == '__main__':
