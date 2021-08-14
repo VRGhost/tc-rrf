@@ -22,14 +22,14 @@ variables:
       fan: 2 # Fan number
       park:
         # X/Y location of the tools' parking position
-        X: -10.5
-        Y: 242
+        X: -7.4
+        Y: 226.6
     T1: &tool1
       id: 1
       fan: 4
       park:
-        X: 79.5
-        Y: 242
+        X: 94.8
+        Y: 226.6
     T2: &tool2
       id: 2
       fan: 6
