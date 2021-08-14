@@ -4,10 +4,10 @@ variables:
   axis:
     # Machine axis set up
     X:
-      min: -40.4
+      min: -29.6
       width: 363.5
     Y:
-      min: -51.2
+      min: -46.8
       width: 292
     Z:
       min: 0
