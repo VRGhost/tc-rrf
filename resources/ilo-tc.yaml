@@ -17,26 +17,26 @@ variables:
       width: 405
   tools:
     # Tool infos
-    T0:
+    T0: &tool0
       id: 0
       fan: 2 # Fan number
       park:
         # X/Y location of the tools' parking position
         X: -10.5
         Y: 242
-    T1:
+    T1: &tool1
       id: 1
       fan: 4
       park:
         X: 79.5
         Y: 242
-    T2:
+    T2: &tool2
       id: 2
       fan: 6
       park:
         X: 214.5
         Y: 243
-    T3:
+    T3: &tool3
       id: 3
       fan: 8
       park:
@@ -51,17 +51,59 @@ render:
       directory: gcodes # Name of the OUTPUT directory files will be saved to
     input:
       directory: ./rrf3.x/gcodes
-      files: ["*"]
+      files: ["*:*"] # <input fname>:<output fname>
     variables: {}
   - output:
       directory: macros # Name of the OUTPUT directory files will be saved to
     input:
       directory: ./rrf3.x/macros
-      files: ["*"]
+      files: ["*:*"]
     variables: {}
   - output:
       directory: sys # Name of the OUTPUT directory files will be saved to
     input:
       directory: ./rrf3.x/sys
-      files: ["*"]
+      files: ["*:*"]
     variables: {}
+
+  # Tool scripts
+  - output: # T0
+      directory: sys
+    input:
+      directory: ./rrf3.x/__templates__
+      files:
+        - tfreeX.jinja:tfree0.g
+        - tpostX.jinja:tpost0.g
+        - tpreX.jinja:tpre0.g
+    variables:
+      tool: *tool0
+  - output: # T1
+      directory: sys
+    input:
+      directory: ./rrf3.x/__templates__
+      files:
+        - tfreeX.jinja:tfree1.g
+        - tpostX.jinja:tpost1.g
+        - tpreX.jinja:tpre1.g
+    variables:
+      tool: *tool1
+  - output: # T2
+      directory: sys
+    input:
+      directory: ./rrf3.x/__templates__
+      files:
+        - tfreeX.jinja:tfree2.g
+        - tpostX.jinja:tpost2.g
+        - tpreX.jinja:tpre2.g
+    variables:
+      tool: *tool2
+  - output: # T3
+      directory: sys
+    input:
+      directory: ./rrf3.x/__templates__
+      files:
+        - tfreeX.jinja:tfree3.g
+        - tpostX.jinja:tpost3.g
+        - tpreX.jinja:tpre3.g
+    variables:
+      tool: *tool3

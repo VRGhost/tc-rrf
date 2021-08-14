@@ -211,8 +211,11 @@ def sync_sys(api, local_dir):
         remote_dir='/sys', local_files=local_files,
     )
     return filter_ledger(
-        raw_ledger, delete=['/sys/*.bin', '/sys/*.json', '/sys/manifest.json.gz'])
-
+        raw_ledger, delete=[
+            '/sys/*.bin', '/sys/*.json', '/sys/*.csv',
+            '/sys/manifest.json.gz'
+        ]
+    )
 def sync_macros(api, local_dir):
     assert os.path.isdir(local_dir), local_dir
     local_files = list_local_files(local_dir, printer_root='/macros')
@@ -285,7 +288,7 @@ def get_arg_parser():
         os.path.dirname(__file__),
         os.pardir
     ))
-    RRF_ROOT = os.path.join(PROJ_DIR, 'rrf3.x')
+    RRF_ROOT = os.path.join(PROJ_DIR, 'dist', 'ilo-tc')
     parser = argparse.ArgumentParser(description='Override DWC scripts with local copies')
     parser.add_argument('--sys', help='Sys dir', default=os.path.join(RRF_ROOT, 'sys'))
     parser.add_argument('--macros', help='Macros dir', default=os.path.join(RRF_ROOT, 'macros'))

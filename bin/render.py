@@ -21,19 +21,25 @@ def render_group(global_vars, config_el, templates_root):
         loader=jinja2.FileSystemLoader(templates_root)
     )
 
-    for fname in config_el['input']['files']:
+    for fname_pair in config_el['input']['files']:
+        (input_fname, output_fname) = fname_pair.split(':')
         full_fname = os.path.normpath(
-            os.path.join(templates_root, input_dir, fname)
+            os.path.join(templates_root, input_dir, input_fname)
         )
         for glob_item in glob.iglob(full_fname):
             # fname may be a glob pattern
             template = jinja_env.get_template(os.path.relpath(
                 glob_item, templates_root
             ))
-            out_fname = os.path.join(out_dir, os.path.basename(glob_item))
+
+            if output_fname == '*':
+                new_out_fname = os.path.basename(glob_item) # special case - re-use the original fname on '*'
+            else:
+                new_out_fname = output_fname
+            out_full_fname = os.path.join(out_dir, new_out_fname)
 
             render_vars = {
-                '__output_file__': out_fname
+                '__output_file__': out_full_fname
             }
             render_vars.update(global_vars)
             render_vars.update(input_vars)
@@ -42,7 +48,7 @@ def render_group(global_vars, config_el, templates_root):
             if not render_out.endswith('\n'):
                 # Ensure all outputs terminate with an empty line (just in case)
                 render_out += '\n'
-            out[out_fname] = render_out
+            out[out_full_fname] = render_out
 
     return out
 
