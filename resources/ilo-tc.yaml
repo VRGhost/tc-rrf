@@ -10,6 +10,25 @@ variables:
         # X/Y location of the tools' parking position
         X: -10.5
         Y: 242
+    T1:
+      id: 1
+      fan: 4
+      park:
+        X: 79.5
+        Y: 242
+    T2:
+      id: 2
+      fan: 6
+      park:
+        X: 214.5
+        Y: 243
+    T3:
+      id: 3
+      fan: 8
+      park:
+        X: 304.5
+        Y: 243
+
 
 output_root: ./ilo-tc
 render:
