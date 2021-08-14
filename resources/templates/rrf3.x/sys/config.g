@@ -31,7 +31,7 @@ M569 P8 S0 						; Drive 8 UNUSED
 M569 P9 S0 						; Drive 9 UNUSED
 
 M584 X0 Y1 Z2 C7 E3:4:5:6 								; Apply custom drive mapping
-M208 X-35:328.5 Y-49:243 Z0:300 C-45:360	 				; Set axis maxima & minima
+M208 X{{ axis.X.min }}:{{ axis.X.min + axis.X.width }} Y{{ axis.Y.min }}:{{ axis.Y.min + axis.Y.width }} Z{{ axis.Z.min }}:{{ axis.Z.min + axis.Z.width }} C-45:360	 				; Set axis maxima & minima
 M92 X100 Y100 Z1600 C91.022 E834:834:834:834				; Set steps per mm assuming x16 microstepping
 M350 E16:16:16:16 I1 									; Configure microstepping with interpolation
 M350 C16 I10											; Configure microstepping without interpolation

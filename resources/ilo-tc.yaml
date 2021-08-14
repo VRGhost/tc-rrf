@@ -1,6 +1,20 @@
 ---
 variables:
   # 'render-global vars'
+  axis:
+    # Machine axis set up
+    X:
+      min: -35
+      width: 363.5
+    Y:
+      min: -49
+      width: 292
+    Z:
+      min: 0
+      width: 300
+    C:
+      min: -45
+      width: 405
   tools:
     # Tool infos
     T0:
