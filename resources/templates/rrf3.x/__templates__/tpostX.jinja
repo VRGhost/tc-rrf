@@ -1,0 +1,10 @@
+; tpost{{ tool.id }}.g
+; called after tool {{ tool.id }} has been selected
+
+;heatup
+M116 P{{ tool.id }}
+
+;prime nozzle
+;M98 P"prime.g"
+
+M106 R1 ; restore print cooling fan speed
