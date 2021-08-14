@@ -1,9 +1,34 @@
 ---
+variables:
+  # 'render-global vars'
+  tools:
+    # Tool infos
+    T0:
+      id: 0
+      fan: 2 # Fan number
+      park:
+        # X/Y location of the tools' parking position
+        X: -10.5
+        Y: 242
+
+output_root: ./ilo-tc
 render:
   # Output specs
   - output:
       directory: gcodes # Name of the OUTPUT directory files will be saved to
     input:
       directory: ./rrf3.x/gcodes
+      files: ["*"]
+    variables: {}
+  - output:
+      directory: macros # Name of the OUTPUT directory files will be saved to
+    input:
+      directory: ./rrf3.x/macros
+      files: ["*"]
+    variables: {}
+  - output:
+      directory: sys # Name of the OUTPUT directory files will be saved to
+    input:
+      directory: ./rrf3.x/sys
       files: ["*"]
     variables: {}

@@ -1,0 +1,26 @@
+; tfree{{ tool.id }}.g
+; called when tool {{ tool.id }} is freed
+
+;Drop the bed
+G91
+G1 Z4 F1000
+G90
+
+;Purge nozzle
+;M98 P"purge.g"
+
+;Move In
+{% set rounded_Y = (tool.park.Y // 20) * 20 -%}
+G53 G1 X{{ tool.park.X }} Y{{ rounded_Y - 90 }} F50000
+G53 G1 X{{ tool.park.X }} Y{{ rounded_Y - 40 }} F50000
+G53 G1 X{{ tool.park.X }} Y{{ rounded_Y - 20 }} F50000
+G53 G1 X{{ tool.park.X }} Y{{ tool.park.Y }} F5000
+
+;Open Coupler
+M98 P"/macros/Coupler - Unlock"
+
+;fan off
+M106 P{{ tool.fan }} S0
+
+;Move Out
+G53 G1 X{{ tool.park.X }} Y{{ rounded_Y - 65 }} F50000
