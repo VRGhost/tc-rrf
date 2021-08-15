@@ -81,7 +81,7 @@ def get_printer_directory(api, remote_path, recursive):
             full_path=pp.join(remote_path, el['name']),
             parent_directory=remote_path,
             size=int(el['size']),
-            date=datetime.datetime.fromisoformat(el['date'])
+            date=datetime.datetime.fromisoformat(el.get('date', '2000-01-01T00:00:00'))
         )
         for el in raw_out
     ]
