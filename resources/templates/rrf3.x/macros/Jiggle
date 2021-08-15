@@ -1,0 +1,27 @@
+{% raw %}
+
+var oldX = {{ move.axes[0].userPosition }}
+var oldY = {{ move.axes[1].userPosition }}
+var oldZ = {{ move.axes[2].userPosition }}
+
+G1 X150 Y100 F50000 ; Move to center
+
+
+G91 ; Relative mode
+
+
+G3 X0 Y0 I20 J0
+G3 X0 Y0 20 I20 J0
+G3 X0 Y0 I20 J0
+
+G1 Z0
+G2 X0 Y0 I-20 J0
+G2 X0 Y0 I-20 J0
+G2 X0 Y0 I-20 J0
+G1 Z0
+
+G90 ; Absolute move
+
+G0 X{ var.oldX } Y{ var.oldY } Z{ var.oldZ }
+
+{% endraw %}
