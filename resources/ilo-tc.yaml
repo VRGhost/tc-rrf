@@ -1,6 +1,23 @@
 ---
 variables:
   # 'render-global vars'
+  motors:
+    X:
+      steps: 100 # steps/mm
+    Y:
+      steps: 100
+    Z:
+      steps: 800
+    C:
+      steps: 91.022
+    E0:
+      steps: 834
+    E1:
+      steps: 834
+    E2:
+      steps: 834
+    E3:
+      steps: 834
   axis:
     # Machine axis set up
     X:
