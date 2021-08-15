@@ -37,6 +37,10 @@ variables:
     T0: &tool0
       id: 0
       fan: 2 # Fan number
+      offsets:
+        X: -9
+        Y: 39
+        Z: -5
       park:
         # X/Y location of the tools' parking position
         X: -7.4
@@ -44,18 +48,30 @@ variables:
     T1: &tool1
       id: 1
       fan: 4
+      offsets:
+        X: -9
+        Y: 39
+        Z: -5
       park:
         X: 82.8
         Y: 226.6
     T2: &tool2
       id: 2
       fan: 6
+      offsets:
+        X: -9
+        Y: 39
+        Z: -5
       park:
         X: 214.5
         Y: 243
     T3: &tool3
       id: 3
       fan: 8
+      offsets:
+        X: -9
+        Y: 39
+        Z: -5
       park:
         X: 304.5
         Y: 243

@@ -123,10 +123,10 @@ M593 F42.2						; cancel ringing at 42.2Hz (https://forum.e3d-online.com/threads
 ; Volcano-tool: X-9 Y39 Z-13.5
 ; Hemera-tool: X20 Y43.5 Z-6
 
-G10 P0 X-9 Y39 Z-5					; T0
-G10 P1 X-9 Y39 Z-5					; T1
-G10 P2 X-9 Y39 Z-5					; T2
-G10 P3 X-9 Y39 Z-5					; T3
+G10 P0 X{{ tools.T0.offsets.X }} Y{{ tools.T0.offsets.Y }} Z{{ tools.T0.offsets.Z }}					; T0
+G10 P1 X{{ tools.T1.offsets.X }} Y{{ tools.T1.offsets.Y }} Z{{ tools.T1.offsets.Z }}					; T1
+G10 P2 X{{ tools.T2.offsets.X }} Y{{ tools.T2.offsets.Y }} Z{{ tools.T2.offsets.Z }}					; T2
+G10 P3 X{{ tools.T3.offsets.X }} Y{{ tools.T3.offsets.Y }} Z{{ tools.T3.offsets.Z }}					; T3
 
 ;M572 D0 S0.2 						; pressure advance T0
 ;M572 D1 S0.2 						; pressure advance T1
