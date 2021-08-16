@@ -38,8 +38,8 @@ variables:
       id: 0
       fan: 2 # Fan number
       offsets:
-        X: -9
-        Y: 39
+        X: 20.45
+        Y: 44.42
         Z: -5.26
       park:
         # X/Y location of the tools' parking position
@@ -49,8 +49,8 @@ variables:
       id: 1
       fan: 4
       offsets:
-        X: -9
-        Y: 39
+        X: 20.38
+        Y: 44.01
         Z: -5.22
       park:
         X: 82.8
