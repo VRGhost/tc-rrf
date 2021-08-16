@@ -1,6 +1,10 @@
 ; homez.g
 ; called to home the Z axis
 
+if !move.axes[0].homed || !move.axes[1].homed
+    M98 P"homey.g"          ; Home Y
+    M98 P"homex.g"          ; Home X
+
 M98 P"/macros/Coupler - Unlock"	; Open Coupler
 
 G91 							; Relative mode

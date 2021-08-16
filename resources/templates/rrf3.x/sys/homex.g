@@ -1,6 +1,9 @@
 ; homex.g
 ; called to home the x axis
 
+if !move.axes[1].homed
+    M98 P"homey.g"          ; Home Y
+
 G91 							; use relative positioning
 
 G1 H2 X0.5 Y-0.5 F10000			; energise motors to ensure they are not stalled
