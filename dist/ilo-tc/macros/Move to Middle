@@ -1,1 +1,3 @@
+if move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
+    G1 Y200 F2500 ; slowly back out
 G1 X150 Y100 F50000

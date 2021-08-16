@@ -53,8 +53,8 @@ variables:
         Y: 44.01
         Z: -5.22
       park:
-        X: 82.8
-        Y: 226.3
+        X: 82.78
+        Y: 226.62
     T2: &tool2
       id: 2
       fan: 6

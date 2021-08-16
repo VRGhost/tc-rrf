@@ -214,7 +214,8 @@ def sync_sys(api, local_dir):
     return filter_ledger(
         raw_ledger, delete=[
             '/sys/*.bin', '/sys/*.json', '/sys/*.csv',
-            '/sys/manifest.json.gz'
+            '/sys/manifest.json.gz',
+            '/sys/config-override.g',
         ]
     )
 def sync_macros(api, local_dir):
