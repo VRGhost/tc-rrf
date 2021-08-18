@@ -11,16 +11,16 @@ variables:
     C:
       steps: 91.022
     E0:
-      steps: 834
+      steps: 409
       reversed: false # Motor direction
     E1:
-      steps: 834
+      steps: 409
       reversed: false
     E2:
-      steps: 834
+      steps: 409
       reversed: true
     E3:
-      steps: 834
+      steps: 409
       reversed: true
   axis:
     # Machine axis set up
