@@ -3,6 +3,10 @@
 
 if !move.axes[1].homed
     M98 P"homey.g"          ; Home Y
+    M400
+
+if state.currentTool >= 0
+    abort "Refusing to home X with tool attached."
 
 G91 							; use relative positioning
 

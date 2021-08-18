@@ -19,7 +19,7 @@ var find_success_3 = 0 ; 0 - not found, 1 - found
 while var.axis_iter_2 < #move.axes
     if move.axes[var.axis_iter_2].letter == "C"
         set var.find_success_3 = 1
-        set var.{{ c_axis }} = var.axis_iter_2
+        set var.c_axis_0 = var.axis_iter_2
         break
     set var.axis_iter_2 = var.axis_iter_2 + 1
 
