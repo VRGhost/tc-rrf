@@ -1,11 +1,12 @@
-; Bed Mesh Leveling
+; Bed Mesh Leveling (G32 command)
 
-G1 S2 Z3 F5000		; lift Z 3mm
+var orig_tool = state.currentTool
+
+T-1 ; Drop tool
 
 G29
 
-;disable mesh leveling, needs to be enabled at the start of your print and disabled again when finished.
-G29 S2
+T{ var.orig_tool } ; restore the original tool
 
 ; Park the head
 G1 X150 Y-49 F50000
