@@ -22,8 +22,8 @@ M586 P2 S0 						; Disable Telnet
 M569 P0 S0 						; Drive 0 X
 M569 P1 S0 						; Drive 1 Y
 M569 P2 S1 						; Drive 2 Z
-M569 P3 S0 						; Drive 3 E0
-M569 P4 S0 						; Drive 4 E1
+M569 P3 S1 						; Drive 3 E0
+M569 P4 S1 						; Drive 4 E1
 M569 P5 S0 						; Drive 5 E2
 M569 P6 S0 						; Drive 6 E3
 M569 P7 S0 						; Drive 7 COUPLER

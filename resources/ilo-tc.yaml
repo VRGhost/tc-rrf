@@ -12,10 +12,10 @@ variables:
       steps: 91.022
     E0:
       steps: 834
-      reversed: true # Motor direction
+      reversed: false # Motor direction
     E1:
       steps: 834
-      reversed: true
+      reversed: false
     E2:
       steps: 834
       reversed: true
