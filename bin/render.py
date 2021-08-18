@@ -6,9 +6,23 @@ import argparse
 import os
 import glob
 import shutil
+import itertools
 
 import yaml
 import jinja2
+
+class PyFunctions:
+    """Object providing some Python functions to Jinja template."""
+
+    uid = None
+
+    def __init__(self):
+        self.uid = itertools.count()
+
+    def unique_var(self, prefix='var'):
+        return f"{prefix}_{next(self.uid)}"
+
+
 
 def render_group(global_vars, config_el, templates_root):
     out = {}
@@ -20,12 +34,16 @@ def render_group(global_vars, config_el, templates_root):
     jinja_env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(templates_root)
     )
+    jinja_env.globals.update(
+        py=PyFunctions()
+    )
 
     for fname_pair in config_el['input']['files']:
         (input_fname, output_fname) = fname_pair.split(':')
         full_fname = os.path.normpath(
             os.path.join(templates_root, input_dir, input_fname)
         )
+        assert os.path.isdir(os.path.dirname(full_fname)), full_fname
         for glob_item in glob.iglob(full_fname):
             # fname may be a glob pattern
             template = jinja_env.get_template(os.path.relpath(
@@ -39,7 +57,7 @@ def render_group(global_vars, config_el, templates_root):
             out_full_fname = os.path.join(out_dir, new_out_fname)
 
             render_vars = {
-                '__output_file__': out_full_fname
+                '__output_file__': out_full_fname,
             }
             render_vars.update(global_vars)
             render_vars.update(input_vars)
@@ -70,8 +88,8 @@ def save_output(files, output_root):
             fout.write(payload.encode('ascii')) # Apologies to the unicode users, but this is safer.
 
 def main(args):
-    templates_root = os.path.abspath(args['templates_root'])
-    assert os.path.isdir(templates_root), templates_root
+    global_templates_root = os.path.abspath(args['templates_root'])
+    assert os.path.isdir(global_templates_root), global_templates_root
 
     global_output_root = os.path.abspath(args['output_root'])
     assert os.path.isdir(global_output_root), global_output_root
@@ -79,11 +97,13 @@ def main(args):
     with open(args['index'], 'r') as fin:
         index = yaml.load(fin, Loader=yaml.SafeLoader)
 
+    user_templates_root = os.path.normpath(os.path.join(global_templates_root, index['templates_root']))
+    assert os.path.isdir(user_templates_root), user_templates_root
     global_vars = index.get('variables') or {}
 
     rendered = {} # Relpath -> text
     for render_el in index['render']:
-        render_out = render_group(global_vars, render_el, templates_root)
+        render_out = render_group(global_vars, render_el, user_templates_root)
         intersection = render_out.keys() & rendered.keys()
         if intersection:
             raise NotImplementedError(f"Multiple sections attempted to return {intersection}")

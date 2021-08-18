@@ -1,12 +1,9 @@
 ; Bed Mesh Leveling (G32 command)
 
-var orig_tool = state.currentTool
+{% extends '__templates__/stack_tool.jinja' %}
 
-T-1 ; Drop tool
+{% block content %}
 
 G29
 
-T{ var.orig_tool } ; restore the original tool
-
-; Park the head
-G1 X150 Y-49 F50000
+{% endblock %}

@@ -1,4 +1,5 @@
 ---
+templates_root: ./rrf3.x/
 variables:
   # 'render-global vars'
   motors:
@@ -87,19 +88,19 @@ render:
   - output:
       directory: gcodes # Name of the OUTPUT directory files will be saved to
     input:
-      directory: ./rrf3.x/gcodes
+      directory: ./gcodes
       files: ["*:*"] # <input fname>:<output fname>
     variables: {}
   - output:
       directory: macros # Name of the OUTPUT directory files will be saved to
     input:
-      directory: ./rrf3.x/macros
+      directory: ./macros
       files: ["*:*"]
     variables: {}
   - output:
       directory: sys # Name of the OUTPUT directory files will be saved to
     input:
-      directory: ./rrf3.x/sys
+      directory: ./sys
       files: ["*:*"]
     variables: {}
 
@@ -107,7 +108,7 @@ render:
   - output: # T0
       directory: sys
     input:
-      directory: ./rrf3.x/__templates__
+      directory: ./__templates__
       files:
         - tfreeX.jinja:tfree0.g
         - tpostX.jinja:tpost0.g
@@ -117,7 +118,7 @@ render:
   - output: # T1
       directory: sys
     input:
-      directory: ./rrf3.x/__templates__
+      directory: ./__templates__
       files:
         - tfreeX.jinja:tfree1.g
         - tpostX.jinja:tpost1.g
@@ -127,7 +128,7 @@ render:
   - output: # T2
       directory: sys
     input:
-      directory: ./rrf3.x/__templates__
+      directory: ./__templates__
       files:
         - tfreeX.jinja:tfree2.g
         - tpostX.jinja:tpost2.g
@@ -137,7 +138,7 @@ render:
   - output: # T3
       directory: sys
     input:
-      directory: ./rrf3.x/__templates__
+      directory: ./__templates__
       files:
         - tfreeX.jinja:tfree3.g
         - tpostX.jinja:tpost3.g

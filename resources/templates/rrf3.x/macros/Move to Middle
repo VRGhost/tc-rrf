@@ -1,2 +1,2 @@
-{% include "rrf3.x/__templates__/avoid_tc_clash.jinja" %}
+{% include "__templates__/avoid_tc_clash.jinja" %}
 G1 X150 Y100 F50000

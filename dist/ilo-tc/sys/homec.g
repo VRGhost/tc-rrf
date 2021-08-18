@@ -1,6 +1,9 @@
 ; homec.g
 ; called to home the C axis (coupler)
 
+if state.currentTool >= 0
+    abort "A tool is mounted."
+
 G91
 M400
 M913 C70					; XY MOTORS TO 60% CURRENT
