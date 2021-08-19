@@ -13,6 +13,9 @@ G90
 G53 G1 X82.78 Y130.0 F50000
 G53 G1 X82.78 Y180.0 F50000
 G53 G1 X82.78 Y200.0 F50000
+
+M913 X30 Y30 ; Set the motor current to 30%
+
 G53 G1 X82.78 Y226.62 F5000
 
 ;Open Coupler
@@ -23,3 +26,5 @@ M106 P4 S0
 
 ;Move Out
 G53 G1 X82.78 Y155.0 F50000
+
+M913 X100 Y100 ; Restore the motor current

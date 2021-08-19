@@ -10,8 +10,12 @@ G1 X214.5 Y200 F50000
 ;Move in
 G1 X214.5 Y230 F50000
 
+
+M913 X30 Y30 ; Set the motor current to 30%
+
 ;Collect
 G1 X214.5 Y243 F2500
+
 
 ;Close Coupler
 M98 P"/macros/Coupler - Lock"
@@ -25,3 +29,4 @@ G90
 ;Move Out
 G1 X214.5 Y150 F4000
 
+M913 X100 Y100 ; Restore the motor current
