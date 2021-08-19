@@ -1,7 +1,11 @@
 ; homex.g
 ; called to home the x axis
 
-if !move.axes[1].homed
+{% from '/__macros__/axes.jinja' import set_mov_axis_id -%}
+
+{{ set_mov_axis_id('y_idx', 'Y') }}
+
+if !move.axes[var.y_idx].homed
     M98 P"homey.g"          ; Home Y
     M400
 
