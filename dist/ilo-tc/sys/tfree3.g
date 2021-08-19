@@ -18,6 +18,8 @@ M913 X30 Y30 ; Set the motor current to 30%
 
 G53 G1 X304.5 Y243 F5000
 
+M913 X100 Y100 ; Restore the motor current
+
 ;Open Coupler
 M98 P"/macros/Coupler - Unlock"
 
@@ -26,5 +28,3 @@ M106 P8 S0
 
 ;Move Out
 G53 G1 X304.5 Y175 F50000
-
-M913 X100 Y100 ; Restore the motor current
