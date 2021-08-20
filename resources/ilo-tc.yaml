@@ -2,6 +2,25 @@
 templates_root: ./rrf3.x/
 variables:
   # 'render-global vars'
+  speed_limits:
+    M566:  # Set maximum instantaneous speed changes (mm/min)
+      X: 400
+      Y: 400
+      Z: 8
+      C: 2
+      E: [2, 2, 2, 2]
+    M203:  # Set maximum speeds (mm/min)
+      X: 35000
+      Y: 35000
+      Z: 1200
+      C: 5000
+      E: [5000, 5000, 5000, 5000]
+    M201: #  Set accelerations (mm/s^2)
+      X: 6000
+      Y: 6000
+      Z: 400
+      C: 500
+      E: [2500, 2500, 2500, 2500]
   motors:
     X:
       steps: 100 # steps/mm
@@ -50,6 +69,16 @@ variables:
         # X/Y location of the tools' parking position
         X: -7.4
         Y: 226.3
+      speed_limits: &hemera_direct_speed_limits
+        M566:
+          X: 300
+          Y: 300
+        M203:
+          X: 30000
+          Y: 30000
+        M201:
+          X: 4500
+          Y: 4500
     T1: &tool1
       id: 1
       fan: 4
@@ -60,6 +89,7 @@ variables:
       park:
         X: 82.78
         Y: 226.62
+      speed_limits: *hemera_direct_speed_limits
     T2: &tool2
       id: 2
       fan: 6

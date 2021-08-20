@@ -22,6 +22,32 @@ class PyFunctions:
     def unique_var(self, prefix='var'):
         return f"{prefix}_{next(self.uid)}"
 
+    def format_gcode_param_str(self, params):
+        """Converts dict of {param} -> <val> to a gcode string of <param><val>.
+
+        Creates ':' - separated list if <val> is a list.
+        """
+        assert isinstance(params, dict), params
+        def _map_simple_val(orig_val):
+            out = None
+            if isinstance(orig_val, float):
+                out = '{:0.4f}'.format(orig_val)
+            elif isinstance(orig_val, (int, str)):
+                out = str(orig_val)
+            else:
+                raise NotImplementedError(orig_val)
+            return out
+
+        out = []
+        for key in sorted(params.keys()):
+            orig_val = params[key]
+            if isinstance(orig_val, (list, tuple)):
+                gcode_val = ':'.join(_map_simple_val(el) for el in orig_val)
+            else:
+                gcode_val = _map_simple_val(orig_val)
+
+            out.append(f"{key}{gcode_val}")
+        return ' '.join(out)
 
 
 def render_group(global_vars, config_el, templates_root):

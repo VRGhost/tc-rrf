@@ -26,7 +26,9 @@ G91
 G1 Z10 F1000
 G90
 
+M913 X100 Y100 ; Restore the motor current
+
+
+
 ;Move Out
 G1 X214.5 Y150 F4000
-
-M913 X100 Y100 ; Restore the motor current
