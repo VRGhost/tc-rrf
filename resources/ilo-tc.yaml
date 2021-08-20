@@ -12,10 +12,10 @@ variables:
     C:
       steps: 91.022
     E0:
-      steps: 409
+      steps: 368
       reversed: false # Motor direction
     E1:
-      steps: 409
+      steps: 368
       reversed: false
     E2:
       steps: 409
