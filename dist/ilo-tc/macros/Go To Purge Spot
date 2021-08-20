@@ -1,0 +1,17 @@
+; ----- AVOID clashing with the TC walls
+if move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
+    G1 Y200 F2500 ; slowly back out
+
+
+
+var RIGHT = -1, LEFT = 1
+var x_side = 0
+
+if state.currentTool >= 0
+    ; a tool is selected
+    set var.x_side = tools[state.currentTool].offsets[0] > 0 ? var.RIGHT : var.LEFT
+
+
+
+G0 X{ var.x_side == var.RIGHT ? 305 : -5} Y0 F50000
+
