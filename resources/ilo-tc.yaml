@@ -70,15 +70,12 @@ variables:
         X: -7.4
         Y: 226.3
       speed_limits: &hemera_direct_speed_limits
-        M566:
+        M566: # maximum instantaneous speed changes (mm/min)
           X: 300
           Y: 300
-        M203:
-          X: 30000
-          Y: 30000
-        M201:
-          X: 4500
-          Y: 4500
+        M201: #  Set accelerations (mm/s^2)
+          X: 4000
+          Y: 4000
     T1: &tool1
       id: 1
       fan: 4

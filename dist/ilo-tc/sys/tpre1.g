@@ -28,10 +28,9 @@ G90
 
 M913 X100 Y100 ; Restore the motor current
 
-; --- apply_speed_limits({'M566': {'X': 300, 'Y': 300}, 'M203': {'X': 30000, 'Y': 30000}, 'M201': {'X': 4500, 'Y': 4500}})
+; --- apply_speed_limits({'M566': {'X': 300, 'Y': 300}, 'M201': {'X': 4000, 'Y': 4000}})
 M566 X300 Y300
-M203 X30000 Y30000
-M201 X4500 Y4500
+M201 X4000 Y4000
 ; --- apply_speed_limits() END
 
 
