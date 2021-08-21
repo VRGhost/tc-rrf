@@ -13,5 +13,5 @@ if state.currentTool >= 0
 
 
 
-G0 X{ var.x_side == var.RIGHT ? 305 : -5} Y0 F50000
+G0 X{ var.x_side == var.RIGHT ? 323 : -5} Y0 F50000
 
