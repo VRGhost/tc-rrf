@@ -1,20 +1,28 @@
 ; tpre1.g
 ; called before tool 1 is selected
 
+
+
 ;Unlock Coupler
 M98 P"/macros/Coupler - Unlock"
 
 ;Move to location
 G1 X83.78 Y180.0 F50000
+if result != 0
+    abort "[ERROR]: Unable to complete approach step #0 (tool 1)"
 
-;Move in
 G1 X83.78 Y210.0 F50000
+if result != 0
+    abort "[ERROR]: Unable to complete approach step #1 (tool 1)"
 
 
 M913 X30 Y30 ; Set the motor current to 30%
 
 ;Collect
 G1 X83.78 Y232.62 F2500
+if result != 0
+    abort "[ERROR]: Unable to complete approach step #2 (tool 1)"
+
 
 
 ;Close Coupler

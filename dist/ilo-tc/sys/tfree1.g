@@ -1,6 +1,7 @@
 ; tfree1.g
 ; called when tool 1 is freed
 
+
 ;Drop the bed
 G91
 G1 Z4 F1000
@@ -11,12 +12,24 @@ G90
 
 ;Move In
 G53 G1 X83.78 Y130.0 F50000
+if result != 0
+    abort "[ERROR]: Unable to complete approach step #0 (tool 1)"
+
 G53 G1 X83.78 Y180.0 F50000
+if result != 0
+    abort "[ERROR]: Unable to complete approach step #1 (tool 1)"
+
 G53 G1 X83.78 Y200.0 F50000
+if result != 0
+    abort "[ERROR]: Unable to complete approach step #2 (tool 1)"
+
 
 M913 X30 Y30 ; Set the motor current to 30%
 
 G53 G1 X83.78 Y232.62 F5000
+if result != 0
+    abort "[ERROR]: Unable to complete approach step #3 (tool 1)"
+
 
 M913 X100 Y100 ; Restore the motor current
 

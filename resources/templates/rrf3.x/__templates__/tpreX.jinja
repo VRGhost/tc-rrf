@@ -2,6 +2,8 @@
 ; tpre{{ tool.id }}.g
 ; called before tool {{ tool.id }} is selected
 
+{% import '__macros__/errors.jinja' as err %}
+
 ;Unlock Coupler
 M98 P"/macros/Coupler - Unlock"
 
@@ -9,15 +11,15 @@ M98 P"/macros/Coupler - Unlock"
 
 ;Move to location
 G1 X{{ tool.park.X }} Y{{ rounded_Y - 40 }} F50000
-
-;Move in
+{{ err.abort_on_error("Unable to complete approach step #0 (tool {id})".format(**tool)) }}
 G1 X{{ tool.park.X }} Y{{ rounded_Y - 10 }} F50000
-
+{{ err.abort_on_error("Unable to complete approach step #1 (tool {id})".format(**tool)) }}
 
 M913 X30 Y30 ; Set the motor current to 30%
 
 ;Collect
 G1 X{{ tool.park.X }} Y{{ tool.park.Y }} F2500
+{{ err.abort_on_error("Unable to complete approach step #2 (tool {id})".format(**tool)) }}
 
 
 ;Close Coupler
