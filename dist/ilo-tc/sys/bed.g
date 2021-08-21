@@ -7,31 +7,31 @@
 
 
 
-var c_axis_2 = -1
-var old_tool_3 = -1
+var c_axis_0 = -1
+var old_tool_1 = -1
 
-;----- find_axis_id("C", var.c_axis_2)
+;----- find_axis_id("C", var.c_axis_0)
 
-var axis_iter_4 = 0
-var find_success_5 = 0 ; 0 - not found, 1 - found
+var axis_iter_2 = 0
+var find_success_3 = 0 ; 0 - not found, 1 - found
 
-while var.axis_iter_4 < #move.axes
-    if move.axes[var.axis_iter_4].letter == "C"
-        set var.find_success_5 = 1
-        set var.c_axis_2 = var.axis_iter_4
+while var.axis_iter_2 < #move.axes
+    if move.axes[var.axis_iter_2].letter == "C"
+        set var.find_success_3 = 1
+        set var.c_axis_0 = var.axis_iter_2
         break
-    set var.axis_iter_4 = var.axis_iter_4 + 1
+    set var.axis_iter_2 = var.axis_iter_2 + 1
 
-if var.find_success_5 == 0
+if var.find_success_3 == 0
     abort "Failed to find C axis"
 
-;----- find_axis_id("C", var.c_axis_2) END
+;----- find_axis_id("C", var.c_axis_0) END
 
-if !move.axes[var.c_axis_2].homed
+if !move.axes[var.c_axis_0].homed
     abort "Coupler (C) is not homed."
 
 
-set var.old_tool_3 = state.currentTool
+set var.old_tool_1 = state.currentTool
 T-1
 
 
@@ -40,4 +40,4 @@ G29
 
 
 
-T{ var.old_tool_3 }
+T{ var.old_tool_1 }

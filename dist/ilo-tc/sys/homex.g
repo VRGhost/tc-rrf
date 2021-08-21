@@ -4,17 +4,17 @@
 var y_idx = -1
 ;----- find_axis_id("Y", var.y_idx)
 
-var axis_iter_0 = 0
-var find_success_1 = 0 ; 0 - not found, 1 - found
+var axis_iter_4 = 0
+var find_success_5 = 0 ; 0 - not found, 1 - found
 
-while var.axis_iter_0 < #move.axes
-    if move.axes[var.axis_iter_0].letter == "Y"
-        set var.find_success_1 = 1
-        set var.y_idx = var.axis_iter_0
+while var.axis_iter_4 < #move.axes
+    if move.axes[var.axis_iter_4].letter == "Y"
+        set var.find_success_5 = 1
+        set var.y_idx = var.axis_iter_4
         break
-    set var.axis_iter_0 = var.axis_iter_0 + 1
+    set var.axis_iter_4 = var.axis_iter_4 + 1
 
-if var.find_success_1 == 0
+if var.find_success_5 == 0
     abort "Failed to find Y axis"
 
 ;----- find_axis_id("Y", var.y_idx) END
