@@ -11,22 +11,22 @@ G90
 ;M98 P"purge.g"
 
 ;Move In
-G53 G1 X83.78 Y130.0 F50000
+G53 G1 X81.4 Y130.0 F50000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #0 (tool 1)"
 
-G53 G1 X83.78 Y180.0 F50000
+G53 G1 X81.4 Y180.0 F50000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #1 (tool 1)"
 
-G53 G1 X83.78 Y200.0 F50000
+G53 G1 X81.4 Y200.0 F50000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #2 (tool 1)"
 
 
 M913 X60 Y60 ; Set the motor current to 60%
 
-G53 G1 X83.78 Y232.62 F5000
+G53 G1 X81.4 Y226.55 F5000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #3 (tool 1)"
 
@@ -48,4 +48,4 @@ M201 C500 E2500:2500:2500:2500 X6000 Y6000 Z400
 
 
 ;Move Out
-G53 G1 X83.78 Y155.0 F50000
+G53 G1 X81.4 Y155.0 F50000

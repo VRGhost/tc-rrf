@@ -57,7 +57,7 @@ G31 P200 X0 Y0 Z0	 				; Set Z probe trigger value, offset and trigger height
 M557 X10:290 Y20:180 S40 			; Define mesh grid
 
 ;Stall Detection
-M915 X Y S3 F0 H400 R4700				; X / Y Axes
+M915 X Y S3 F0 H400 R1				; X / Y Axes
 
 ; Heaters
 M308 S0 P"bedtemp" Y"thermistor" A"Bed" T100000 B4138 C0 		; Set thermistor 
