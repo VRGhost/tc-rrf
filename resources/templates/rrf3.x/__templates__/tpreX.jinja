@@ -15,7 +15,7 @@ G1 X{{ tool.park.X }} Y{{ rounded_Y - 40 }} F50000
 G1 X{{ tool.park.X }} Y{{ rounded_Y - 10 }} F50000
 {{ err.abort_on_error("Unable to complete approach step #1 (tool {id})".format(**tool)) }}
 
-M913 X30 Y30 ; Set the motor current to 30%
+M913 X60 Y60 ; Set the motor current to 60%
 
 ;Collect
 G1 X{{ tool.park.X }} Y{{ tool.park.Y }} F2500

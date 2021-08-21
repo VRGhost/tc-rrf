@@ -16,7 +16,7 @@ if result != 0
     abort "[ERROR]: Unable to complete approach step #1 (tool 3)"
 
 
-M913 X30 Y30 ; Set the motor current to 30%
+M913 X60 Y60 ; Set the motor current to 60%
 
 ;Collect
 G1 X304.5 Y243 F2500
