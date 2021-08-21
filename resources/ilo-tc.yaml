@@ -84,8 +84,8 @@ variables:
         Y: 44.01
         Z: -5.183
       park:
-        X: 82.78
-        Y: 226.62
+        X: 83.78
+        Y: 232.62
       speed_limits: *hemera_direct_speed_limits
     T2: &tool2
       id: 2

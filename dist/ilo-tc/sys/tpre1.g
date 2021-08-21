@@ -5,16 +5,16 @@
 M98 P"/macros/Coupler - Unlock"
 
 ;Move to location
-G1 X82.78 Y180.0 F50000
+G1 X83.78 Y180.0 F50000
 
 ;Move in
-G1 X82.78 Y210.0 F50000
+G1 X83.78 Y210.0 F50000
 
 
 M913 X30 Y30 ; Set the motor current to 30%
 
 ;Collect
-G1 X82.78 Y226.62 F2500
+G1 X83.78 Y232.62 F2500
 
 
 ;Close Coupler
@@ -35,4 +35,4 @@ M201 X4000 Y4000
 
 
 ;Move Out
-G1 X82.78 Y130.0 F4000
+G1 X83.78 Y130.0 F4000
