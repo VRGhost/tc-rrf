@@ -1,0 +1,4 @@
+{% macro abort_on_error(message) -%}
+if result != 0
+    abort "[ERROR]: {{ message }}"
+{% endmacro %}
