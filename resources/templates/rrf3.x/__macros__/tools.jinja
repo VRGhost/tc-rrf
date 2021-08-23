@@ -1,0 +1,10 @@
+{% macro apply_tool_offsets(settings, tool_number=None) -%}
+; --- apply_tool_offsets({{tool_number}}, {{settings}})
+G10 {{ py.format_gcode_param_str(settings, P=tool_number) }}
+; --- apply_tool_offsets() END
+{%- endmacro -%}
+
+{% macro amend_current_tool_offsets(dx=0, dy=0, dz=0) %}
+; --- amend_current_tool_offsets({{dx}},  {{dy}}, {{dz}})
+; --- amend_current_tool_offsets() END
+{% endmacro %}

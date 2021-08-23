@@ -54,7 +54,7 @@ G31 P200 X0 Y0 Z0	 				; Set Z probe trigger value, offset and trigger height
 M557 X10:290 Y20:180 S40 			; Define mesh grid
 
 ;Stall Detection
-M915 X Y S3 F0 H400 R1				; X / Y Axes
+M915 X Y S3 F0 H400 R2				; X / Y Axes
 
 ; Heaters
 M308 S0 P"bedtemp" Y"thermistor" A"Bed" T100000 B4138 C0 		; Set thermistor 
@@ -118,21 +118,9 @@ M106 P8 S0						; T3 PCF
 M593 F42.2						; cancel ringing at 42.2Hz (https://forum.e3d-online.com/threads/accelerometer-and-resonance-measurements-of-the-motion-system.3445/)
 ;M376 H15						; bed compensation taper
 
-;tool offsets
-; !ESTIMATED! offsets for:
-; V6-tool: X-9 Y39 Z-5
-; Volcano-tool: X-9 Y39 Z-13.5
-; Hemera-tool: X20 Y43.5 Z-6
 
-G10 P0 X{{ tools.T0.offsets.X }} Y{{ tools.T0.offsets.Y }} Z{{ tools.T0.offsets.Z }}					; T0
-G10 P1 X{{ tools.T1.offsets.X }} Y{{ tools.T1.offsets.Y }} Z{{ tools.T1.offsets.Z }}					; T1
-G10 P2 X{{ tools.T2.offsets.X }} Y{{ tools.T2.offsets.Y }} Z{{ tools.T2.offsets.Z }}					; T2
-G10 P3 X{{ tools.T3.offsets.X }} Y{{ tools.T3.offsets.Y }} Z{{ tools.T3.offsets.Z }}					; T3
+M98 P"/sys/usr/reset_tool_offsets.g"
 
-;M572 D0 S0.2 						; pressure advance T0
-;M572 D1 S0.2 						; pressure advance T1
-;M572 D2 S0.2 						; pressure advance T2
-;M572 D3 S0.2 						; pressure advance T3
 
 M575 P1 S1 B57600				; Enable LCD
 G29 S2							    ; disable mesh

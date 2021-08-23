@@ -1,7 +1,7 @@
 {% macro apply_speed_limits(limit) -%}
 ; --- apply_speed_limits({{limit}})
-{% for (gcode, params) in limit.items() -%}
+{%  for (gcode, params) in limit.items() -%}
 {{ gcode }} {{ py.format_gcode_param_str(params) }}
-{% endfor -%}
+{%  endfor -%}
 ; --- apply_speed_limits() END
 {% endmacro -%}

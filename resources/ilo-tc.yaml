@@ -116,19 +116,19 @@ render:
       directory: gcodes # Name of the OUTPUT directory files will be saved to
     input:
       directory: ./gcodes
-      files: ["*:*"] # <input fname>:<output fname>
+      files: ["**:**"] # <input fname>:<output fname> (one star - non-recursice, two stars - recursive)
     variables: {}
   - output:
       directory: macros # Name of the OUTPUT directory files will be saved to
     input:
       directory: ./macros
-      files: ["*:*"]
+      files: ["**:**"]
     variables: {}
   - output:
       directory: sys # Name of the OUTPUT directory files will be saved to
     input:
       directory: ./sys
-      files: ["*:*"]
+      files: ["**:**"]
     variables: {}
 
   # Tool scripts

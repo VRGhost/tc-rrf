@@ -22,21 +22,25 @@ class PyFunctions:
     def unique_var(self, prefix='var'):
         return f"{prefix}_{next(self.uid)}"
 
-    def format_gcode_param_str(self, params):
+    def format_gcode_param_str(self, dict_params=None, **kw_params):
         """Converts dict of {param} -> <val> to a gcode string of <param><val>.
 
         Creates ':' - separated list if <val> is a list.
         """
-        assert isinstance(params, dict), params
         def _map_simple_val(orig_val):
             out = None
             if isinstance(orig_val, float):
                 out = '{:0.4f}'.format(orig_val)
             elif isinstance(orig_val, (int, str)):
                 out = str(orig_val)
+            elif orig_val is None:
+                out = None # Return None (do not map it to a string)
             else:
                 raise NotImplementedError(orig_val)
             return out
+
+        params = (dict_params or {}).copy()
+        params.update(kw_params)
 
         out = []
         for key in sorted(params.keys()):
@@ -45,8 +49,9 @@ class PyFunctions:
                 gcode_val = ':'.join(_map_simple_val(el) for el in orig_val)
             else:
                 gcode_val = _map_simple_val(orig_val)
-
-            out.append(f"{key}{gcode_val}")
+            if gcode_val is not None:
+                # Skip any empty values
+                out.append(f"{key}{gcode_val}")
         return ' '.join(out)
 
 
@@ -70,14 +75,18 @@ def render_group(global_vars, config_el, templates_root):
             os.path.join(templates_root, input_dir, input_fname)
         )
         assert os.path.isdir(os.path.dirname(full_fname)), full_fname
-        for glob_item in glob.iglob(full_fname):
+        for glob_item in glob.iglob(full_fname, recursive=True):
             # fname may be a glob pattern
+            if os.path.isdir(glob_item):
+                continue # Skip directories
             template = jinja_env.get_template(os.path.relpath(
                 glob_item, templates_root
             ))
 
             if output_fname == '*':
                 new_out_fname = os.path.basename(glob_item) # special case - re-use the original fname on '*'
+            elif output_fname == '**':
+                new_out_fname = os.path.relpath(glob_item, os.path.dirname(full_fname))
             else:
                 new_out_fname = output_fname
             out_full_fname = os.path.join(out_dir, new_out_fname)
