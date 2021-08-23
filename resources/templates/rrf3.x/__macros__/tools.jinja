@@ -6,5 +6,16 @@ G10 {{ py.format_gcode_param_str(settings, P=tool_number) }}
 
 {% macro amend_current_tool_offsets(dx=0, dy=0, dz=0) %}
 ; --- amend_current_tool_offsets({{dx}},  {{dy}}, {{dz}})
+if state.currentTool >= 0
+    echo "Amending offsets for the T" ^ state.currentTool
+    M98 P"/sys/usr/reset_tool_offsets.g" ; Ensure that all offsets are set to stock
+    var new_x = tools[state.currentTool].offsets[0] + {{ dx }}
+    var new_y = tools[state.currentTool].offsets[1] + {{ dy }}
+    var new_z = tools[state.currentTool].offsets[2] + {{ dz }}
+    {% raw %}
+    G10 X{{var.new_x}} Y{{var.new_y}} Z{{var.new_z}}
+    {% endraw %}
+else
+    echo "amend_current_tool_offsets: No tool is currently selected"
 ; --- amend_current_tool_offsets() END
 {% endmacro %}

@@ -3,6 +3,7 @@
 
 
 
+M98 P"/sys/usr/reset_tool_offsets.g"
 ;Unlock Coupler
 M98 P"/macros/Coupler - Unlock"
 

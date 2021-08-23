@@ -17,7 +17,6 @@
 ; ---- T3
 {{ apply_tool_offsets(tools.T3.offsets, 3) }}
 
-echo "Offsets reset"
 
 ;M572 D0 S0.2                       ; pressure advance T0
 ;M572 D1 S0.2                       ; pressure advance T1

@@ -49,3 +49,4 @@ M201 C500 E2500:2500:2500:2500 X6000 Y6000 Z400
 
 ;Move Out
 G53 G1 X81.4 Y155.0 F50000
+M98 P"/sys/usr/reset_tool_offsets.g"
