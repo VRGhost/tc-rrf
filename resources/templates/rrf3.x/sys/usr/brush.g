@@ -18,3 +18,6 @@ echo "Brush.g called"
 ;G1 X-41.5 Y135 F50000
 ;G1 X-32.5 Y130 F50000
 ;G1 X-41.5 Y125 F50000
+
+{% import '__macros__/move.jinja' as move %}
+{{ move.save_long_move(0, 0, 5) }}
