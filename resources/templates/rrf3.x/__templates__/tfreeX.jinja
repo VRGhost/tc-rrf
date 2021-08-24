@@ -10,7 +10,7 @@ G1 Z4 F1000
 G90
 
 ;Purge nozzle
-M98 P"pre_dock.g"
+M98 P"/sys/usr/pre_dock.g"
 
 ;Move In
 {% set rounded_Y = (tool.park.Y // 20) * 20 -%}
