@@ -21,7 +21,6 @@ if state.currentTool >= 0
         set var.cur_tool_heater_idx_6 = var.cur_tool_heater_idx_6 + 1
 
 
-echo "T=" ^ state.currentTool ^ " H= "^ tools[state.currentTool].heaters ^" T =" ^ var.cur_nozzle_temp_7 ^ " H=" ^ heat.coldExtrudeTemperature
 ; Allow some cooldown (just in case)
 set var.can_extrude = (var.cur_nozzle_temp_7 - 5) > heat.coldExtrudeTemperature ? 1 : 0
 

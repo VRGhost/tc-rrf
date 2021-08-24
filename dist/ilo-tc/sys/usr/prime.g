@@ -21,7 +21,6 @@ if state.currentTool >= 0
         set var.cur_tool_heater_idx_10 = var.cur_tool_heater_idx_10 + 1
 
 
-echo "T=" ^ state.currentTool ^ " H= "^ tools[state.currentTool].heaters ^" T =" ^ var.cur_nozzle_temp_11 ^ " H=" ^ heat.coldExtrudeTemperature
 ; Allow some cooldown (just in case)
 set var.can_extrude = (var.cur_nozzle_temp_11 - 5) > heat.coldExtrudeTemperature ? 1 : 0
 
@@ -35,9 +34,7 @@ if var.can_extrude <= 0
 
 M98 P"/macros/Go To Purge Spot"
 
-G1 E20 F400 ; extrude 30mm of filament
+G1 E30 F400 ; extrude 30mm of filament
 M400
 M98 P"/sys/usr/brush.g"
 M400
-
-M98 P"/macros/Go To Purge Spot"
