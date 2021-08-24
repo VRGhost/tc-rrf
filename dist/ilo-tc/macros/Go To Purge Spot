@@ -4,6 +4,8 @@ if move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking are
 
 
 
+
+
 var RIGHT = -1, LEFT = 1
 var x_side = 0
 
@@ -12,4 +14,4 @@ if state.currentTool >= 0
     set var.x_side = tools[state.currentTool].offsets[0] > 0 ? var.RIGHT : var.LEFT
 
 
-G0 X{ var.x_side == var.RIGHT ? 323 : -5} Y119 F50000
+G0 X{ var.x_side == var.RIGHT ? 325.5 : -5.0 } Y89 F50000

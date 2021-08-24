@@ -1,0 +1,23 @@
+; Sets 'out_var' to true if the currently active heater can extrude filament
+{% macro is_hot_enough_to_extrude(out_var) %}
+
+; ------ is_hot_enough_to_extrude({{out_var}})
+
+{% set cur_nozzle_temp = py.unique_var('cur_nozzle_temp') -%}
+{% set idx = py.unique_var('idx') -%}
+
+
+var {{ cur_nozzle_temp }} = -273
+var {{ idx }} = 0
+while var.{{ idx }} < #heat.heaters
+    if heat.heaters[var.{{ idx }}].state = "active"
+        set var.{{ cur_nozzle_temp }} = heat.heaters[var.{{ idx }}].current
+        break
+    set var.{{ idx }} = var.{{ idx }} + 1
+
+; Allow some cooldown (just in case)
+set {{out_var}} = (var.{{ cur_nozzle_temp }} - 5) > heat.coldExtrudeTemperature ? 1 : 0
+
+; ------ is_hot_enough_to_extrude() END
+
+{% endmacro %}

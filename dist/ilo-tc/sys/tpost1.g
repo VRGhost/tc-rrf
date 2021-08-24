@@ -5,6 +5,6 @@
 M116 P1
 
 ;prime nozzle
-;M98 P"prime.g"
+M98 P"/sys/usr/prime.g"
 
 M106 R1 ; restore print cooling fan speed

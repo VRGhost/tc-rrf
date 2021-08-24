@@ -8,7 +8,7 @@ G1 Z4 F1000
 G90
 
 ;Purge nozzle
-;M98 P"purge.g"
+M98 P"pre_dock.g"
 
 ;Move In
 G53 G1 X214.5 Y150 F50000
