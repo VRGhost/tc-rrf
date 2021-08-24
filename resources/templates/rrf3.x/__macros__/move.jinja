@@ -1,0 +1,89 @@
+
+
+{% import '__macros__/axes.jinja' as axes %}
+
+; ##### find_nearest_manhattan_point
+;       Finds the point on the (min x, min y), (max x, max y) rectangle
+;       that is nearest to the (target x, target y)
+{% macro find_nearest_manhattan_point(
+    out_x_var, out_y_var,
+    cur_x, cur_y,
+    min_x, min_y,
+    max_x, max_y
+) %}
+; ---- find_nearest_manhattan_point({{out_x_var}}, {{out_y_var}}, {{cur_x}}, {{cur_y}}, {{min_x}}, {{min_y}}, {{max_x}}, {{max_y}})
+
+{% set dx = py.unique_var('dx') -%}
+{% set dy = py.unique_var('dy') -%}
+
+var {{ dx }} = 0
+var {{ dy }} = 0
+
+; Step 1 - move to the nearest edge
+; --- Find the minimum dx/dy to move to the rectangle
+
+; ----- Find min dx (by abs)
+set var.{{ dx }} = {{ min_x }} - {{ cur_x }}
+if abs(var.{{ dx }}) > abs({{ max_x }} - {{ cur_x }})
+    set var.{{ dx }} = {{ max_x }} - {{ cur_x }}
+
+; ------ Find min dy (by abs)
+set var.{{ dy }} = {{ min_y }} - {{ cur_y }}
+if abs(var.{{ dy }}) > abs({{ max_y }} - {{ cur_y }})
+    set var.{{ dy }} = {{ max_y }} - {{ cur_y }}
+
+; --- Pick the side with minimum delta
+if abs(var.{{ dx }}) > abs(var.{{ dy }})
+    set var.{{ dx }} = 0
+else
+    set var.{{ dy }} = 0
+
+set {{ out_x_var }} = {{ cur_x }} + var.{{ dx }}
+set {{ out_y_var }} = {{ cur_y }} + var.{{ dy }}
+
+; ---- find_nearest_manhattan_point() END
+{% endmacro %}
+
+; ##### manhattan_move
+;       Moves the toolhead to given X, Y coord in a "safe"
+;       (Meaning that it tries to go around the bed)
+;       The travel is performed amongst sides of (min x, min y), (max x, max y) rectangle
+{% macro manhattan_move(
+    target_x, target_y,
+    min_x, min_y,
+    max_x, max_y,
+    dz=0
+) -%}
+; ---- manhattan_move({{target_x}}, {{target_y}}, {{min_x}}, {{min_y}}, {{max_x}}, {{max_y}}, {{dz}})
+G91
+G1 Z{{dz}}
+G90
+
+{{ axes.set_mov_axis_id('x_axis_idx', 'X') }}
+{{ axes.set_mov_axis_id('y_axis_idx', 'Y') }}
+
+var cur_x = move.axes[var.x_axis_idx].userPosition
+var cur_y = move.axes[var.y_axis_idx].userPosition
+
+var new_y = var.cur_y
+var new_x = var.cur_x
+
+{{ find_nearest_manhattan_point('var.new_x', 'var.new_y', 'var.cur_x', 'var.cur_y', min_x, min_y, max_x, max_y) }}
+
+{% raw %}
+G0 X{{ var.new_x }} Y{{ var.new_y }} F50000
+{% endraw %}
+set var.cur_x = var.new_x
+set var.cur_y = var.new_y
+
+var target_mt_x = {{ target_x }}
+var target_mt_y = {{ target_y }}
+
+{{ find_nearest_manhattan_point('var.target_mt_x', 'var.target_mt_y', target_x, target_y, min_x, min_y, max_x, max_y) }}
+
+{% raw %}
+G0 X{{ var.target_mt_x }} Y{{ var.target_mt_y }} F50000
+{% endraw %}
+
+; ---- manhattan_move() END
+{% endmacro %}

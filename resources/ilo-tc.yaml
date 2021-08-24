@@ -107,8 +107,24 @@ variables:
       park:
         X: 304.5
         Y: 243
-
-
+  bed:
+    width: 300
+    depth: 200
+    # Legal (automated) move limits
+    X:
+      min: 4
+      max: 335
+    Y:
+      min: 0
+      max: 200
+  brushes:
+    right: &right_brush
+      x_max: 328.5
+      width: 6
+      y_min: 119
+      depth: 33
+    left: &left_brush
+      {}
 output_root: ./ilo-tc
 render:
   # Output specs
@@ -172,3 +188,11 @@ render:
         - tpreX.jinja:tpre3.g
     variables:
       tool: *tool3
+  - output: # brush right
+      directory: sys/usr/brushes
+    input:
+      directory: ./__templates__
+      files:
+        - brushX.jinja:right.g
+    variables:
+      brush: *right_brush
