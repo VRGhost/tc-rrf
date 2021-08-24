@@ -5,4 +5,4 @@ echo "Brush.g called"
 ;G90
 
 
-M98 P"/sys/usr/brush/right.g"
+M98 P"/sys/usr/brushes/right.g"

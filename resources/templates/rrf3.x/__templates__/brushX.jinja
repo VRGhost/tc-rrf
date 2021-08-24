@@ -1,16 +1,34 @@
 ; {{ brush }}
 
-;brush in
-G1 X-32.5 Y124 F50000
-G1 X-35.5 Y155 F50000
-G1 X-38.5 Y124 F50000
-G1 X-41.5 Y155 F50000
+{% if brush %}
 
-;Brush Out
-G1 X-41.5 Y155 F50000
-G1 X-32.5 Y150 F50000
-G1 X-41.5 Y145 F50000
-G1 X-32.5 Y140 F50000
-G1 X-41.5 Y135 F50000
-G1 X-32.5 Y130 F50000
-G1 X-41.5 Y125 F50000
+
+{% set min_x = brush.x_max - brush.width -%}
+{% set mid_x = brush.x_max - brush.width / 2 -%}
+{% set max_x = brush.x_max -%}
+
+{% set min_y = brush.y_min -%}
+{% set max_y = brush.y_min + brush.depth -%}
+
+; Go to the start of the brush
+G0 X{{ mid_x }} Y{{ min_y }} F50000
+
+; Front-to-back motions
+{% set f2b_steps = 4 -%}
+{% set dx = brush.width / f2b_steps -%}
+
+{% for idx in range(f2b_steps) %}
+G1 X{{ min_x + (dx * (idx - 1)) }} Y{{ min_y - 5 }} F50000
+G1 X{{ mid_x + (dx * idx) }} Y{{ max_y + 5 }} F50000
+{% endfor %}
+; Front-to-back end
+
+; Side-to-side motions
+{% set s2s_steps = 5 -%}
+{% set dy = brush.depth / s2s_steps -%}
+{% for idx in range(f2b_steps) %}
+G1 X{{ min_x }} Y{{ min_y + (dy * (idx - 1)) }} F50000
+G1 X{{ max_x }} Y{{ min_y + (dy * idx) }} F50000
+{% endfor %}
+
+{% endif %}

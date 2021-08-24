@@ -196,3 +196,11 @@ render:
         - brushX.jinja:right.g
     variables:
       brush: *right_brush
+  - output: # brush left
+      directory: sys/usr/brushes
+    input:
+      directory: ./__templates__
+      files:
+        - brushX.jinja:left.g
+    variables:
+      brush: *left_brush

@@ -128,3 +128,4 @@ T-1								      ; deselect tools
 
 M501                    ; load config-override.g
 
+M98 P"/sys/usr/global_vars.g"
