@@ -7,16 +7,12 @@ var can_extrude = 0
 
 ; ------ is_hot_enough_to_extrude(var.can_extrude)
 
-var cur_nozzle_temp_8 = -273
-var idx_9 = 0
-while var.idx_9 < #heat.heaters
-    if heat.heaters[var.idx_9].state = "active"
-        set var.cur_nozzle_temp_8 = heat.heaters[var.idx_9].current
-        break
-    set var.idx_9 = var.idx_9 + 1
+var cur_nozzle_idx_9 = (state.currentTool >= 0) ? tools[state.currentTool].filamentExtruder : -1
+var cur_nozzle_temp_10 = (cur_nozzle_idx >= 0) ? heat.heaters[var.cur_nozzle_idx_9].current : -273
 
+echo "T=" ^ var.cur_nozzle_temp_10 ^ "H=" ^ heat.coldExtrudeTemperature
 ; Allow some cooldown (just in case)
-set var.can_extrude = (var.cur_nozzle_temp_8 - 5) > heat.coldExtrudeTemperature ? 1 : 0
+set var.can_extrude = (var.cur_nozzle_temp_10 - 5) > heat.coldExtrudeTemperature ? 1 : 0
 
 ; ------ is_hot_enough_to_extrude() END
 
