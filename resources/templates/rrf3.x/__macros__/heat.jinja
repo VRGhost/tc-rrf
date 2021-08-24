@@ -3,14 +3,26 @@
 
 ; ------ is_hot_enough_to_extrude({{out_var}})
 
-{% set cur_nozzle_idx = py.unique_var('cur_nozzle_idx') -%}
+set {{out_var}} = 0 ; set to 'False' by default
+
+{% set cur_heater_tool_arr_idx = py.unique_var('cur_tool_heater_idx') -%}
 {% set cur_nozzle_temp = py.unique_var('cur_nozzle_temp') -%}
+{% set cur_heater_idx = py.unique_var('cur_heater_idx') -%}
 {% set idx = py.unique_var('idx') -%}
 
-var {{ cur_nozzle_idx }} = (state.currentTool >= 0) ? tools[state.currentTool].filamentExtruder : -1
-var {{ cur_nozzle_temp }} = (cur_nozzle_idx >= 0) ? heat.heaters[var.{{ cur_nozzle_idx }}].current : -273
+var {{ cur_heater_tool_arr_idx }} = 0
+var {{ cur_nozzle_temp }} = -273
+var {{ cur_heater_idx }} = -1
 
-echo "T=" ^ var.{{ cur_nozzle_temp }} ^ "H=" ^ heat.coldExtrudeTemperature
+if state.currentTool >= 0
+    ; There is a tool mounter
+    while var.{{ cur_heater_tool_arr_idx }} < #tools[state.currentTool].heaters
+        set var.{{ cur_heater_idx }} = tools[state.currentTool].heaters[var.{{ cur_heater_tool_arr_idx }}]
+        set var.{{ cur_nozzle_temp }} = max(var.{{ cur_nozzle_temp }}, heat.heaters[var.{{ cur_heater_idx }}].current)
+        set var.{{ cur_heater_tool_arr_idx }} = var.{{ cur_heater_tool_arr_idx }} + 1
+
+
+echo "T=" ^ state.currentTool ^ " H= "^ tools[state.currentTool].heaters ^" T =" ^ var.{{ cur_nozzle_temp }} ^ " H=" ^ heat.coldExtrudeTemperature
 ; Allow some cooldown (just in case)
 set {{out_var}} = (var.{{ cur_nozzle_temp }} - 5) > heat.coldExtrudeTemperature ? 1 : 0
 
