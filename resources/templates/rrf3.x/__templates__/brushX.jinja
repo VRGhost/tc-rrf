@@ -13,8 +13,16 @@
 ; Go to the start of the brush
 G0 X{{ mid_x }} Y{{ min_y }} F50000
 
+; Side-to-side motions
+{% set s2s_steps = 5 -%}
+{% set dy = brush.depth / s2s_steps -%}
+{% for idx in range(s2s_steps) %}
+G1 X{{ min_x }} Y{{ min_y + (dy * (idx - 1)) }} F50000
+G1 X{{ max_x }} Y{{ min_y + (dy * idx) }} F50000
+{% endfor %}
+
 ; Front-to-back motions
-{% set f2b_steps = 4 -%}
+{% set f2b_steps = 3 -%}
 {% set dx = brush.width / f2b_steps -%}
 
 {% for idx in range(f2b_steps) %}
@@ -23,12 +31,8 @@ G1 X{{ mid_x + (dx * idx) }} Y{{ max_y + 5 }} F50000
 {% endfor %}
 ; Front-to-back end
 
-; Side-to-side motions
-{% set s2s_steps = 5 -%}
-{% set dy = brush.depth / s2s_steps -%}
-{% for idx in range(f2b_steps) %}
-G1 X{{ min_x }} Y{{ min_y + (dy * (idx - 1)) }} F50000
-G1 X{{ max_x }} Y{{ min_y + (dy * idx) }} F50000
-{% endfor %}
+; One last time to clear any debree off
+G0 X{{ mid_x }} Y{{ min_y }} F50000
+G0 X{{ mid_x }} Y{{ max_y + 30 }} F50000
 
 {% endif %}
