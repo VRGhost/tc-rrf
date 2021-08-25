@@ -214,6 +214,7 @@ def sync_sys(api, local_dir):
     return filter_ledger(
         raw_ledger, delete=[
             '/sys/*.bin', '/sys/*.json', '/sys/*.csv',
+            '/sys/logs', '/sys/logs/*', # do not GC the logs
             '/sys/manifest.json.gz',
             '/sys/config-override.g',
         ]
