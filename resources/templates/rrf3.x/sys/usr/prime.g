@@ -9,11 +9,27 @@ if var.can_extrude <= 0
     echo "Too cold to extrude, skipping priming"
     M99 ; return
 
+{% macro check_and_mark_first_nozzle_use(tool_idx) -%}
+; ---- check_and_mark_first_nozzle_use({{ tool_idx }})
+{% set tool_prime_id = [2, 3, 5, 7][tool_idx] -%}
+if state.currentTool == {{ tool_idx }} && mod(global.prime_first_tool_use, {{ tool_prime_id }}) != 0
+    ; The tool ID is not present in the global state. This is the first use of the tool
+    set global.prime_first_tool_use = global.prime_first_tool_use * {{ tool_prime_id }}
+    set var.is_first_use = true
+; ---- check_and_mark_first_nozzle_use() END
+{% endmacro -%}
+
+var is_first_use = false
+
+{% for idx in range(4) %}
+{{ check_and_mark_first_nozzle_use(idx) }}
+{% endfor %}
+
 M98 P"/macros/Go To Purge Spot"
 
-G1 E30 F400 ; extrude 30mm of filament
+G1 E{ var.is_first_use ? 100 : 30 } F400 ; extrude 30mm of filament
 M400
-G4 S2 ; wait 2 s
+G4 S{ global.prime_extrude_delay * (var.is_first_use ? 2 : 1) } ; wait (the delay is twise as long for the initial priming)
 M98 P"/sys/usr/brush.g"
 M400
 G10 ; retract

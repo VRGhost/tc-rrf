@@ -12,3 +12,7 @@ while var.axis_idx < #move.axes
 if var.do_home
     echo "Some axes not homed. Homing."
     G28
+
+;----- Reset global vars
+set global.prime_first_tool_use = 1 ; see /sys/usr/prime.g
+set global.prime_extrude_delay = 2 ; see /sys/usr/prime.g
