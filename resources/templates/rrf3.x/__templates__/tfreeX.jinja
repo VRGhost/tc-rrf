@@ -2,7 +2,6 @@
 ; called when tool {{ tool.id }} is freed
 
 {% import '__macros__/errors.jinja' as err %}
-{% from '/__macros__/speeds.jinja' import apply_speed_limits -%}
 
 ;Drop the bed
 G91
@@ -34,8 +33,9 @@ M98 P"/macros/Coupler - Unlock"
 ;fan off
 M106 P{{ tool.fan }} S0
 
-; Restore the global speed limits
-{{ apply_speed_limits(speed_limits) }}
+; Restore global extra settings
+{% from 'sys/config.g' import apply_global_settings with context  %}
+{{ apply_global_settings() }}
 
 ;Move Out
 G53 G1 X{{ tool.park.X }} Y{{ rounded_Y - 65 }} F50000

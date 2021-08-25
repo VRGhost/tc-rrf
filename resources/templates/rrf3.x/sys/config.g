@@ -1,8 +1,6 @@
 ; Configuration file for Duet WiFi / Ethernet running RRF3 on E3D Tool Changer
 ; executed by the firmware on start-up
 
-{% from '/__macros__/speeds.jinja' import apply_speed_limits -%}
-
 ; General preferences
 M111 S0 						; Debugging off
 G21 							; Work in millimetres
@@ -41,7 +39,20 @@ M350 X16 Y16 Z16 I1										; Configure microstepping with interpolation
 M906 X1800 Y1800 Z1330 I30                          ; Idle motion motors to 30%
 M906 E1000:1000:1000:1000 C500 I10                          ; Idle extruder motors to 10%
 
-{{ apply_speed_limits(speed_limits) }}
+{% macro apply_global_settings() -%}
+; ----- apply_global_settings()
+; This macro applies all global settings that can be overriden in some other scripts
+{% if extra_settings -%}
+{% for (cmd, params) in extra_settings.items() -%}
+
+{{ cmd }} {{ py.format_gcode_param_str(params) }}
+
+{% endfor -%}
+{% endif -%}
+; ----- apply_global_settings() END
+{% endmacro -%}
+
+{{ apply_global_settings() }}
 
 ; Endstops
 M574 X1 S1 P"xstop"   ; X min active high endstop switch

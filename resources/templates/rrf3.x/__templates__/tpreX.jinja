@@ -1,4 +1,3 @@
-{% from '/__macros__/speeds.jinja' import apply_speed_limits -%}
 ; tpre{{ tool.id }}.g
 ; called before tool {{ tool.id }} is selected
 
@@ -34,7 +33,13 @@ G90
 
 M913 X100 Y100 ; Restore the motor current
 
-{{ apply_speed_limits(tool.speed_limits) if 'speed_limits' in tool }}
+{% if 'extra_settings' in tool %}
+{% for (cmd, params) in extra_settings.items() -%}
+
+{{ cmd }} {{ py.format_gcode_param_str(params, P=tool.id) }}
+
+{% endfor -%}
+{% endif %}
 
 ;Move Out
 G1 X{{ tool.park.X }} Y{{ rounded_Y - 90 }} F4000

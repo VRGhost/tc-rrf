@@ -39,11 +39,17 @@ M350 X16 Y16 Z16 I1										; Configure microstepping with interpolation
 M906 X1800 Y1800 Z1330 I30                          ; Idle motion motors to 30%
 M906 E1000:1000:1000:1000 C500 I10                          ; Idle extruder motors to 10%
 
-; --- apply_speed_limits({'M566': {'X': 400, 'Y': 400, 'Z': 8, 'C': 2, 'E': [2, 2, 2, 2]}, 'M203': {'X': 35000, 'Y': 35000, 'Z': 1200, 'C': 5000, 'E': [5000, 5000, 5000, 5000]}, 'M201': {'X': 6000, 'Y': 6000, 'Z': 400, 'C': 500, 'E': [2500, 2500, 2500, 2500]}})
+; ----- apply_global_settings()
+; This macro applies all global settings that can be overriden in some other scripts
 M566 C2 E2:2:2:2 X400 Y400 Z8
+
 M203 C5000 E5000:5000:5000:5000 X35000 Y35000 Z1200
+
 M201 C500 E2500:2500:2500:2500 X6000 Y6000 Z400
-; --- apply_speed_limits() END
+
+M207 F5 S10
+
+; ----- apply_global_settings() END
 
 
 ; Endstops

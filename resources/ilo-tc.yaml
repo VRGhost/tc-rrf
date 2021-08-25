@@ -2,7 +2,7 @@
 templates_root: ./rrf3.x/
 variables:
   # 'render-global vars'
-  speed_limits:
+  extra_settings:
     M566:  # Set maximum instantaneous speed changes (mm/min)
       X: 400
       Y: 400
@@ -21,6 +21,9 @@ variables:
       Z: 400
       C: 500
       E: [2500, 2500, 2500, 2500]
+    M207: # Set retract length
+      S: 10 # positive length to retract, in mm
+      F: 5 # retraction feedrate, in mm/min
   motors:
     X:
       steps: 100 # steps/mm
@@ -69,24 +72,27 @@ variables:
         # X/Y location of the tools' parking position
         X: -7.4
         Y: 226.3
-      speed_limits: &hemera_direct_speed_limits
+      extra_settings: &hemera_direct_extra_settings
         M566: # maximum instantaneous speed changes (mm/min)
           X: 300
           Y: 300
         M201: #  Set accelerations (mm/s^2)
           X: 4000
           Y: 4000
+        M207: # Set retract length
+          S: 0.25 # positive length to retract, in mm
+          F: 5 # retraction feedrate, in mm/min
     T1: &tool1
       id: 1
       fan: 4
       offsets:
         X: 20.38
         Y: 44.01
-        Z: -4.9
+        Z: -4.85
       park:
         X: 81.4
         Y: 226.55
-      speed_limits: *hemera_direct_speed_limits
+      extra_settings: *hemera_direct_extra_settings
     T2: &tool2
       id: 2
       fan: 6
