@@ -32,7 +32,7 @@ M98 P"/macros/Coupler - Lock"
 ;WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!
 ;if you are using non-standard length hotends ensure the bed is lowered enough BEFORE undocking the tool!
 G91
-G1 Z9.9 F1000
+G1 Z9.8 F1000
 G90
 
 M913 X100 Y100 ; Restore the motor current

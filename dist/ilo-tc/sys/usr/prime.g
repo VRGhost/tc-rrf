@@ -36,5 +36,7 @@ M98 P"/macros/Go To Purge Spot"
 
 G1 E30 F400 ; extrude 30mm of filament
 M400
+G4 S2 ; wait 2 s
 M98 P"/sys/usr/brush.g"
 M400
+G10 ; retract
