@@ -23,7 +23,7 @@ variables:
       E: [2500, 2500, 2500, 2500]
     M207: # Set retract length
       S: 10 # positive length to retract, in mm
-      F: 5 # retraction feedrate, in mm/min
+      F: 2400 # retraction feedrate, in mm/min
   motors:
     X:
       steps: 100 # steps/mm
@@ -81,7 +81,7 @@ variables:
           Y: 4000
         M207: # Set retract length
           S: 0.25 # positive length to retract, in mm
-          F: 5 # retraction feedrate, in mm/min
+          F: 2700 # retraction feedrate, in mm/min (45 mm / s)
     T1: &tool1
       id: 1
       fan: 4
