@@ -34,7 +34,8 @@ G90
 M913 X100 Y100 ; Restore the motor current
 
 {% if 'extra_settings' in tool %}
-{% for (cmd, params) in extra_settings.items() -%}
+; {{ tool.extra_settings }}
+{% for (cmd, params) in tool.extra_settings.items() -%}
 
 {{ cmd }} {{ py.format_gcode_param_str(params, P=tool.id) }}
 
