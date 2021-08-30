@@ -26,9 +26,9 @@ M569 P3 {{ 'S0' if motors.E0.reversed else 'S1' }} 						; Drive 3 E0
 M569 P4 {{ 'S0' if motors.E1.reversed else 'S1' }} 						; Drive 4 E1
 M569 P5 {{ 'S0' if motors.E2.reversed else 'S1' }} 						; Drive 5 E2
 M569 P6 {{ 'S0' if motors.E3.reversed else 'S1' }} 						; Drive 6 E3
-M569 P7 S0 						; Drive 7 COUPLER
-M569 P8 S0 						; Drive 8 UNUSED
-M569 P9 S0 						; Drive 9 UNUSED
+M569 P7 {{ 'S0' if motors.C.reversed else 'S1' }} 						; Drive 7 COUPLER
+M569 P8 {{ 'S0' if motors.A.reversed else 'S1' }}						; Brush "A"
+M569 P9 {{ 'S0' if motors.B.reversed else 'S1' }} 						; Brush "B"
 
 
 M584 X0 Y1 Z2 C7 E3:4:5:6 A8 B9                             ; Apply custom drive mapping
@@ -71,7 +71,7 @@ M906 E1000:1000:1000:1000 C500 I10                          ; Idle extruder moto
 M574 X1 S1 P"xstop"   ; X min active high endstop switch
 M574 Y1 S1 P"ystop"   ; Y min active high endstop switch
 M574 C0 Z0  						; No C Z endstop
-M574 A1 B1 S3         ; Brushes use stall detection
+M574 A0 B0         ; Brushes use stall detection
 
 ; Z probe
 M558 P8 C"zstop" H3 F360 I0 T20000 	; Set Z probe type to switch, the axes for which it is used and the dive height + speeds
@@ -80,6 +80,7 @@ M557 X10:290 Y20:180 S40 			; Define mesh grid
 
 ;Stall Detection
 M915 X Y S3 F0 H400 R2				; X / Y Axes
+;M915 A B S3 F0 H100 R1
 
 ; Heaters
 M308 S0 P"bedtemp" Y"thermistor" A"Bed" T100000 B4138 C0 		; Set thermistor 

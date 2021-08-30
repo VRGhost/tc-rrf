@@ -53,7 +53,8 @@ variables:
       reversed: true
     # Brushes
     A: &brush_motor
-      steps: 800
+      steps: 400
+      reversed: false
     B: *brush_motor
   axis:
     # Machine axis set up
@@ -72,7 +73,7 @@ variables:
     # Brushes
     A: &brush_axis
       min: 0
-      width: 100
+      width: 30
     B: *brush_axis
   tools:
     # Tool infos
@@ -218,6 +219,7 @@ render:
         - home_brush.jinja:homea.g
     variables:
       letter: A
+      axis: *brush_axis
   - output:
       directory: sys/
     input:
@@ -226,6 +228,7 @@ render:
         - home_brush.jinja:homeb.g
     variables:
       letter: B
+      axis: *brush_axis
 
   - output: # brush right
       directory: sys/usr/brushes
