@@ -71,7 +71,7 @@ M906 E1000:1000:1000:1000 C500 I10                          ; Idle extruder moto
 M574 X1 S1 P"xstop"   ; X min active high endstop switch
 M574 Y1 S1 P"ystop"   ; Y min active high endstop switch
 M574 C0 Z0  						; No C Z endstop
-M574 A0 B0         ; Brushes use stall detection
+M574 A1 B1  S3       ; Brushes use stall detection
 
 ; Z probe
 M558 P8 C"zstop" H3 F360 I0 T20000 	; Set Z probe type to switch, the axes for which it is used and the dive height + speeds
@@ -80,7 +80,7 @@ M557 X10:290 Y20:180 S40 			; Define mesh grid
 
 ;Stall Detection
 M915 X Y S3 F0 H400 R2				; X / Y Axes
-;M915 A B S3 F0 H100 R1
+M915 A B S3 F0 H100 R1
 
 ; Heaters
 M308 S0 P"bedtemp" Y"thermistor" A"Bed" T100000 B4138 C0 		; Set thermistor 

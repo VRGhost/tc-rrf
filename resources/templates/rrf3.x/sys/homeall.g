@@ -1,6 +1,9 @@
 ; homeall.g
 ; called to home all axes
 
+M98 P"homea.g"
+M98 P"homeb.g"
+
 M98 P"homec.g"			; Home C (ToolHead)
 
 M98 P"homey.g"			; Home Y

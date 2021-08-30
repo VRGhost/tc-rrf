@@ -72,7 +72,7 @@ variables:
       width: 405
     # Brushes
     A: &brush_axis
-      min: 0
+      min: -8
       width: 30
     B: *brush_axis
   tools:
