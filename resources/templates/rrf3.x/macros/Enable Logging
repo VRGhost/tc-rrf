@@ -1,0 +1,10 @@
+M929 P"/sys/logs/eventlog.txt" S2
+
+;  Platform(0) Network(1) Webserver(2) GCodes(3) Move(4) Heat(5) DDA(6) Roland(7) Scanner(8) PrintMonitor(9) Storage(10) PortControl(11) DuetExpansion(12) FilamentSensors(13) WiFi(14) Display(15) LinuxInterface(16) CAN(17)
+
+M111 P0 S1
+M111 P3 S1
+M111 P4 S1
+M111 P5 S1
+M111 P9 S1
+M111 P10 S1

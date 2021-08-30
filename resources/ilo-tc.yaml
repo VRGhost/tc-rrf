@@ -9,18 +9,24 @@ variables:
       Z: 8
       C: 2
       E: [2, 2, 2, 2]
+      A: 2
+      B: 2
     M203:  # Set maximum speeds (mm/min)
       X: 35000
       Y: 35000
       Z: 1200
       C: 5000
       E: [5000, 5000, 5000, 5000]
+      A: 300
+      B: 300
     M201: #  Set accelerations (mm/s^2)
       X: 6000
       Y: 6000
       Z: 400
       C: 500
       E: [2500, 2500, 2500, 2500]
+      A: 500
+      B: 500
     M207: # Set retract length
       S: 10 # positive length to retract, in mm
       F: 2400 # retraction feedrate, in mm/min
@@ -45,6 +51,10 @@ variables:
     E3:
       steps: 409
       reversed: true
+    # Brushes
+    A: &brush_motor
+      steps: 800
+    B: *brush_motor
   axis:
     # Machine axis set up
     X:
@@ -56,9 +66,14 @@ variables:
     Z:
       min: 0
       width: 290
-    C:
+    C: # Carriage
       min: -45
       width: 405
+    # Brushes
+    A: &brush_axis
+      min: 0
+      width: 100
+    B: *brush_axis
   tools:
     # Tool infos
     T0: &tool0
@@ -194,6 +209,24 @@ render:
         - tpreX.jinja:tpre3.g
     variables:
       tool: *tool3
+  # brush routines
+  - output:
+      directory: sys/
+    input:
+      directory: ./__templates__
+      files:
+        - home_brush.jinja:homea.g
+    variables:
+      letter: A
+  - output:
+      directory: sys/
+    input:
+      directory: ./__templates__
+      files:
+        - home_brush.jinja:homeb.g
+    variables:
+      letter: B
+
   - output: # brush right
       directory: sys/usr/brushes
     input:

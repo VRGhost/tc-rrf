@@ -1,0 +1,11 @@
+; home{{ letter }}.g
+; called to home the A or B axis (brushes)
+
+
+G91
+M400                        ; Wait for any moves to finish
+M913 {{letter}}30                    ; MOTORS TO 30% CURRENT
+G1 H2 {{letter}} 500 F5000
+G92 {{letter}}0                    ; Mark {{ letter }} as homed
+G90
+M913 C100                   ; MOTORS TO 100% CURRENT

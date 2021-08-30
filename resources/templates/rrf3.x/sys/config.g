@@ -30,13 +30,26 @@ M569 P7 S0 						; Drive 7 COUPLER
 M569 P8 S0 						; Drive 8 UNUSED
 M569 P9 S0 						; Drive 9 UNUSED
 
-M584 X0 Y1 Z2 C7 E3:4:5:6 								; Apply custom drive mapping
-M208 X{{ axis.X.min }}:{{ axis.X.min + axis.X.width }} Y{{ axis.Y.min }}:{{ axis.Y.min + axis.Y.width }} Z{{ axis.Z.min }}:{{ axis.Z.min + axis.Z.width }} C{{ axis.C.min }}:{{ axis.C.min + axis.C.width }}	 				; Set axis maxima & minima
-M92 X{{ motors.X.steps }} Y{{ motors.Y.steps }} Z{{ motors.Z.steps }} C{{ motors.C.steps }} E{{ motors.E0.steps }}:{{ motors.E1.steps }}:{{ motors.E2.steps }}:{{ motors.E3.steps }}				; Set steps per mm assuming x16 microstepping
-M350 E16:16:16:16 I1 									; Configure microstepping with interpolation
-M350 C16 I10											; Configure microstepping without interpolation
-M350 X16 Y16 Z16 I1										; Configure microstepping with interpolation
-M906 X1800 Y1800 Z1330 I30                          ; Idle motion motors to 30%
+
+M584 X0 Y1 Z2 C7 E3:4:5:6 A8 B9                             ; Apply custom drive mapping
+; Apply drive mapping
+
+; Set axis maxima & minima
+M208 X{{ axis.X.min }}:{{ axis.X.min + axis.X.width }} Y{{ axis.Y.min }}:{{ axis.Y.min + axis.Y.width }} Z{{ axis.Z.min }}:{{ axis.Z.min + axis.Z.width }}
+M208 C{{ axis.C.min }}:{{ axis.C.min + axis.C.width }} A{{ axis.A.min }}:{{ axis.A.min + axis.A.width }} B{{ axis.B.min }}:{{ axis.B.min + axis.B.width }}
+
+; Set steps per mm assuming x16 microstepping
+M92 X{{ motors.X.steps }} Y{{ motors.Y.steps }} Z{{ motors.Z.steps }} C{{ motors.C.steps }}
+M92 E{{ motors.E0.steps }}:{{ motors.E1.steps }}:{{ motors.E2.steps }}:{{ motors.E3.steps }}
+M92 A{{ motors.B.steps }} B{{ motors.B.steps }}
+
+; Configure microstepping
+M350 E16:16:16:16 I1 									; with interpolation
+M350 C16 I10											; without interpolation
+M350 X16 Y16 Z16 I1										; with interpolation
+M350 A16 B16 I1
+
+M906 X1800 Y1800 Z1330 A800 B800 I30                          ; Idle motion motors to 30%
 M906 E1000:1000:1000:1000 C500 I10                          ; Idle extruder motors to 10%
 
 {% macro apply_global_settings() -%}
@@ -58,6 +71,7 @@ M906 E1000:1000:1000:1000 C500 I10                          ; Idle extruder moto
 M574 X1 S1 P"xstop"   ; X min active high endstop switch
 M574 Y1 S1 P"ystop"   ; Y min active high endstop switch
 M574 C0 Z0  						; No C Z endstop
+M574 A1 B1 S3         ; Brushes use stall detection
 
 ; Z probe
 M558 P8 C"zstop" H3 F360 I0 T20000 	; Set Z probe type to switch, the axes for which it is used and the dive height + speeds
