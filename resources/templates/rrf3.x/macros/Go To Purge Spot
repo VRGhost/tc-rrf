@@ -1,4 +1,6 @@
-{% include "__templates__/avoid_tc_clash.jinja" %}
+{% from "__macros__/move.jinja" import avoid_tc_clash %}
+
+{{ avoid_tc_clash() }}
 
 {% set target_y = brushes.values() | map(attribute='y_min', default=1000000) | min %}
 {% set right_x = brushes.right.get('x_max', 300) - brushes.right.get('width', 10)/2 %}

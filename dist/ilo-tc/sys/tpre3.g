@@ -8,11 +8,11 @@ M98 P"/sys/usr/reset_tool_offsets.g"
 M98 P"/macros/Coupler - Unlock"
 
 ;Move to location
-G1 X304.5 Y200 F50000
+G1 X308.6 Y200.0 F50000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #0 (tool 3)"
 
-G1 X304.5 Y230 F50000
+G1 X308.6 Y230.0 F50000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #1 (tool 3)"
 
@@ -20,7 +20,7 @@ if result != 0
 M913 X60 Y60 ; Set the motor current to 60%
 
 ;Collect
-G1 X304.5 Y243 F2500
+G1 X308.6 Y241.5 F2500
 if result != 0
     abort "[ERROR]: Unable to complete approach step #2 (tool 3)"
 
@@ -40,4 +40,4 @@ M913 X100 Y100 ; Restore the motor current
 
 
 ;Move Out
-G1 X304.5 Y150 F4000
+G1 X308.6 Y150.0 F4000

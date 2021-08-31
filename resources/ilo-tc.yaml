@@ -117,8 +117,8 @@ variables:
         Y: 39
         Z: -5
       park:
-        X: 214.5
-        Y: 243
+        X: 218.8
+        Y: 242
     T3: &tool3
       id: 3
       fan: 8
@@ -127,8 +127,8 @@ variables:
         Y: 39
         Z: -5
       park:
-        X: 304.5
-        Y: 243
+        X: 308.6
+        Y: 241.5
   bed:
     width: 300
     depth: 200

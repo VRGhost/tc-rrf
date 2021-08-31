@@ -2,12 +2,16 @@
 ; called to home the x axis
 
 {% from '/__macros__/axes.jinja' import set_mov_axis_id -%}
+{% from "__macros__/move.jinja" import avoid_tc_clash %}
 
 {{ set_mov_axis_id('y_idx', 'Y') }}
 
 if !move.axes[var.y_idx].homed
     M98 P"homey.g"          ; Home Y
     M400
+else
+    ; Avoid accidentally clashing with the tools/Z column
+    {{ avoid_tc_clash(indent=4)}}
 
 if state.currentTool >= 0
     abort "Refusing to home X with tool attached."

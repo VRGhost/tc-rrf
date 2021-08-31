@@ -1,6 +1,8 @@
 ; homex.g
 ; called to home the x axis
 
+
+
 var y_idx = -1
 ;----- find_axis_id("Y", var.y_idx)
 
@@ -22,6 +24,12 @@ if var.find_success_5 == 0
 if !move.axes[var.y_idx].homed
     M98 P"homey.g"          ; Home Y
     M400
+else
+    ; Avoid accidentally clashing with the tools/Z column
+    ; ----- AVOID clashing with the TC walls
+    if move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
+        G1 Y200 F2500 ; slowly back out
+
 
 if state.currentTool >= 0
     abort "Refusing to home X with tool attached."

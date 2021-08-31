@@ -1,2 +1,4 @@
-{% include "__templates__/avoid_tc_clash.jinja" %}
-G1 X150 Y100 F50000
+{% from "__macros__/move.jinja" import avoid_tc_clash %}
+
+{{ avoid_tc_clash() }}
+G1 X150 Y20 F50000

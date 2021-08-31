@@ -7,6 +7,7 @@ import os
 import glob
 import shutil
 import itertools
+import logging
 
 import yaml
 import jinja2
@@ -96,8 +97,11 @@ def render_group(global_vars, config_el, templates_root):
             }
             render_vars.update(global_vars)
             render_vars.update(input_vars)
-
-            render_out = template.render(**render_vars)
+            try:
+                render_out = template.render(**render_vars)
+            except:
+                logging.fatal(f"Error rendering {glob_item!r}")
+                raise
             if not render_out.endswith('\n'):
                 # Ensure all outputs terminate with an empty line (just in case)
                 render_out += '\n'
@@ -161,5 +165,6 @@ def get_arg_parser():
     return parser
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
     args = get_arg_parser().parse_args()
     main(args.__dict__)
