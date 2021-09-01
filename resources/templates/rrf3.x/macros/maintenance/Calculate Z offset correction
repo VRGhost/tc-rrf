@@ -1,0 +1,12 @@
+{% import '__macros__/axes.jinja' as axes %}
+
+if !exists(global.measured_z_height)
+    abort "You must 'Set Real Z offset' first"
+
+{{ axes.set_mov_axis_id('z_idx', 'Z') }}
+var current_tool_offset = 0;
+if state.currentTool >= 0
+    ; A tool is selected
+    set var.current_tool_offset = tools[state.currentTool].offsets[var.z_idx]
+
+echo "New Tool Z offset is: " ^ (var.current_tool_offset - (global.measured_z_height - move.axes[var.z_idx].userPosition))

@@ -1,0 +1,43 @@
+
+
+
+if state.currentTool >= 0
+    abort "No tool must be equipped"
+
+var z_idx = -1
+;----- find_axis_id("Z", var.z_idx)
+
+var axis_iter_2 = 0
+var find_success_3 = 0 ; 0 - not found, 1 - found
+
+while var.axis_iter_2 < #move.axes
+    if move.axes[var.axis_iter_2].letter == "Z"
+        set var.find_success_3 = 1
+        set var.z_idx = var.axis_iter_2
+        break
+    set var.axis_iter_2 = var.axis_iter_2 + 1
+
+if var.find_success_3 == 0
+    abort "Failed to find Z axis"
+
+;----- find_axis_id("Z", var.z_idx) END
+
+if move.axes[var.z_idx].userPosition < 30
+    G1 Z30 F500 ; Move back a little
+
+if !exists(global.measured_z_height)
+    global measured_z_height = 0
+
+G30 S-1
+; Move back a little
+
+; ---- rel_move(None, None, 10, 500, G1)
+G91
+G1 F500 Z10
+G90
+; ---- rel_move() END
+
+G30 S-1 ; try again
+
+set global.measured_z_height = move.axes[var.z_idx].userPosition
+echo "Saved base Z height of " ^ global.measured_z_height ^ "mm"

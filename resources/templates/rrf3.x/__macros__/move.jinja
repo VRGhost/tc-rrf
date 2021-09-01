@@ -2,6 +2,14 @@
 
 {% import '__macros__/axes.jinja' as axes %}
 
+{% macro rel_move(dx=None, dy=None, dz=0, F=None, cmd='G0') %}
+; ---- rel_move({{dx}}, {{dy}}, {{dz}}, {{F}}, {{cmd}})
+G91
+{{cmd}} {{ py.format_gcode_param_str(X=dx, Y=dy, Z=dz, F=F) }}
+G90
+; ---- rel_move() END
+{% endmacro %}
+
 ; ##### find_nearest_manhattan_point
 ;       Finds the point on the (min x, min y), (max x, max y) rectangle
 ;       that is nearest to the (target x, target y)
