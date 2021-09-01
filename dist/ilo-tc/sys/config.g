@@ -26,7 +26,7 @@ M569 P3 S1 						; Drive 3 E0
 M569 P4 S1 						; Drive 4 E1
 M569 P5 S0 						; Drive 5 E2
 M569 P6 S0 						; Drive 6 E3
-M569 P7 S1 						; Drive 7 COUPLER
+M569 P7 S0 						; Drive 7 COUPLER
 M569 P8 S1						; Brush "A"
 M569 P9 S1 						; Brush "B"
 
@@ -36,7 +36,7 @@ M584 X0 Y1 Z2 C7 E3:4:5:6 A8 B9                             ; Apply custom drive
 
 ; Set axis maxima & minima
 M208 X-29.6:333.9 Y-46.8:245.2 Z0:290
-M208 C-45:360 A-8:22 B-8:22
+M208 C-45:360 A-13:17 B-13:17
 
 ; Set steps per mm assuming x16 microstepping
 M92 X100 Y100 Z800 C91.022
@@ -56,7 +56,7 @@ M906 E1000:1000:1000:1000 C500 I10                          ; Idle extruder moto
 ; This macro applies all global settings that can be overriden in some other scripts
 M566 A2 B2 C2 E2:2:2:2 X400 Y400 Z8
 
-M203 A300 B300 C5000 E5000:5000:5000:5000 X35000 Y35000 Z1200
+M203 A5000 B5000 C5000 E5000:5000:5000:5000 X35000 Y35000 Z1200
 
 M201 A500 B500 C500 E2500:2500:2500:2500 X6000 Y6000 Z400
 

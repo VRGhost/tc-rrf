@@ -9,7 +9,8 @@ if move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking are
 
 
 
-var RIGHT = -1, LEFT = 1
+var RIGHT = -1
+var LEFT = 1
 var x_side = 0
 
 if state.currentTool >= 0

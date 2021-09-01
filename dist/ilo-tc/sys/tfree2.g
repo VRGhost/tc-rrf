@@ -19,22 +19,22 @@ if move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking are
 M98 P"/sys/usr/pre_dock.g"
 
 ;Move In
-G53 G1 X218.8 Y150 F50000
+G53 G1 X218.8 Y150.0 F50000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #0 (tool 2)"
 
-G53 G1 X218.8 Y200 F50000
+G53 G1 X218.8 Y200.0 F50000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #1 (tool 2)"
 
-G53 G1 X218.8 Y220 F50000
+G53 G1 X218.8 Y220.0 F50000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #2 (tool 2)"
 
 
 M913 X60 Y60 ; Set the motor current to 60%
 
-G53 G1 X218.8 Y242 F5000
+G53 G1 X218.8 Y242.2 F5000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #3 (tool 2)"
 
@@ -53,7 +53,7 @@ M106 P6 S0
 ; This macro applies all global settings that can be overriden in some other scripts
 M566 A2 B2 C2 E2:2:2:2 X400 Y400 Z8
 
-M203 A300 B300 C5000 E5000:5000:5000:5000 X35000 Y35000 Z1200
+M203 A5000 B5000 C5000 E5000:5000:5000:5000 X35000 Y35000 Z1200
 
 M201 A500 B500 C500 E2500:2500:2500:2500 X6000 Y6000 Z400
 
@@ -63,5 +63,5 @@ M207 F2400 S10
 
 
 ;Move Out
-G53 G1 X218.8 Y175 F50000
+G53 G1 X218.8 Y175.0 F50000
 M98 P"/sys/usr/reset_tool_offsets.g"

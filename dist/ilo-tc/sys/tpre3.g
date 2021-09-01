@@ -3,6 +3,13 @@
 
 
 
+
+; Just in case - take care not to clash with the environment
+; ----- AVOID clashing with the TC walls
+if move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
+    G1 Y200 F2500 ; slowly back out
+
+
 M98 P"/sys/usr/reset_tool_offsets.g"
 ;Unlock Coupler
 M98 P"/macros/Coupler - Unlock"

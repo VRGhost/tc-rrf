@@ -6,7 +6,8 @@
 {% set right_x = brushes.right.get('x_max', 300) - brushes.right.get('width', 10)/2 %}
 {% set left_x = brushes.left.get('x_max', 0) - brushes.left.get('width', 10)/2 %}
 
-var RIGHT = -1, LEFT = 1
+var RIGHT = -1
+var LEFT = 1
 var x_side = 0
 
 if state.currentTool >= 0

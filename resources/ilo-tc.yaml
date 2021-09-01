@@ -17,8 +17,8 @@ variables:
       Z: 1200
       C: 5000
       E: [5000, 5000, 5000, 5000]
-      A: 300
-      B: 300
+      A: 5000
+      B: 5000
     M201: #  Set accelerations (mm/s^2)
       X: 6000
       Y: 6000
@@ -39,6 +39,7 @@ variables:
       steps: 800
     C:
       steps: 91.022
+      reversed: true
     E0:
       steps: 368
       reversed: false # Motor direction
@@ -72,7 +73,7 @@ variables:
       width: 405
     # Brushes
     A: &brush_axis
-      min: -8
+      min: -13
       width: 30
     B: *brush_axis
   tools:
@@ -118,7 +119,7 @@ variables:
         Z: -5
       park:
         X: 218.8
-        Y: 242
+        Y: 242.2
     T3: &tool3
       id: 3
       fan: 8

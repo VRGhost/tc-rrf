@@ -2,6 +2,10 @@
 ; called before tool {{ tool.id }} is selected
 
 {% import '__macros__/errors.jinja' as err %}
+{% from "__macros__/move.jinja" import avoid_tc_clash %}
+
+; Just in case - take care not to clash with the environment
+{{ avoid_tc_clash() }}
 
 M98 P"/sys/usr/reset_tool_offsets.g"
 ;Unlock Coupler
