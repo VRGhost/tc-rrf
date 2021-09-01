@@ -1,1 +1,10 @@
-G29 S2
+G29 S2 ; Disable mesh levelling
+
+M29 P"/macros/Move to Middle"
+
+if state.currentTool <= 0
+    ; No tool selected - Zero out the Z coord by current point
+    G30 ; Adjust Z zero point
+    G30 S-1 ; Report current height
+
+G1 Z50
