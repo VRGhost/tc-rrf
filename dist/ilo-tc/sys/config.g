@@ -39,7 +39,7 @@ M208 X-29.6:333.9 Y-46.8:245.2 Z0:290
 M208 C-45:360 A-13:17 B-13:17
 
 ; Set steps per mm assuming x16 microstepping
-M92 X100 Y100 Z800 C91.022
+M92 X100 Y100 Z860 C91.022
 M92 E368:368:409:409
 M92 A400 B400
 
@@ -73,7 +73,7 @@ M574 A1 B1  S3       ; Brushes use stall detection
 
 ; Z probe
 ; ----- apply_z_probe_settings()
-M558 Czstop F360 H3 I0 P8 T20000
+M558 C"zstop" F360 H3 I0 P8 T20000
 
 G31 P200 X0 Y0 Z0.1000
 

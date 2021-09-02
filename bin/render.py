@@ -32,8 +32,15 @@ class PyFunctions:
             out = None
             if isinstance(orig_val, float):
                 out = '{:0.4f}'.format(orig_val)
-            elif isinstance(orig_val, (int, str)):
+            elif isinstance(orig_val, int):
                 out = str(orig_val)
+            elif isinstance(orig_val, str):
+                # A string
+                out = orig_val
+                for doubled_char in ('"', "'"):
+                    # All quotation chars have to be doubled when inside a string
+                    out = out.replace(doubled_char, doubled_char * 2)
+                out = f'"{out}"'
             elif orig_val is None:
                 out = None # Return None (do not map it to a string)
             else:

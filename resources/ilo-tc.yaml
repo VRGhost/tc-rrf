@@ -50,7 +50,7 @@ variables:
     Y:
       steps: 100
     Z:
-      steps: 800
+      steps: 860
     C:
       steps: 91.022
       reversed: true

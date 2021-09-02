@@ -5,7 +5,10 @@ if !move.axes[0].homed || !move.axes[1].homed
     M98 P"homey.g"          ; Home Y
     M98 P"homex.g"          ; Home X
 
-M98 P"/macros/Coupler - Unlock"	; Open Coupler
+if state.currentTool >= 0
+    abort "Refusing to home Z with tool attached."
+
+M98 P"/macros/Coupler - Unlock"	; Open Coupler (just in case)
 
 G91 							; Relative mode
 G1 H2 Z5 F5000					; Lower the bed
