@@ -1,0 +1,5 @@
+if state.currentTool >= 0
+    abort "No tool must be equipped"
+
+G0 Z200 ; allow enough space for the microscop
+M98 P"/macros/Move to Middle"

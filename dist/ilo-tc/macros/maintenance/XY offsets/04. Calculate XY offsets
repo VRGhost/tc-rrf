@@ -1,0 +1,49 @@
+
+
+if !exists(global.measured_x_coord) || !exists(global.measured_y_coord)
+    abort "You must 'Set Real XY coords' first"
+
+var x_idx = -1
+;----- find_axis_id("X", var.x_idx)
+
+var axis_iter_4 = 0
+var find_success_5 = 0 ; 0 - not found, 1 - found
+
+while var.axis_iter_4 < #move.axes
+    if move.axes[var.axis_iter_4].letter == "X"
+        set var.find_success_5 = 1
+        set var.x_idx = var.axis_iter_4
+        break
+    set var.axis_iter_4 = var.axis_iter_4 + 1
+
+if var.find_success_5 == 0
+    abort "Failed to find X axis"
+
+;----- find_axis_id("X", var.x_idx) END
+var y_idx = -1
+;----- find_axis_id("Y", var.y_idx)
+
+var axis_iter_6 = 0
+var find_success_7 = 0 ; 0 - not found, 1 - found
+
+while var.axis_iter_6 < #move.axes
+    if move.axes[var.axis_iter_6].letter == "Y"
+        set var.find_success_7 = 1
+        set var.y_idx = var.axis_iter_6
+        break
+    set var.axis_iter_6 = var.axis_iter_6 + 1
+
+if var.find_success_7 == 0
+    abort "Failed to find Y axis"
+
+;----- find_axis_id("Y", var.y_idx) END
+
+var current_tool_x_offset = 0
+var current_tool_y_offset = 0
+if state.currentTool >= 0
+    ; A tool is selected
+    set var.current_tool_x_offset = tools[state.currentTool].offsets[var.x_idx]
+    set var.current_tool_y_offset = tools[state.currentTool].offsets[var.y_idx]
+
+echo "New Tool X offset is: " ^ (var.current_tool_x_offset - (global.measured_x_coord - move.axes[var.x_idx].userPosition))
+echo "New Tool Y offset is: " ^ (var.current_tool_y_offset - (global.measured_y_coord - move.axes[var.y_idx].userPosition))

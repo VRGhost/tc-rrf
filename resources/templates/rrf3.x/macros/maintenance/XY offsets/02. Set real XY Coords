@@ -1,0 +1,18 @@
+{% import '__macros__/axes.jinja' as axes %}
+
+if state.currentTool >= 0
+    abort "No tool must be equipped"
+
+{{ axes.set_mov_axis_id('x_idx', 'X') }}
+{{ axes.set_mov_axis_id('y_idx', 'Y') }}
+
+if !exists(global.measured_x_coord)
+    global measured_x_coord = 0
+
+if !exists(global.measured_y_coord)
+    global measured_y_coord = 0
+
+set global.measured_x_coord = move.axes[var.x_idx].userPosition
+set global.measured_y_coord = move.axes[var.y_idx].userPosition
+
+echo "Saved base (X, Y) of (" ^ global.measured_x_coord ^ ", " ^ global.measured_y_coord ^ ") mm"
