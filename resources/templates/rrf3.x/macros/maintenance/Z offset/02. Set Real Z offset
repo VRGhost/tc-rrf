@@ -18,6 +18,8 @@ G30 S-1
 G30 S-1 ; try again
 
 set global.measured_z_height = move.axes[var.z_idx].userPosition
-echo "Saved base Z height of " ^ global.measured_z_height ^ "mm"
+var zProbeTriggerHeight = sensors.probes[0].triggerHeight
+
+echo "Saved base Z height of " ^ global.measured_z_height ^ "mm (Real object height: "^ (global.measured_z_height - var.zProbeTriggerHeight) ^"mm)"
 
 {{ move.rel_move(dz=50, cmd='G1', F=500) }}

@@ -6,17 +6,17 @@ if !exists(global.measured_z_height)
 var z_idx = -1
 ;----- find_axis_id("Z", var.z_idx)
 
-var axis_iter_0 = 0
-var find_success_1 = 0 ; 0 - not found, 1 - found
+var axis_iter_2 = 0
+var find_success_3 = 0 ; 0 - not found, 1 - found
 
-while var.axis_iter_0 < #move.axes
-    if move.axes[var.axis_iter_0].letter == "Z"
-        set var.find_success_1 = 1
-        set var.z_idx = var.axis_iter_0
+while var.axis_iter_2 < #move.axes
+    if move.axes[var.axis_iter_2].letter == "Z"
+        set var.find_success_3 = 1
+        set var.z_idx = var.axis_iter_2
         break
-    set var.axis_iter_0 = var.axis_iter_0 + 1
+    set var.axis_iter_2 = var.axis_iter_2 + 1
 
-if var.find_success_1 == 0
+if var.find_success_3 == 0
     abort "Failed to find Z axis"
 
 ;----- find_axis_id("Z", var.z_idx) END
