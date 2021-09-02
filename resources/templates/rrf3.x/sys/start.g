@@ -13,6 +13,6 @@ if var.do_home
     echo "Some axes not homed. Homing."
     G28
 
-;----- Reset global vars
-set global.prime_first_tool_use = 1 ; see /sys/usr/prime.g
-set global.prime_extrude_delay = 2 ; see /sys/usr/prime.g
+{% from 'sys/usr/prime.g' import reset_global_prime_vars %}
+
+{{ reset_global_prime_vars() }}

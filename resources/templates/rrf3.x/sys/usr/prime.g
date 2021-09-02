@@ -2,6 +2,19 @@
 
 {% import '__macros__/heat.jinja' as heat %}
 
+{% macro declare_global_prime_vars() -%}
+; ---- declare_global_prime_vars
+global prime_extrude_delay = 2 ; seconds
+global prime_first_tool_use = 1 ; this int is used to mark what tool hadn't been initially primed
+{% endmacro -%}
+
+{% macro reset_global_prime_vars() -%}
+; ---- reset_global_prime_vars
+set global.prime_first_tool_use = 1 ; see /sys/usr/prime.g
+set global.prime_extrude_delay = 2 ; see /sys/usr/prime.g
+{% endmacro %}
+
+
 var can_extrude = 0
 {{ heat.is_hot_enough_to_extrude('var.can_extrude') }}
 

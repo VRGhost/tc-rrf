@@ -1,6 +1,6 @@
 
 M98 P"/sys/usr/brushes/right.g"
 
-; Update maybe_brush times
-set global.maybe_brush_last_tool = state.currentTool
-set global.maybe_brush_last_time = state.upTime
+{% from 'sys/usr/maybe_brush.g' import update_maybe_brush_timestamp %}
+
+{{ update_maybe_brush_timestamp() }}
