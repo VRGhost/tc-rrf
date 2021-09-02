@@ -72,8 +72,13 @@ M574 C0 Z0  						; No C Z endstop
 M574 A1 B1  S3       ; Brushes use stall detection
 
 ; Z probe
-M558 P8 C"zstop" H3 F360 I0 T20000 	; Set Z probe type to switch, the axes for which it is used and the dive height + speeds
-G31 P200 X0 Y0 Z0	 				; Set Z probe trigger value, offset and trigger height
+; ----- apply_z_probe_settings()
+M558 Czstop F360 H3 I0 P8 T20000
+
+G31 P200 X0 Y0 Z0.1000
+
+; ----- apply_global_settings() END
+
 M557 X10:290 Y20:180 S40 			; Define mesh grid
 
 ;Stall Detection

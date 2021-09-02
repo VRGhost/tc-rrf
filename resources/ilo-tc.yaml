@@ -30,6 +30,20 @@ variables:
     M207: # Set retract length
       S: 10 # positive length to retract, in mm
       F: 2400 # retraction feedrate, in mm/min
+  z_probe:
+    extra_settings:
+      M558: # Set Z probe type to switch, the axes for which it is used and the dive height + speeds
+        P: 8
+        C: zstop
+        H: 3
+        F: 360
+        I: 0
+        T: 20000
+      G31: # Set Z probe trigger value, offset and trigger height
+        P: 200
+        X: 0
+        Y: 0
+        Z: 0.1
   motors:
     X:
       steps: 100 # steps/mm

@@ -74,9 +74,19 @@ M574 C0 Z0  						; No C Z endstop
 M574 A1 B1  S3       ; Brushes use stall detection
 
 ; Z probe
-M558 P8 C"zstop" H3 F360 I0 T20000 	; Set Z probe type to switch, the axes for which it is used and the dive height + speeds
-G31 P200 X0 Y0 Z0	 				; Set Z probe trigger value, offset and trigger height
-M557 X10:290 Y20:180 S40 			; Define mesh grid
+; ----- apply_z_probe_settings()
+{% if z_probe.extra_settings -%}
+{% for (cmd, params) in z_probe.extra_settings.items() -%}
+
+{{ cmd }} {{ py.format_gcode_param_str(params) }}
+
+{% endfor -%}
+{% endif -%}
+; ----- apply_global_settings() END
+
+{% set bed_grid_border_x = 10 -%}
+{% set bed_grid_border_y = 20 -%}
+M557 X{{ bed_grid_border_x }}:{{ bed.width - bed_grid_border_x }} Y{{ bed_grid_border_y }}:{{ bed.depth - bed_grid_border_y }} S40 			; Define mesh grid
 
 ;Stall Detection
 M915 X Y S3 F0 H400 R2				; X / Y Axes
