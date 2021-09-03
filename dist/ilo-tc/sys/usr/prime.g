@@ -12,20 +12,20 @@ var can_extrude = 0
 
 set var.can_extrude = 0 ; set to 'False' by default
 
-var cur_tool_heater_idx_14 = 0
-var cur_nozzle_temp_15 = -273
-var cur_heater_idx_16 = -1
+var cur_tool_heater_idx_32 = 0
+var cur_nozzle_temp_33 = -273
+var cur_heater_idx_34 = -1
 
 if state.currentTool >= 0
     ; There is a tool mounter
-    while var.cur_tool_heater_idx_14 < #tools[state.currentTool].heaters
-        set var.cur_heater_idx_16 = tools[state.currentTool].heaters[var.cur_tool_heater_idx_14]
-        set var.cur_nozzle_temp_15 = max(var.cur_nozzle_temp_15, heat.heaters[var.cur_heater_idx_16].current)
-        set var.cur_tool_heater_idx_14 = var.cur_tool_heater_idx_14 + 1
+    while var.cur_tool_heater_idx_32 < #tools[state.currentTool].heaters
+        set var.cur_heater_idx_34 = tools[state.currentTool].heaters[var.cur_tool_heater_idx_32]
+        set var.cur_nozzle_temp_33 = max(var.cur_nozzle_temp_33, heat.heaters[var.cur_heater_idx_34].current)
+        set var.cur_tool_heater_idx_32 = var.cur_tool_heater_idx_32 + 1
 
 
 ; Allow some cooldown (just in case)
-set var.can_extrude = (var.cur_nozzle_temp_15 - 5) > heat.coldExtrudeTemperature ? 1 : 0
+set var.can_extrude = (var.cur_nozzle_temp_33 - 5) > heat.coldExtrudeTemperature ? 1 : 0
 
 ; ------ is_hot_enough_to_extrude() END
 

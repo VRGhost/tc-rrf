@@ -1,4 +1,6 @@
-{% macro abort_on_error(message) -%}
+{% macro abort_on_error(message, indent=0) -%}
+{% filter indent(width=indent) -%}
 if result != 0
     abort "[ERROR]: {{ message }}"
+{%- endfilter %}
 {% endmacro %}

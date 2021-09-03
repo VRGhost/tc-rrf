@@ -62,6 +62,8 @@ class PyFunctions:
                 out.append(f"{key}{gcode_val}")
         return ' '.join(out)
 
+    def zip(self, *args, **kwargs):
+        return zip(*args, **kwargs)
 
 def render_group(global_vars, config_el, templates_root):
     out = {}

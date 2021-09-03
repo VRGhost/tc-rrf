@@ -18,4 +18,4 @@ if state.currentTool >= 0
     set var.x_side = tools[state.currentTool].offsets[0] > 0 ? var.RIGHT : var.LEFT
 
 
-G0 X{ var.x_side == var.RIGHT ? 325.5 : -5.0 } Y89 F50000
+G0 X{ var.x_side == var.RIGHT ? 325.5 : -22.0 } Y98 F50000

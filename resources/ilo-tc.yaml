@@ -132,8 +132,8 @@ variables:
         Y: 38.6
         Z: -5.77
       park:
-        X: 218.8
-        Y: 242.2
+        X: 218.2
+        Y: 242
     T3: &tool3
       id: 3
       fan: 8
@@ -158,10 +158,13 @@ variables:
     right: &right_brush
       x_max: 328.5
       width: 6
-      y_min: 119
+      y_min: 128
       depth: 33
     left: &left_brush
-      {}
+      x_max: -19
+      width: 6
+      y_min: 128
+      depth: 33
 output_root: ./ilo-tc
 render:
   # Output specs
