@@ -116,7 +116,6 @@ if var.{{cur_min_dist}} > var.{{ cur_check_dist_total }}
 ; ---- optimise_extra_points({{p1_x}}, {{p1_y}}, {{p2_x}}, {{p2_y}}, {{p3_x}}, {{p3_y}})
 ; Removes P2 (x, y) coords IF all of p1, p2 and p3 are laying on a same line
 if (({{ p1_x }} == {{ p2_x }}) && ({{ p2_x }} == {{ p3_x }})) || (({{ p1_y }} == {{ p2_y }}) && ({{ p2_y }} == {{ p3_y }}))
-    echo
     set {{ p2_x }} = {{ p3_x }}
     set {{ p2_y }} = {{ p3_y }}
 ; ---- optimise_extra_points() END

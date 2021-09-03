@@ -361,7 +361,6 @@ if var.cur_min_dist_24 > var.cur_check_dist_total_25
 ; ---- optimise_extra_points(var.src_x, var.src_y, var.p1_x, var.p1_y, var.p2_x, var.p2_y)
 ; Removes P2 (x, y) coords IF all of p1, p2 and p3 are laying on a same line
 if ((var.src_x == var.p1_x) && (var.p1_x == var.p2_x)) || ((var.src_y == var.p1_y) && (var.p1_y == var.p2_y))
-    echo
     set var.p1_x = var.p2_x
     set var.p1_y = var.p2_y
 ; ---- optimise_extra_points() END
@@ -371,7 +370,6 @@ if ((var.src_x == var.p1_x) && (var.p1_x == var.p2_x)) || ((var.src_y == var.p1_
 ; ---- optimise_extra_points(var.p1_x, var.p1_y, var.p2_x, var.p2_y, var.p3_x, var.p3_y)
 ; Removes P2 (x, y) coords IF all of p1, p2 and p3 are laying on a same line
 if ((var.p1_x == var.p2_x) && (var.p2_x == var.p3_x)) || ((var.p1_y == var.p2_y) && (var.p2_y == var.p3_y))
-    echo
     set var.p2_x = var.p3_x
     set var.p2_y = var.p3_y
 ; ---- optimise_extra_points() END
@@ -381,7 +379,6 @@ if ((var.p1_x == var.p2_x) && (var.p2_x == var.p3_x)) || ((var.p1_y == var.p2_y)
 ; ---- optimise_extra_points(var.p2_x, var.p2_y, var.p3_x, var.p3_y, var.p4_x, var.p4_y)
 ; Removes P2 (x, y) coords IF all of p1, p2 and p3 are laying on a same line
 if ((var.p2_x == var.p3_x) && (var.p3_x == var.p4_x)) || ((var.p2_y == var.p3_y) && (var.p3_y == var.p4_y))
-    echo
     set var.p3_x = var.p4_x
     set var.p3_y = var.p4_y
 ; ---- optimise_extra_points() END
@@ -391,7 +388,6 @@ if ((var.p2_x == var.p3_x) && (var.p3_x == var.p4_x)) || ((var.p2_y == var.p3_y)
 ; ---- optimise_extra_points(var.p3_x, var.p3_y, var.p4_x, var.p4_y, var.p5_x, var.p5_y)
 ; Removes P2 (x, y) coords IF all of p1, p2 and p3 are laying on a same line
 if ((var.p3_x == var.p4_x) && (var.p4_x == var.p5_x)) || ((var.p3_y == var.p4_y) && (var.p4_y == var.p5_y))
-    echo
     set var.p4_x = var.p5_x
     set var.p4_y = var.p5_y
 ; ---- optimise_extra_points() END
@@ -401,7 +397,6 @@ if ((var.p3_x == var.p4_x) && (var.p4_x == var.p5_x)) || ((var.p3_y == var.p4_y)
 ; ---- optimise_extra_points(var.p4_x, var.p4_y, var.p5_x, var.p5_y, var.dst_x, var.dst_y)
 ; Removes P2 (x, y) coords IF all of p1, p2 and p3 are laying on a same line
 if ((var.p4_x == var.p5_x) && (var.p5_x == var.dst_x)) || ((var.p4_y == var.p5_y) && (var.p5_y == var.dst_y))
-    echo
     set var.p5_x = var.dst_x
     set var.p5_y = var.dst_y
 ; ---- optimise_extra_points() END
@@ -414,7 +409,6 @@ if ((var.p4_x == var.p5_x) && (var.p5_x == var.dst_x)) || ((var.p4_y == var.p5_y
 ; ---- optimise_extra_points(var.src_x, var.src_y, var.p1_x, var.p1_y, var.p2_x, var.p2_y)
 ; Removes P2 (x, y) coords IF all of p1, p2 and p3 are laying on a same line
 if ((var.src_x == var.p1_x) && (var.p1_x == var.p2_x)) || ((var.src_y == var.p1_y) && (var.p1_y == var.p2_y))
-    echo
     set var.p1_x = var.p2_x
     set var.p1_y = var.p2_y
 ; ---- optimise_extra_points() END
@@ -424,7 +418,6 @@ if ((var.src_x == var.p1_x) && (var.p1_x == var.p2_x)) || ((var.src_y == var.p1_
 ; ---- optimise_extra_points(var.p1_x, var.p1_y, var.p2_x, var.p2_y, var.p3_x, var.p3_y)
 ; Removes P2 (x, y) coords IF all of p1, p2 and p3 are laying on a same line
 if ((var.p1_x == var.p2_x) && (var.p2_x == var.p3_x)) || ((var.p1_y == var.p2_y) && (var.p2_y == var.p3_y))
-    echo
     set var.p2_x = var.p3_x
     set var.p2_y = var.p3_y
 ; ---- optimise_extra_points() END
@@ -434,7 +427,6 @@ if ((var.p1_x == var.p2_x) && (var.p2_x == var.p3_x)) || ((var.p1_y == var.p2_y)
 ; ---- optimise_extra_points(var.p2_x, var.p2_y, var.p3_x, var.p3_y, var.p4_x, var.p4_y)
 ; Removes P2 (x, y) coords IF all of p1, p2 and p3 are laying on a same line
 if ((var.p2_x == var.p3_x) && (var.p3_x == var.p4_x)) || ((var.p2_y == var.p3_y) && (var.p3_y == var.p4_y))
-    echo
     set var.p3_x = var.p4_x
     set var.p3_y = var.p4_y
 ; ---- optimise_extra_points() END
@@ -444,7 +436,6 @@ if ((var.p2_x == var.p3_x) && (var.p3_x == var.p4_x)) || ((var.p2_y == var.p3_y)
 ; ---- optimise_extra_points(var.p3_x, var.p3_y, var.p4_x, var.p4_y, var.p5_x, var.p5_y)
 ; Removes P2 (x, y) coords IF all of p1, p2 and p3 are laying on a same line
 if ((var.p3_x == var.p4_x) && (var.p4_x == var.p5_x)) || ((var.p3_y == var.p4_y) && (var.p4_y == var.p5_y))
-    echo
     set var.p4_x = var.p5_x
     set var.p4_y = var.p5_y
 ; ---- optimise_extra_points() END
@@ -454,7 +445,6 @@ if ((var.p3_x == var.p4_x) && (var.p4_x == var.p5_x)) || ((var.p3_y == var.p4_y)
 ; ---- optimise_extra_points(var.p4_x, var.p4_y, var.p5_x, var.p5_y, var.dst_x, var.dst_y)
 ; Removes P2 (x, y) coords IF all of p1, p2 and p3 are laying on a same line
 if ((var.p4_x == var.p5_x) && (var.p5_x == var.dst_x)) || ((var.p4_y == var.p5_y) && (var.p5_y == var.dst_y))
-    echo
     set var.p5_x = var.dst_x
     set var.p5_y = var.dst_y
 ; ---- optimise_extra_points() END
@@ -467,7 +457,6 @@ if ((var.p4_x == var.p5_x) && (var.p5_x == var.dst_x)) || ((var.p4_y == var.p5_y
 ; ---- optimise_extra_points(var.src_x, var.src_y, var.p1_x, var.p1_y, var.p2_x, var.p2_y)
 ; Removes P2 (x, y) coords IF all of p1, p2 and p3 are laying on a same line
 if ((var.src_x == var.p1_x) && (var.p1_x == var.p2_x)) || ((var.src_y == var.p1_y) && (var.p1_y == var.p2_y))
-    echo
     set var.p1_x = var.p2_x
     set var.p1_y = var.p2_y
 ; ---- optimise_extra_points() END
@@ -477,7 +466,6 @@ if ((var.src_x == var.p1_x) && (var.p1_x == var.p2_x)) || ((var.src_y == var.p1_
 ; ---- optimise_extra_points(var.p1_x, var.p1_y, var.p2_x, var.p2_y, var.p3_x, var.p3_y)
 ; Removes P2 (x, y) coords IF all of p1, p2 and p3 are laying on a same line
 if ((var.p1_x == var.p2_x) && (var.p2_x == var.p3_x)) || ((var.p1_y == var.p2_y) && (var.p2_y == var.p3_y))
-    echo
     set var.p2_x = var.p3_x
     set var.p2_y = var.p3_y
 ; ---- optimise_extra_points() END
@@ -487,7 +475,6 @@ if ((var.p1_x == var.p2_x) && (var.p2_x == var.p3_x)) || ((var.p1_y == var.p2_y)
 ; ---- optimise_extra_points(var.p2_x, var.p2_y, var.p3_x, var.p3_y, var.p4_x, var.p4_y)
 ; Removes P2 (x, y) coords IF all of p1, p2 and p3 are laying on a same line
 if ((var.p2_x == var.p3_x) && (var.p3_x == var.p4_x)) || ((var.p2_y == var.p3_y) && (var.p3_y == var.p4_y))
-    echo
     set var.p3_x = var.p4_x
     set var.p3_y = var.p4_y
 ; ---- optimise_extra_points() END
@@ -497,7 +484,6 @@ if ((var.p2_x == var.p3_x) && (var.p3_x == var.p4_x)) || ((var.p2_y == var.p3_y)
 ; ---- optimise_extra_points(var.p3_x, var.p3_y, var.p4_x, var.p4_y, var.p5_x, var.p5_y)
 ; Removes P2 (x, y) coords IF all of p1, p2 and p3 are laying on a same line
 if ((var.p3_x == var.p4_x) && (var.p4_x == var.p5_x)) || ((var.p3_y == var.p4_y) && (var.p4_y == var.p5_y))
-    echo
     set var.p4_x = var.p5_x
     set var.p4_y = var.p5_y
 ; ---- optimise_extra_points() END
@@ -507,7 +493,6 @@ if ((var.p3_x == var.p4_x) && (var.p4_x == var.p5_x)) || ((var.p3_y == var.p4_y)
 ; ---- optimise_extra_points(var.p4_x, var.p4_y, var.p5_x, var.p5_y, var.dst_x, var.dst_y)
 ; Removes P2 (x, y) coords IF all of p1, p2 and p3 are laying on a same line
 if ((var.p4_x == var.p5_x) && (var.p5_x == var.dst_x)) || ((var.p4_y == var.p5_y) && (var.p5_y == var.dst_y))
-    echo
     set var.p5_x = var.dst_x
     set var.p5_y = var.dst_y
 ; ---- optimise_extra_points() END

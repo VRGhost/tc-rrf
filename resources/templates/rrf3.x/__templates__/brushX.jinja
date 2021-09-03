@@ -2,6 +2,22 @@
 
 {% if brush %}
 
+{% import '__macros__/move.jinja' as move %}
+{% import '__macros__/axes.jinja' as axes %}
+
+
+
+{{ axes.set_mov_axis_id('x_axis_idx', 'X') }}
+{{ axes.set_mov_axis_id('y_axis_idx', 'Y') }}
+
+var src_x = move.axes[var.x_axis_idx].userPosition
+var src_y = move.axes[var.y_axis_idx].userPosition
+var on_the_bed = ( var.src_x >= 0 && var.src_y >= 0 && var.src_x <= {{ bed.width }} && var.src_y <= {{ bed.depth }} )
+
+{{ move.avoid_tc_clash() }}
+
+if var.on_the_bed
+    {{ move.rel_move(dz=15, indent=4) }}
 
 {% set min_x = brush.x_max - brush.width -%}
 {% set mid_x = brush.x_max - brush.width / 2 -%}
@@ -11,7 +27,9 @@
 {% set max_y = brush.y_min + brush.depth -%}
 
 ; Go to the start of the brush
-G0 X{{ mid_x }} Y{{ min_y }} F50000
+; G0 X{{ mid_x }} Y{{ min_y }} F50000
+
+M98 P"/sys/usr/lib/manhattan_move.g" X{{ mid_x }} Y{{ min_y }} Z0 F50000
 
 ; Side-to-side motions
 {% set s2s_steps = 5 -%}
@@ -34,5 +52,10 @@ G1 X{{ mid_x + (dx * idx) }} Y{{ max_y + 5 }} F50000
 ; One last time to clear any debree off
 G0 X{{ mid_x }} Y{{ min_y }} F50000
 G0 X{{ mid_x }} Y{{ max_y + 30 }} F50000
+
+if var.on_the_bed
+    ; Return to the point of origin if it is on the bed
+    M98 P"/sys/usr/lib/manhattan_move.g" X{var.src_x} Y{var.src_y} Z0 F50000
+    {{ move.rel_move(dz=-15, indent=4) }}
 
 {% endif %}

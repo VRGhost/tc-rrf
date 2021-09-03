@@ -31,6 +31,7 @@ if !exists(global.measured_z_height)
 G30 S-1
 ; Move back a little
 
+
 ; ---- rel_move(None, None, 10, 500, G1)
 G91
 G1 F500 Z10
@@ -43,6 +44,7 @@ set global.measured_z_height = move.axes[var.z_idx].userPosition
 var zProbeTriggerHeight = sensors.probes[0].triggerHeight
 
 echo "Saved base Z height of " ^ global.measured_z_height ^ "mm (Real object height: "^ (global.measured_z_height - var.zProbeTriggerHeight) ^"mm)"
+
 
 
 ; ---- rel_move(None, None, 50, 500, G1)
