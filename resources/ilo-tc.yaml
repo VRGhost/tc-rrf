@@ -134,6 +134,16 @@ variables:
       park:
         X: 218.2
         Y: 242
+      extra_settings: &hemera_bowden_extra_settings
+        M566: # maximum instantaneous speed changes (mm/min)
+          X: 300
+          Y: 300
+        M201: #  Set accelerations (mm/s^2)
+          X: 4000
+          Y: 4000
+        M207: # Set retract length
+          S: 5 # positive length to retract, in mm
+          F: 2700 # retraction feedrate, in mm/min (45 mm / s)
     T3: &tool3
       id: 3
       fan: 8
@@ -144,6 +154,7 @@ variables:
       park:
         X: 308.6
         Y: 241.5
+      extra_settings: *hemera_bowden_extra_settings
   bed:
     width: 300
     depth: 200
