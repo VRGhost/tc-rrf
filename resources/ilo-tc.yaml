@@ -86,10 +86,12 @@ variables:
       min: -45
       width: 405
     # Brushes
-    A: &brush_axis
+    A: &brush_axis_a
+      min: -10.3
+      width: 30
+    B: &brush_axis_b
       min: -13
       width: 30
-    B: *brush_axis
   tools:
     # Tool infos
     T0: &tool0
@@ -248,7 +250,7 @@ render:
         - home_brush.jinja:homea.g
     variables:
       letter: A
-      axis: *brush_axis
+      axis: *brush_axis_a
   - output:
       directory: sys/
     input:
@@ -257,7 +259,7 @@ render:
         - home_brush.jinja:homeb.g
     variables:
       letter: B
-      axis: *brush_axis
+      axis: *brush_axis_b
 
   - output: # brush right
       directory: sys/usr/brushes

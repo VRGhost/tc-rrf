@@ -36,7 +36,7 @@ M584 X0 Y1 Z2 C7 E3:4:5:6 A8 B9                             ; Apply custom drive
 
 ; Set axis maxima & minima
 M208 X-29.6:333.9 Y-46.8:245.2 Z0:290
-M208 C-45:360 A-13:17 B-13:17
+M208 C-45:360 A-10.3:19.7 B-13:17
 
 ; Set steps per mm assuming x16 microstepping
 M92 X100 Y100 Z860 C91.022
