@@ -27,8 +27,10 @@ if !move.axes[var.y_idx].homed
 else
     ; Avoid accidentally clashing with the tools/Z column
     ; ----- AVOID clashing with the TC walls
-    if move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
+    if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
         G1 Y200 F2500 ; slowly back out
+    if move.axes[2].homed && move.axes[2].userPosition < 10 ; if Z < 10
+        G1 Z10 ; slowly lower the bed
 
 
 if state.currentTool >= 0

@@ -6,8 +6,10 @@
 
 ; Just in case - take care not to clash with the environment
 ; ----- AVOID clashing with the TC walls
-if move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
+if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
     G1 Y200 F2500 ; slowly back out
+if move.axes[2].homed && move.axes[2].userPosition < 10 ; if Z < 10
+    G1 Z10 ; slowly lower the bed
 
 
 M98 P"/sys/usr/reset_tool_offsets.g"
@@ -39,7 +41,7 @@ M98 P"/macros/Coupler - Lock"
 ;WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!
 ;if you are using non-standard length hotends ensure the bed is lowered enough BEFORE undocking the tool!
 G91
-G1 Z14.748 F1000
+G1 Z8.128 F1000
 G90
 
 M913 X100 Y100 ; Restore the motor current

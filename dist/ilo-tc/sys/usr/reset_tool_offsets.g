@@ -19,8 +19,8 @@ G10 P1 X19.7800 Y43.4100 Z-6.0200
 G10 P2 X-11.6000 Y37.9000 Z-7.3840
 ; --- apply_tool_offsets() END
 ; ---- T3
-; --- apply_tool_offsets(3, {'X': -10.96, 'Y': 37.76, 'Z': -7.374})
-G10 P3 X-10.9600 Y37.7600 Z-7.3740
+; --- apply_tool_offsets(3, {'X': -10.96, 'Y': 37.76, 'Z': -4.064})
+G10 P3 X-10.9600 Y37.7600 Z-4.0640
 ; --- apply_tool_offsets() END
 
 

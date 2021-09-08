@@ -26,4 +26,5 @@ if state.currentTool >= 0
     ; A tool is selected
     set var.current_tool_offset = tools[state.currentTool].offsets[var.z_idx]
 
-echo "New Tool Z offset is: " ^ (var.current_tool_offset - (global.measured_z_height - move.axes[var.z_idx].userPosition))
+echo "Current Tool Z offset: " ^ var.current_tool_offset
+echo "New Tool Z offset is: " ^ (var.current_tool_offset - (move.axes[var.z_idx].userPosition - global.measured_z_height))
