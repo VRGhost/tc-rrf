@@ -61,11 +61,11 @@ variables:
       steps: 368
       reversed: false
     E2:
-      steps: 409
-      reversed: true
+      steps: 408.18
+      reversed: false
     E3:
-      steps: 409
-      reversed: true
+      steps: 408.18
+      reversed: false
     # Brushes
     A: &brush_motor
       steps: 400
@@ -96,9 +96,9 @@ variables:
       id: 0
       fan: 2 # Fan number
       offsets:
-        X: 20.15
-        Y: 44.72
-        Z: -5.53
+        X: 19.75
+        Y: 45.12
+        Z: -6.34
       park:
         # X/Y location of the tools' parking position
         X: -7.4
@@ -117,9 +117,9 @@ variables:
       id: 1
       fan: 4
       offsets:
-        X: 20.08
-        Y: 43.61
-        Z: -5.39
+        X: 19.78
+        Y: 43.41
+        Z: -6.02
       park:
         X: 81.4
         Y: 226.55
@@ -128,9 +128,9 @@ variables:
       id: 2
       fan: 6
       offsets:
-        X: -9.9
-        Y: 38.6
-        Z: -5.77
+        X: -11.6
+        Y: 37.9
+        Z: -7.384
       park:
         X: 218.2
         Y: 242
@@ -138,9 +138,9 @@ variables:
       id: 3
       fan: 8
       offsets:
-        X: -9.66
-        Y: 38.56
-        Z: -5.77
+        X: -10.96
+        Y: 37.76
+        Z: -7.374
       park:
         X: 308.6
         Y: 241.5

@@ -3,8 +3,7 @@
 if !exists(global.measured_z_height)
     abort "You must 'Set Real Z offset' first"
 
-{{ axes.set_mov_axis_id('x_idx', 'X') }}
-{{ axes.set_mov_axis_id('y_idx', 'Y') }}
+{{ axes.set_mov_axis_id('z_idx', 'Z') }}
 
 var current_tool_offset = 0;
 if state.currentTool >= 0
