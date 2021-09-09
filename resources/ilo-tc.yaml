@@ -87,10 +87,10 @@ variables:
       width: 405
     # Brushes
     A: &brush_axis_a
-      min: -10.3
+      min: -13
       width: 30
     B: &brush_axis_b
-      min: -13
+      min: -10.3
       width: 30
   tools:
     # Tool infos
@@ -100,7 +100,7 @@ variables:
       offsets:
         X: 20.77
         Y: 44.22
-        Z: -4.697
+        Z: -4.897
       park:
         # X/Y location of the tools' parking position
         X: -7.4
@@ -121,7 +121,7 @@ variables:
       offsets:
         X: 20.48
         Y: 43.73
-        Z: -4.687
+        Z: -4.887
       park:
         X: 81.4
         Y: 226.55
@@ -132,7 +132,7 @@ variables:
       offsets:
         X: -8
         Y: 39.2
-        Z: -4.7
+        Z: -4.1
       park:
         X: 218.2
         Y: 242
@@ -152,7 +152,7 @@ variables:
       offsets:
         X: -7.96
         Y: 39.46
-        Z: -4.7
+        Z: -4.25
       park:
         X: 308.6
         Y: 241.5

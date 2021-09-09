@@ -1,5 +1,16 @@
 G29 S2 ; Disable mesh levelling
 
+; Set Bed and nozzle temps
+
+M140 S60 ; Bed to 60
+M568 P0 R180 S230 A1 ; Standby at 180, 230 active
+M568 P1 R180 S230 A1 ; Standby at 180, 230 active
+M568 P2 R180 S230 A1 ; Standby at 180, 230 active
+M568 P3 R180 S230 A1 ; Standby at 180, 230 active
+
+M116 ; Wait for temps
+; Temps end
+
 M98 P"/macros/Move to Middle"
 
 if state.currentTool >= 0

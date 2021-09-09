@@ -1,0 +1,9 @@
+; Disable temps
+
+M140 S0
+M568 P0 R0 S0 A0
+M568 P0 R0 S0 A0
+M568 P0 R0 S0 A0
+M568 P0 R0 S0 A0
+
+T-1

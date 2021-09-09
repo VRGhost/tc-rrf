@@ -155,8 +155,8 @@ G90
 
 {% set min_x = 0 %}
 {% set min_y = 0 %}
-{% set max_x = bed.width %}
-{% set max_y = bed.depth %}
+{% set max_x = bed.width - 15 %}
+{% set max_y = bed.depth - 15 %}
 
 {{ axes.set_mov_axis_id('x_axis_idx', 'X') }}
 {{ axes.set_mov_axis_id('y_axis_idx', 'Y') }}
