@@ -12,20 +12,32 @@ var can_extrude = 0
 
 set var.can_extrude = 0 ; set to 'False' by default
 
-var cur_tool_heater_idx_32 = 0
-var cur_nozzle_temp_33 = -273
+var cur_nozzle_temp_32 = -273
+echo "Current tool: " ^ state.currentTool
+
+; ------ get_nozzle_temp(var.cur_nozzle_temp_32, state.currentTool)
+set var.cur_nozzle_temp_32 = -273
+
+
+var cur_tool_heater_idx_35 = 0
 var cur_heater_idx_34 = -1
 
 if state.currentTool >= 0
-    ; There is a tool mounter
-    while var.cur_tool_heater_idx_32 < #tools[state.currentTool].heaters
-        set var.cur_heater_idx_34 = tools[state.currentTool].heaters[var.cur_tool_heater_idx_32]
-        set var.cur_nozzle_temp_33 = max(var.cur_nozzle_temp_33, heat.heaters[var.cur_heater_idx_34].current)
-        set var.cur_tool_heater_idx_32 = var.cur_tool_heater_idx_32 + 1
+    ; Valid tool ID
+    while var.cur_tool_heater_idx_35 < #tools[state.currentTool].heaters
+        set var.cur_heater_idx_34 = tools[state.currentTool].heaters[var.cur_tool_heater_idx_35]
+        
+        set var.cur_nozzle_temp_32 = max(var.cur_nozzle_temp_32, heat.heaters[var.cur_heater_idx_34].current)
+
+        set var.cur_tool_heater_idx_35 = var.cur_tool_heater_idx_35 + 1
 
 
+; ------ get_nozzle_temp() END
+
+
+echo "Tool temp: " ^ var.cur_nozzle_temp_32
 ; Allow some cooldown (just in case)
-set var.can_extrude = (var.cur_nozzle_temp_33 - 5) > heat.coldExtrudeTemperature ? 1 : 0
+set var.can_extrude = (var.cur_nozzle_temp_32 - 5) > heat.coldExtrudeTemperature ? 1 : 0
 
 ; ------ is_hot_enough_to_extrude() END
 
@@ -73,7 +85,7 @@ if state.currentTool == 3 && mod(global.prime_first_tool_use, 7) != 0
 
 M98 P"/macros/Go To Purge Spot"
 
-G1 E{ var.is_first_use ? 100 : 30 } F400 ; extrude 30mm of filament
+G1 E{ var.is_first_use ? 60 : 30 } F400 ; extrude 30mm of filament
 M400
 G4 S{ global.prime_extrude_delay * (var.is_first_use ? 2 : 1) } ; wait (the delay is twise as long for the initial priming)
 M98 P"/sys/usr/brush.g"

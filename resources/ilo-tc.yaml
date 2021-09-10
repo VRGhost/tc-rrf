@@ -61,10 +61,10 @@ variables:
       steps: 368
       reversed: false
     E2:
-      steps: 408.18
+      steps: 342
       reversed: false
     E3:
-      steps: 408.18
+      steps: 321
       reversed: false
     # Brushes
     A: &brush_motor
@@ -100,7 +100,7 @@ variables:
       offsets:
         X: 20.77
         Y: 44.22
-        Z: -4.769
+        Z: -4.66
       park:
         # X/Y location of the tools' parking position
         X: -7.4
@@ -121,7 +121,7 @@ variables:
       offsets:
         X: 20.48
         Y: 43.73
-        Z: -4.729
+        Z: -4.6
       park:
         X: 81.4
         Y: 226.55
@@ -132,7 +132,7 @@ variables:
       offsets:
         X: -8
         Y: 39.2
-        Z: -4.422
+        Z: -4.1
       park:
         X: 218.2
         Y: 242
@@ -144,7 +144,7 @@ variables:
           X: 4000
           Y: 4000
         M207: # Set retract length
-          S: 5 # positive length to retract, in mm
+          S: 15 # positive length to retract, in mm
           F: 2700 # retraction feedrate, in mm/min (45 mm / s)
     T3: &tool3
       id: 3

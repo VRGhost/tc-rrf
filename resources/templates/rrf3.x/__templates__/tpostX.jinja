@@ -1,7 +1,21 @@
 ; tpost{{ tool.id }}.g
 ; called after tool {{ tool.id }} has been selected
 
+{% import '__macros__/heat.jinja' as heat %}
+
 ;heatup
+
+var curToolTemp = -273
+{{ heat.get_nozzle_temp('var.curToolTemp', tool.id) }}
+
+var targetToolTemp = -273
+{{ heat.get_target_tool_temp('var.targetToolTemp', tool.id) }}
+
+if var.curToolTemp < 55 && var.targetToolTemp > 100
+    ; Sleep for a little bit
+    echo "Waiting for 15 seconds."
+    G4 S15
+
 M116 P{{ tool.id }}
 
 var toolZOffset = 0
@@ -9,7 +23,7 @@ if state.currentTool >= 0
     set var.toolZOffset = tools[state.currentTool].offsets[2]
 
 G1 A{var.toolZOffset} B{var.toolZOffset}
+M106 R1 ; restore print cooling fan speed
+
 ;prime nozzle
 M98 P"/sys/usr/prime.g"
-
-M106 R1 ; restore print cooling fan speed

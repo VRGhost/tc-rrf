@@ -41,18 +41,18 @@ M98 P"/macros/Coupler - Lock"
 ;WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!
 ;if you are using non-standard length hotends ensure the bed is lowered enough BEFORE undocking the tool!
 G91
-G1 Z8.844 F1000
+G1 Z8.2 F1000
 G90
 
 M913 X100 Y100 ; Restore the motor current
 
 
-; {'M566': {'X': 300, 'Y': 300}, 'M201': {'X': 4000, 'Y': 4000}, 'M207': {'S': 5, 'F': 2700}}
+; {'M566': {'X': 300, 'Y': 300}, 'M201': {'X': 4000, 'Y': 4000}, 'M207': {'S': 15, 'F': 2700}}
 M566 P2 X300 Y300
 
 M201 P2 X4000 Y4000
 
-M207 F2700 P2 S5
+M207 F2700 P2 S15
 
 
 
