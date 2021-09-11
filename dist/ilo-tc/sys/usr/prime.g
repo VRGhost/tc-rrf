@@ -12,32 +12,32 @@ var can_extrude = 0
 
 set var.can_extrude = 0 ; set to 'False' by default
 
-var cur_nozzle_temp_32 = -273
+var cur_nozzle_temp_21 = -273
 echo "Current tool: " ^ state.currentTool
 
-; ------ get_nozzle_temp(var.cur_nozzle_temp_32, state.currentTool)
-set var.cur_nozzle_temp_32 = -273
+; ------ get_nozzle_temp(var.cur_nozzle_temp_21, state.currentTool)
+set var.cur_nozzle_temp_21 = -273
 
 
-var cur_tool_heater_idx_35 = 0
-var cur_heater_idx_34 = -1
+var cur_tool_heater_idx_24 = 0
+var cur_heater_idx_23 = -1
 
 if state.currentTool >= 0
     ; Valid tool ID
-    while var.cur_tool_heater_idx_35 < #tools[state.currentTool].heaters
-        set var.cur_heater_idx_34 = tools[state.currentTool].heaters[var.cur_tool_heater_idx_35]
+    while var.cur_tool_heater_idx_24 < #tools[state.currentTool].heaters
+        set var.cur_heater_idx_23 = tools[state.currentTool].heaters[var.cur_tool_heater_idx_24]
         
-        set var.cur_nozzle_temp_32 = max(var.cur_nozzle_temp_32, heat.heaters[var.cur_heater_idx_34].current)
+        set var.cur_nozzle_temp_21 = max(var.cur_nozzle_temp_21, heat.heaters[var.cur_heater_idx_23].current)
 
-        set var.cur_tool_heater_idx_35 = var.cur_tool_heater_idx_35 + 1
+        set var.cur_tool_heater_idx_24 = var.cur_tool_heater_idx_24 + 1
 
 
 ; ------ get_nozzle_temp() END
 
 
-echo "Tool temp: " ^ var.cur_nozzle_temp_32
+echo "Tool temp: " ^ var.cur_nozzle_temp_21
 ; Allow some cooldown (just in case)
-set var.can_extrude = (var.cur_nozzle_temp_32 - 5) > heat.coldExtrudeTemperature ? 1 : 0
+set var.can_extrude = (var.cur_nozzle_temp_21 - 5) > heat.coldExtrudeTemperature ? 1 : 0
 
 ; ------ is_hot_enough_to_extrude() END
 

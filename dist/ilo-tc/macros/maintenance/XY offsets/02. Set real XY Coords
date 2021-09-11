@@ -1,42 +1,5 @@
-
-
 if state.currentTool >= 0
     abort "No tool must be equipped"
-
-var x_idx = -1
-;----- find_axis_id("X", var.x_idx)
-
-var axis_iter_0 = 0
-var find_success_1 = 0 ; 0 - not found, 1 - found
-
-while var.axis_iter_0 < #move.axes
-    if move.axes[var.axis_iter_0].letter == "X"
-        set var.find_success_1 = 1
-        set var.x_idx = var.axis_iter_0
-        break
-    set var.axis_iter_0 = var.axis_iter_0 + 1
-
-if var.find_success_1 == 0
-    abort "Failed to find X axis"
-
-;----- find_axis_id("X", var.x_idx) END
-var y_idx = -1
-;----- find_axis_id("Y", var.y_idx)
-
-var axis_iter_2 = 0
-var find_success_3 = 0 ; 0 - not found, 1 - found
-
-while var.axis_iter_2 < #move.axes
-    if move.axes[var.axis_iter_2].letter == "Y"
-        set var.find_success_3 = 1
-        set var.y_idx = var.axis_iter_2
-        break
-    set var.axis_iter_2 = var.axis_iter_2 + 1
-
-if var.find_success_3 == 0
-    abort "Failed to find Y axis"
-
-;----- find_axis_id("Y", var.y_idx) END
 
 if !exists(global.measured_x_coord)
     global measured_x_coord = 0
@@ -44,7 +7,7 @@ if !exists(global.measured_x_coord)
 if !exists(global.measured_y_coord)
     global measured_y_coord = 0
 
-set global.measured_x_coord = move.axes[var.x_idx].userPosition
-set global.measured_y_coord = move.axes[var.y_idx].userPosition
+set global.measured_x_coord = move.axes[0].userPosition
+set global.measured_y_coord = move.axes[1].userPosition
 
 echo "Saved base (X, Y) of (" ^ global.measured_x_coord ^ ", " ^ global.measured_y_coord ^ ") mm"

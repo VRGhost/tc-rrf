@@ -1,17 +1,12 @@
-{% import '__macros__/axes.jinja' as axes %}
-
 if !exists(global.measured_x_coord) || !exists(global.measured_y_coord)
     abort "You must 'Set Real XY coords' first"
-
-{{ axes.set_mov_axis_id('x_idx', 'X') }}
-{{ axes.set_mov_axis_id('y_idx', 'Y') }}
 
 var current_tool_x_offset = 0
 var current_tool_y_offset = 0
 if state.currentTool >= 0
     ; A tool is selected
-    set var.current_tool_x_offset = tools[state.currentTool].offsets[var.x_idx]
-    set var.current_tool_y_offset = tools[state.currentTool].offsets[var.y_idx]
+    set var.current_tool_x_offset = tools[state.currentTool].offsets[{{ axis.X.index }}]
+    set var.current_tool_y_offset = tools[state.currentTool].offsets[{{ axis.Y.index }}]
 
-echo "New Tool X offset is: " ^ (var.current_tool_x_offset - (move.axes[var.x_idx].userPosition - global.measured_x_coord))
-echo "New Tool Y offset is: " ^ (var.current_tool_y_offset - (move.axes[var.y_idx].userPosition - global.measured_y_coord))
+echo "New Tool X offset is: " ^ (var.current_tool_x_offset - (move.axes[{{ axis.X.index }}].userPosition - global.measured_x_coord))
+echo "New Tool Y offset is: " ^ (var.current_tool_y_offset - (move.axes[{{ axis.Y.index }}].userPosition - global.measured_y_coord))

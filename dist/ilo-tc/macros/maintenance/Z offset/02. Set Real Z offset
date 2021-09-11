@@ -1,28 +1,9 @@
 
 
-
 if state.currentTool >= 0
     abort "No tool must be equipped"
 
-var z_idx = -1
-;----- find_axis_id("Z", var.z_idx)
-
-var axis_iter_8 = 0
-var find_success_9 = 0 ; 0 - not found, 1 - found
-
-while var.axis_iter_8 < #move.axes
-    if move.axes[var.axis_iter_8].letter == "Z"
-        set var.find_success_9 = 1
-        set var.z_idx = var.axis_iter_8
-        break
-    set var.axis_iter_8 = var.axis_iter_8 + 1
-
-if var.find_success_9 == 0
-    abort "Failed to find Z axis"
-
-;----- find_axis_id("Z", var.z_idx) END
-
-if move.axes[var.z_idx].userPosition < 30
+if move.axes[2].userPosition < 30
     G1 Z30 F500 ; Move back a little
 
 if !exists(global.measured_z_height)
@@ -40,7 +21,7 @@ G90
 
 G30 S-1 ; try again
 
-set global.measured_z_height = move.axes[var.z_idx].userPosition
+set global.measured_z_height = move.axes[2].userPosition
 var zProbeTriggerHeight = sensors.probes[0].triggerHeight
 
 echo "Saved base Z height of " ^ global.measured_z_height ^ "mm (Real object height: "^ (global.measured_z_height - var.zProbeTriggerHeight) ^"mm)"

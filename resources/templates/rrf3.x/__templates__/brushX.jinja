@@ -3,15 +3,9 @@
 {% if brush %}
 
 {% import '__macros__/move.jinja' as move %}
-{% import '__macros__/axes.jinja' as axes %}
 
-
-
-{{ axes.set_mov_axis_id('x_axis_idx', 'X') }}
-{{ axes.set_mov_axis_id('y_axis_idx', 'Y') }}
-
-var src_x = move.axes[var.x_axis_idx].userPosition
-var src_y = move.axes[var.y_axis_idx].userPosition
+var src_x = move.axes[{{ axis.X.index }}].userPosition
+var src_y = move.axes[{{ axis.Y.index }}].userPosition
 var on_the_bed = ( var.src_x >= 0 && var.src_y >= 0 && var.src_x <= {{ bed.width }} && var.src_y <= {{ bed.depth }} )
 
 {{ move.avoid_tc_clash() }}
@@ -27,9 +21,9 @@ if var.on_the_bed
 {% set max_y = brush.y_min + brush.depth -%}
 
 ; Go to the start of the brush
-; G0 X{{ mid_x }} Y{{ min_y }} F50000
+G0 X{{ mid_x }} Y{{ min_y }} F50000
 
-M98 P"/sys/usr/lib/manhattan_move.g" X{{ mid_x }} Y{{ min_y }} Z0 F50000
+;M98 P"/sys/usr/lib/manhattan_move.g" X{{ mid_x }} Y{{ min_y }} Z0 F50000
 
 ; Side-to-side motions
 {% set s2s_steps = 5 -%}

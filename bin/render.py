@@ -8,6 +8,8 @@ import glob
 import shutil
 import itertools
 import logging
+import copy
+import types
 
 import yaml
 import jinja2
@@ -17,8 +19,9 @@ class PyFunctions:
 
     uid = None
 
-    def __init__(self):
+    def __init__(self, global_vars):
         self.uid = itertools.count()
+        self.global_vars = global_vars
 
     def unique_var(self, prefix='var'):
         return f"{prefix}_{next(self.uid)}"
@@ -65,6 +68,12 @@ class PyFunctions:
     def zip(self, *args, **kwargs):
         return zip(*args, **kwargs)
 
+    @property
+    def g(self):
+        """Return global vars."""
+        return types.SimpleNamespace(**copy.deepcopy(self.global_vars))
+
+
 def render_group(global_vars, config_el, templates_root):
     out = {}
 
@@ -76,7 +85,9 @@ def render_group(global_vars, config_el, templates_root):
         loader=jinja2.FileSystemLoader(templates_root)
     )
     jinja_env.globals.update(
-        py=PyFunctions()
+        py=PyFunctions(
+            global_vars=global_vars,
+        )
     )
 
     for fname_pair in config_el['input']['files']:

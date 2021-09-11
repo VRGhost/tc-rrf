@@ -1,12 +1,9 @@
-{% import '__macros__/axes.jinja' as axes %}
 {% import '__macros__/move.jinja' as move %}
 
 if state.currentTool >= 0
     abort "No tool must be equipped"
 
-{{ axes.set_mov_axis_id('z_idx', 'Z') }}
-
-if move.axes[var.z_idx].userPosition < 30
+if move.axes[{{ axis.Z.index }}].userPosition < 30
     G1 Z30 F500 ; Move back a little
 
 if !exists(global.measured_z_height)
@@ -17,7 +14,7 @@ G30 S-1
 {{ move.rel_move(dz=10, cmd='G1', F=500) }}
 G30 S-1 ; try again
 
-set global.measured_z_height = move.axes[var.z_idx].userPosition
+set global.measured_z_height = move.axes[{{ axis.Z.index }}].userPosition
 var zProbeTriggerHeight = sensors.probes[0].triggerHeight
 
 echo "Saved base Z height of " ^ global.measured_z_height ^ "mm (Real object height: "^ (global.measured_z_height - var.zProbeTriggerHeight) ^"mm)"

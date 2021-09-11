@@ -1,16 +1,10 @@
 ; This macro saves and restores currently used tool
 
-{% import '__macros__/axes.jinja' as axes %}
-
-{% set c_axis = py.unique_var('c_axis') %}
 {% set old_tool = py.unique_var('old_tool') %}
 
-var {{ c_axis }} = -1
 var {{ old_tool }} = -1
 
-{{ axes.find_axis_id('C', 'var.' + c_axis) }}
-
-if !move.axes[var.{{ c_axis }}].homed
+if !move.axes[{{ py.g.axis.C.index }}].homed
     abort "Coupler (C) is not homed."
 
 

@@ -1,7 +1,6 @@
 ; Manhattan move - move to X, Y but while moving around the bed
 
 {% import '__macros__/move.jinja' as move %}
-{% import '__macros__/axes.jinja' as axes %}
 
 ; ##### find_nearest_manhattan_point
 ;       Finds the point on the (min x, min y), (max x, max y) rectangle
@@ -158,11 +157,8 @@ G90
 {% set max_x = bed.width - 15 %}
 {% set max_y = bed.depth - 15 %}
 
-{{ axes.set_mov_axis_id('x_axis_idx', 'X') }}
-{{ axes.set_mov_axis_id('y_axis_idx', 'Y') }}
-
-var src_x = move.axes[var.x_axis_idx].userPosition
-var src_y = move.axes[var.y_axis_idx].userPosition
+var src_x = move.axes[{{ axis.X.index }}].userPosition
+var src_y = move.axes[{{ axis.Y.index }}].userPosition
 
 var p1_x = 0
 var p1_y = 0

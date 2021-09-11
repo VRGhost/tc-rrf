@@ -3,34 +3,17 @@
 
 
 
-var y_idx = -1
-;----- find_axis_id("Y", var.y_idx)
 
-var axis_iter_4 = 0
-var find_success_5 = 0 ; 0 - not found, 1 - found
-
-while var.axis_iter_4 < #move.axes
-    if move.axes[var.axis_iter_4].letter == "Y"
-        set var.find_success_5 = 1
-        set var.y_idx = var.axis_iter_4
-        break
-    set var.axis_iter_4 = var.axis_iter_4 + 1
-
-if var.find_success_5 == 0
-    abort "Failed to find Y axis"
-
-;----- find_axis_id("Y", var.y_idx) END
-
-if !move.axes[var.y_idx].homed
+if !move.axes[1].homed
     M98 P"homey.g"          ; Home Y
     M400
 else
     ; Avoid accidentally clashing with the tools/Z column
+    if move.axes[2].homed && move.axes[2].userPosition < 10 ; if Z < 10
+        G1 Z10 ; slowly lower the bed
     ; ----- AVOID clashing with the TC walls
     if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
         G1 Y200 F2500 ; slowly back out
-    if move.axes[2].homed && move.axes[2].userPosition < 10 ; if Z < 10
-        G1 Z10 ; slowly lower the bed
 
 
 if state.currentTool >= 0

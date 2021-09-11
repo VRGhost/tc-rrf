@@ -1,7 +1,4 @@
 
-
-{% import '__macros__/axes.jinja' as axes %}
-
 {% macro rel_move(dx=None, dy=None, dz=0, F=None, cmd='G0', indent=0) %}
 {% filter indent(width=indent) %}
 ; ---- rel_move({{dx}}, {{dy}}, {{dz}}, {{F}}, {{cmd}})
@@ -14,10 +11,10 @@ G90
 
 {% macro avoid_tc_clash(indent=0) -%}
 {% filter indent(width=indent) -%}
-; ----- AVOID clashing with the TC walls
-if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
-    G1 Y200 F2500 ; slowly back out
-if move.axes[2].homed && move.axes[2].userPosition < 10 ; if Z < 10
+if move.axes[{{ py.g.axis.Z.index }}].homed && move.axes[{{ py.g.axis.Z.index }}].userPosition < 10 ; if Z < 10
     G1 Z10 ; slowly lower the bed
+; ----- AVOID clashing with the TC walls
+if move.axes[{{ py.g.axis.Y.index }}].homed && move.axes[{{ py.g.axis.Y.index }}].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
+    G1 Y200 F2500 ; slowly back out
 {%- endfilter %}
 {% endmacro %}

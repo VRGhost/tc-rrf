@@ -74,22 +74,28 @@ variables:
   axis:
     # Machine axis set up
     X:
+      index: 0 # Axis index in move.axes array
       min: -29.6
       width: 363.5
     Y:
+      index: 1
       min: -46.8
       width: 292
     Z:
+      index: 2
       min: 0
       width: 290
     C: # Carriage
+      index: 5
       min: -45
       width: 405
     # Brushes
     A: &brush_axis_a
+      index: 3
       min: -13
       width: 30
     B: &brush_axis_b
+      index: 4
       min: -10.3
       width: 30
   tools:
