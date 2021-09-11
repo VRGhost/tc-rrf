@@ -39,8 +39,8 @@ M208 X-29.6:333.9 Y-46.8:245.2 Z0:290
 M208 C-45:360 A-13:17 B-10.3:19.7
 
 ; Set steps per mm assuming x16 microstepping
-M92 X100 Y100 Z860 C91.022
-M92 E368:368:342:321
+M92 X100 Y100 Z800 C91.022
+M92 E368:368:304:337.9
 M92 A400 B400
 
 ; Configure microstepping

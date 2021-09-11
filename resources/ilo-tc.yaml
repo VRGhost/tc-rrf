@@ -50,7 +50,7 @@ variables:
     Y:
       steps: 100
     Z:
-      steps: 860
+      steps: 800
     C:
       steps: 91.022
       reversed: true
@@ -61,10 +61,10 @@ variables:
       steps: 368
       reversed: false
     E2:
-      steps: 342
+      steps: 304
       reversed: false
     E3:
-      steps: 321
+      steps: 337.9
       reversed: false
     # Brushes
     A: &brush_motor
