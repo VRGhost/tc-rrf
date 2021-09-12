@@ -54,18 +54,14 @@ variables:
     C:
       steps: 91.022
       reversed: true
-    E0:
-      steps: 368
+    E0: &direct_hemera_extrude_motor
+      steps: 409 # direct_hemera_esteps
       reversed: false # Motor direction
-    E1:
-      steps: 368
+    E1: *direct_hemera_extrude_motor
+    E2: &bowden_hemera_extrude_motor # manual val = 304
+      steps: 390
       reversed: false
-    E2:
-      steps: 304
-      reversed: false
-    E3:
-      steps: 337.9
-      reversed: false
+    E3: *bowden_hemera_extrude_motor # manual val = 337.9
     # Brushes
     A: &brush_motor
       steps: 400
@@ -184,6 +180,17 @@ variables:
       width: 6
       y_min: 128
       depth: 33
+  filament_overrides:
+    PET:
+      0.4: # this must be float!
+        extrude_factor: 0.89975
+      0.8:
+        extrude_factor: 0.623584
+    PLA:
+      0.4:
+        extrude_factor: 0.9
+      0.6:
+        extrude_factor: 0.86641
 output_root: ./ilo-tc
 render:
   # Output specs

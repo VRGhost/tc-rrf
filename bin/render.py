@@ -68,6 +68,32 @@ class PyFunctions:
     def zip(self, *args, **kwargs):
         return zip(*args, **kwargs)
 
+    def floatWithinBoundsCond(self, var_name, prev_val=None, cur_val=None, next_val=None):
+        """Return duet meta if condition that is true when the float in var_name is _approximatly_ cur_val (boundaries specified by prev & next vals).
+
+        An open boundary is assumed if the prev/next floats are not provided.
+        """
+        conditions = []
+        if cur_val is None:
+            assert prev_val is None
+            assert next_val is None
+        else:
+            assert isinstance(cur_val, float)
+            if prev_val is not None:
+                assert isinstance(prev_val, float)
+                real_prev_limit = (cur_val + prev_val) / 2.0
+                conditions.append("{var_name} >= {limit:.5f}".format(var_name=var_name, limit=real_prev_limit))
+            if next_val is not None:
+                assert isinstance(next_val, float)
+                real_next_limit = (cur_val + next_val) / 2.0
+                conditions.append("{var_name} < {limit:.5f}".format(var_name=var_name, limit=real_next_limit))
+
+        if not conditions:
+            # Unable to generate boundary conditions
+            conditions.append('true')
+
+        return ' && '.join("({})".format(el) for el in conditions) # CNF
+
     @property
     def g(self):
         """Return global vars."""

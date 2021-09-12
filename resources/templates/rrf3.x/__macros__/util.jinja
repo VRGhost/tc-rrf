@@ -1,0 +1,12 @@
+; Utility macroses
+{% macro foreach(array_var) %}
+; util.foreach({{array_var}})
+
+{% set idx_var = py.unique_var('foreach_idx') -%}
+var {{ idx_var }} = 0
+while var.{{ idx_var }} < #{{ array_var }}
+    {{ caller(array_var + ('[var.{}]'.format(idx_var)) ) | indent(4) }}
+    set var.{{ idx_var }} = var.{{ idx_var }} + 1
+
+; end util.foreach()
+{% endmacro %}
