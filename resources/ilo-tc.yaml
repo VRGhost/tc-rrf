@@ -43,7 +43,7 @@ variables:
         P: 200
         X: 0
         Y: 0
-        Z: 0.1
+        Z: 0
   motors:
     X:
       steps: 100 # steps/mm
@@ -59,7 +59,7 @@ variables:
       reversed: false # Motor direction
     E1: *direct_hemera_extrude_motor
     E2: &bowden_hemera_extrude_motor
-      steps: 390
+      steps: 392
       reversed: false
     E3: *bowden_hemera_extrude_motor
     # Brushes
@@ -102,7 +102,7 @@ variables:
       offsets:
         X: 20.77
         Y: 44.22
-        Z: -4.66
+        Z: -4.86
       park:
         # X/Y location of the tools' parking position
         X: -7.4
@@ -123,7 +123,7 @@ variables:
       offsets:
         X: 20.48
         Y: 43.73
-        Z: -4.6
+        Z: -5
       park:
         X: 81.4
         Y: 226.55
@@ -134,7 +134,7 @@ variables:
       offsets:
         X: -8
         Y: 39.2
-        Z: -4.1
+        Z: -4.6
       park:
         X: 218.2
         Y: 242
@@ -154,7 +154,7 @@ variables:
       offsets:
         X: -7.96
         Y: 39.46
-        Z: -4.25
+        Z: -4.35
       park:
         X: 308.6
         Y: 241.5
@@ -185,7 +185,7 @@ variables:
       0.4: # this must be float!
         extrude_factor: 0.8097
       0.8:
-        extrude_factor: 0.5612
+        extrude_factor: 1.2
     PLA:
       0.4:
         extrude_factor: 0.9

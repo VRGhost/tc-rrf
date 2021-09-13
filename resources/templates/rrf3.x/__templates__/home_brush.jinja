@@ -6,7 +6,7 @@ G91
 M400                        ; Wait for any moves to finish
 M913 {{letter}}20                    ; MOTORS TO 60% CURRENT
 G1 H2 {{letter}}{{ -1 * (axis.width + 10) }} F50000
-G1 H2 {{letter}}0.4                            ; Back out a little bit
+G1 H2 {{letter}}1                            ; Back out a little bit
 G92 {{letter}}{{ axis.min }}                    ; Mark {{ letter }} as homed
 G90
 M913 {{letter}}100                   ; MOTORS TO 100% CURRENT
