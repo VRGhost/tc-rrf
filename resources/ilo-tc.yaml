@@ -185,7 +185,7 @@ variables:
       0.4: # this must be float!
         extrude_factor: 0.81
       0.8:
-        extrude_factor: 0.77
+        extrude_factor: 0.6
     PLA:
       0.4:
         extrude_factor: 0.9
