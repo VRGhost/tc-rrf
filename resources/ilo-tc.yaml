@@ -122,7 +122,7 @@ variables:
       fan: 4
       offsets:
         X: 20.48
-        Y: 43.73
+        Y: 43.93
         Z: -5.188
       park:
         X: 81.4
@@ -132,8 +132,8 @@ variables:
       id: 2
       fan: 6
       offsets:
-        X: -8
-        Y: 39.2
+        X: -8.2
+        Y: 39.5
         Z: -4.638
       park:
         X: 218.2
@@ -152,8 +152,8 @@ variables:
       id: 3
       fan: 8
       offsets:
-        X: -7.96
-        Y: 39.46
+        X: -8.16
+        Y: 39.58
         Z: -4.55
       park:
         X: 308.6
