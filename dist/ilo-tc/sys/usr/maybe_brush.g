@@ -6,7 +6,7 @@
 
 
 
-if global.maybe_brush_last_tool != state.currentTool || (global.maybe_brush_last_time + 300) < state.upTime
+if global.maybe_brush_last_tool != state.currentTool || (global.maybe_brush_last_time + 600) < state.upTime
     G10 ; retract
     G91
     G1 Z10

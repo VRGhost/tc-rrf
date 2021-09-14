@@ -16,7 +16,7 @@ set global.maybe_brush_last_time = state.upTime
 
 
 
-{% set max_brush_freq_secs = 300 -%}
+{% set max_brush_freq_secs = 600 -%}
 
 
 if global.maybe_brush_last_tool != state.currentTool || (global.maybe_brush_last_time + {{ max_brush_freq_secs }}) < state.upTime
