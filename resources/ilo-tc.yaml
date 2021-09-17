@@ -123,7 +123,7 @@ variables:
       offsets:
         X: 20.48
         Y: 43.93
-        Z: -5.188
+        Z: -5.25
       park:
         X: 81.4
         Y: 226.55
@@ -134,7 +134,7 @@ variables:
       offsets:
         X: -8.2
         Y: 39.5
-        Z: -4.7
+        Z: -4.638
       park:
         X: 218.2
         Y: 242
