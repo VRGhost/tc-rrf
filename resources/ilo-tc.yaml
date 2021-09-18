@@ -183,12 +183,12 @@ variables:
   filament_overrides:
     PET:
       0.4: # this must be float!
-        extrude_factor: 0.81
+        extrude_factor: 0.8
       0.8:
         extrude_factor: 0.6
     PLA:
       0.4:
-        extrude_factor: 0.9
+        extrude_factor: 0.88
       0.6:
         extrude_factor: 0.87
 output_root: ./ilo-tc
