@@ -88,11 +88,11 @@ variables:
     # Brushes
     A: &brush_axis_a
       index: 3
-      min: -13
+      min: -11
       width: 30
     B: &brush_axis_b
       index: 4
-      min: -10.3
+      min: -8.3
       width: 30
   tools:
     # Tool infos
