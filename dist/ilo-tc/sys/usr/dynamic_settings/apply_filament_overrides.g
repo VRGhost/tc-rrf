@@ -18,7 +18,7 @@ if param.F == "PET"
     
     if (param.N < 0.60000)
         ; Nozzle diameter 0.4
-        set var.extrude_factor = 82 ; Real factor = 0.82
+        set var.extrude_factor = 87 ; Real factor = 0.87
     
     if (param.N >= 0.60000)
         ; Nozzle diameter 0.8
