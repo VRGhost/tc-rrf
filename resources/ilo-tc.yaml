@@ -183,7 +183,7 @@ variables:
   filament_overrides:
     PET:
       0.4: # this must be float!
-        extrude_factor: 0.87
+        extrude_factor: 0.93
       0.8:
         extrude_factor: 0.6
     PLA:
