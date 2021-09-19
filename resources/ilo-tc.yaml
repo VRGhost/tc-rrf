@@ -188,7 +188,7 @@ variables:
         extrude_factor: 0.6
     PLA:
       0.4:
-        extrude_factor: 0.88
+        extrude_factor: 0.85
       0.6:
         extrude_factor: 0.87
 output_root: ./ilo-tc
