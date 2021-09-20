@@ -113,7 +113,7 @@ def patch_temp_changes(input_line, tool_change_tracker):
     if next_tool not in tool_change_tracker.allPastTools():
         next_tool_heat_mode = TOOL_HEAT_STANDBY
 
-    if will_extrude_now < 100:
+    if will_extrude_now < 200:
         next_tool_heat_mode = TOOL_HEAT_ON
 
     if next_tool is None:
