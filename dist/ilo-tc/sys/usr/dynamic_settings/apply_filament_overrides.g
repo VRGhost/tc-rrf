@@ -30,7 +30,7 @@ if param.F == "PLA"
     
     if (param.N < 0.50000)
         ; Nozzle diameter 0.4
-        set var.extrude_factor = 85 ; Real factor = 0.85
+        set var.extrude_factor = 89 ; Real factor = 0.89
     
     if (param.N >= 0.50000)
         ; Nozzle diameter 0.6

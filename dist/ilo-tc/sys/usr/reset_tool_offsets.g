@@ -7,8 +7,8 @@
 ; Hemera-tool: X20 Y43.5 Z-6
 
 ; ---- T0
-; --- apply_tool_offsets(0, {'X': 20.77, 'Y': 44.22, 'Z': -5.148})
-G10 P0 X20.7700 Y44.2200 Z-5.1480
+; --- apply_tool_offsets(0, {'X': 20.53, 'Y': 44.24, 'Z': -5.148})
+G10 P0 X20.5300 Y44.2400 Z-5.1480
 ; --- apply_tool_offsets() END
 ; ---- T1
 ; --- apply_tool_offsets(1, {'X': 20.48, 'Y': 43.93, 'Z': -5.25})
