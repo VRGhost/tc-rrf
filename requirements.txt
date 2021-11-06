@@ -1,3 +1,0 @@
-duetwebapi
-Jinja2
-pyyaml

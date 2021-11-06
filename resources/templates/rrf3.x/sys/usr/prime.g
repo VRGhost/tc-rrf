@@ -4,7 +4,7 @@
 
 {% macro declare_global_prime_vars() -%}
 ; ---- declare_global_prime_vars
-global prime_extrude_delay = 2 ; seconds
+global prime_extrude_delay = 3 ; seconds
 global prime_first_tool_use = 1 ; this int is used to mark what tool hadn't been initially primed
 {% endmacro -%}
 
@@ -40,7 +40,7 @@ var is_first_use = false
 
 M98 P"/macros/Go To Purge Spot"
 
-G1 E{ var.is_first_use ? 60 : 30 } F400 ; extrude 30mm of filament
+G1 E{ var.is_first_use ? 90 : 40 } F400 ; extrude 30mm of filament
 M400
 G4 S{ global.prime_extrude_delay * (var.is_first_use ? 2 : 1) } ; wait (the delay is twise as long for the initial priming)
 M98 P"/sys/usr/brush.g"

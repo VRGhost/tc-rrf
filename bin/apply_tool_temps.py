@@ -3,6 +3,7 @@
 import argparse
 import sys
 import re
+import os
 import collections
 
 TC = collections.namedtuple('_TC', ['tool', 'extruded'])
@@ -147,13 +148,20 @@ def main(args):
                 line.rstrip(), tool_change_tracker
             ))
 
-    for line in new_gcode_lines:
-        args['out_file'].write(line + '\n')
+    out_fname = args['out']
+    if out_fname is None:
+        (pth, ext) = os.path.splitext(args['input_gcode'])
+        out_fname = f"{pth}.patched{ext}"
+
+    with open(out_fname, 'w') as fout:
+        for line in new_gcode_lines:
+            fout.write(line + '\n')
+    print(f"Result saved into {out_fname}")
 
 def get_arg_parser():
     parser = argparse.ArgumentParser(description='Override DWC scripts with local copies')
     parser.add_argument('input_gcode', help='Input gcode to patch')
-    parser.add_argument('out_file', nargs='?', type=argparse.FileType('w'), default=sys.stdout)
+    parser.add_argument('--out', default=None)
     return parser
 
 if __name__ == '__main__':
