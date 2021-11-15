@@ -29,7 +29,7 @@ variables:
       B: 500
     M207: # Set retract length
       S: 10 # positive length to retract, in mm
-      R: -0.3 # positive or negative additional length to un-retract, in mm, default zero
+      R: -0.6 # positive or negative additional length to un-retract, in mm, default zero
       F: 2400 # retraction feedrate, in mm/min
   z_probe:
     extra_settings:
