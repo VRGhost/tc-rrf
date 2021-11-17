@@ -29,7 +29,6 @@ variables:
       B: 500
     M207: # Set retract length
       S: 10 # positive length to retract, in mm
-      R: -0.6 # positive or negative additional length to un-retract, in mm, default zero
       F: 2400 # retraction feedrate, in mm/min
   z_probe:
     extra_settings:
@@ -100,6 +99,7 @@ variables:
     T0: &tool0
       id: 0
       fan: 2 # Fan number
+      is_direct: true
       offsets:
         X: 20.53
         Y: 44.24
@@ -113,8 +113,8 @@ variables:
           X: 300
           Y: 300
         M201: #  Set accelerations (mm/s^2)
-          X: 4000
-          Y: 4000
+          X: 3500
+          Y: 3500
         M207: # Set retract length
           S: 0.25 # positive length to retract, in mm
           R: -0.01
@@ -122,6 +122,7 @@ variables:
     T1: &tool1
       id: 1
       fan: 4
+      is_direct: true
       offsets:
         X: 20.48
         Y: 43.93
@@ -133,6 +134,7 @@ variables:
     T2: &tool2
       id: 2
       fan: 6
+      is_direct: false
       offsets:
         X: -8.2
         Y: 39.5
@@ -153,6 +155,7 @@ variables:
     T3: &tool3
       id: 3
       fan: 8
+      is_direct: false
       offsets:
         X: -8.16
         Y: 39.58
@@ -182,17 +185,43 @@ variables:
       width: 6
       y_min: 128
       depth: 33
-  filament_overrides:
-    PET:
-      0.4: # this must be float!
-        extrude_factor: 0.93
-      0.8:
-        extrude_factor: 0.6
-    PLA:
-      0.4:
-        extrude_factor: 0.89
-      0.6:
-        extrude_factor: 0.87
+  dynamic_overrides:
+    filaments:
+      PET:
+        nozzles:
+          0.4: # this must be float!
+            M221: # Set extrude factor override percentage
+              S: 93 # Extrude factor override percentage
+          0.8:
+            M221:
+              S: 60
+        extruders:
+          direct:
+            M207: # Set retract length
+              R: -0.01 # positive or negative additional length to un-retract, in mm, default zero
+          bowden:
+            M207:
+              R: -0.01
+      PLA:
+        nozzles:
+          0.4:
+            M221:
+              S: 89
+          0.6:
+            M221:
+              S: 87
+        extruders:
+          direct:
+            M207:
+              R: -0.01
+          bowden:
+            M207:
+              R: -0.5
+              Z: 0.075
+    default:
+      M221:
+        S: 100
+
 output_root: ./ilo-tc
 render:
   # Output specs

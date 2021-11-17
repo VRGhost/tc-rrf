@@ -13,6 +13,7 @@ import types
 
 import yaml
 import jinja2
+from mergedeep import merge
 
 class PyFunctions:
     """Object providing some Python functions to Jinja template."""
@@ -93,6 +94,30 @@ class PyFunctions:
             conditions.append('true')
 
         return ' && '.join("({})".format(el) for el in conditions) # CNF
+
+
+    def get_merged_dynamic_overrides(self, tool_id, nozzle_d, filament):
+        effective_dict_queue = [{}]
+
+        tool_dict = [
+            tool_dict
+            for tool_dict in self.global_vars['tools'].values()
+            if tool_dict['id'] == tool_id
+        ]
+        assert len(tool_dict) == 1
+        tool_dict = tool_dict[0]
+
+        root_dict = self.global_vars['dynamic_overrides']
+
+        effective_dict_queue.append(root_dict.get('default', {}))
+
+        extruder_key = 'direct' if tool_dict['is_direct'] else 'bowden'
+        effective_dict_queue.append(root_dict['filaments'][filament]['extruders'][extruder_key])
+
+        effective_dict_queue.append(root_dict['filaments'][filament]['nozzles'][nozzle_d])
+
+
+        return merge(*effective_dict_queue)
 
     @property
     def g(self):

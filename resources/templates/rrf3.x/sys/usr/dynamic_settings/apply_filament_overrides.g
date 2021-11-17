@@ -8,22 +8,39 @@
 
 {% import '__macros__/util.jinja' as util %}
 
+{% macro extruder_m221(tool_id, m221_kwargs) -%}
+; extruder_m221({{tool_id}}, {{m221_kwargs}})
+{% call(drive_id) util.foreach('tools[{}].extruders'.format(tool_id)) -%}
+
+M221 D{ {{drive_id}} } {{ py.format_gcode_param_str(m221_kwargs) }}
+
+{%- endcall %}
+; extruder_m221() END
+{%- endmacro %}
+
+
+
+{%- macro apply_tool_mode(tool, nozzle_d, filament) -%}
+; apply_tool_mode(tool={{tool.id}}, nozzle_d={{nozzle_d}}, filament={{filament}})
+{%- set filament_settings = py.get_merged_dynamic_overrides(tool_id=tool.id, nozzle_d=nozzle_d, filament=filament) %}
+{{ extruder_m221(tool.id, filament_settings['M221']) }}
+M207 P{{tool.id}} {{ py.format_gcode_param_str(filament_settings.get('M207', {})) }}
+; apply_tool_mode() END
+{% endmacro -%}
+
 echo "Applying filament overrides for the Tool " ^ param.T ^ " with nozzle D=" ^ param.N ^ " and filament '" ^ param.F ^ "'"
 
-var extrude_factor = 100 ; Default factor
+{% for py_tool in tools.values() -%}
+{% for (filament_name, filament_settings) in dynamic_overrides.filaments.items() -%}
+{% set nozzle_diameters = filament_settings.nozzles.keys() | sort | list -%}
+{% for (prev_d, cur_d, next_d) in py.zip([None] + nozzle_diameters, nozzle_diameters, nozzle_diameters[1:] + [None]) -%}
 
-{% for (filament_name, filament_settings) in filament_overrides.items() %}
-{% set nozzle_diameters = filament_settings.keys() | sort | list %}
-if param.F == "{{ filament_name }}"
-    {% for (prev_d, cur_d, next_d) in py.zip([None] + nozzle_diameters, nozzle_diameters, nozzle_diameters[1:] + [None]) %}
-    if {{ py.floatWithinBoundsCond('param.N', prev_d, cur_d, next_d) }}
-        ; Nozzle diameter {{ cur_d }}
-        set var.extrude_factor = {{ "%d"|format(filament_settings[cur_d]['extrude_factor'] * 100 | round) }} ; Real factor = {{ filament_settings[cur_d]['extrude_factor'] }}
-    {% endfor %}
+if (param.T == {{py_tool.id}}) && (param.F == "{{ filament_name }}") && {{ py.floatWithinBoundsCond('param.N', prev_d, cur_d, next_d) }}
+    {% filter indent(width=4) -%}
+    {{ apply_tool_mode(tool=py_tool, nozzle_d=cur_d, filament=filament_name) }}
+    {%- endfilter %}
+
 {% endfor %}
+{%- endfor %}
+{%- endfor %}
 
-echo "Using extrude factor " ^ var.extrude_factor
-
-{% call(drive_id) util.foreach('tools[{{ param.T }}].extruders') %}
-M221 S{var.extrude_factor} D{ {{ drive_id }} }
-{% endcall %}
