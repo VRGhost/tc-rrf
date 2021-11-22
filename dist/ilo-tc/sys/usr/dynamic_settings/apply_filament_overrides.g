@@ -60,7 +60,7 @@ if (param.T == 0) && (param.F == "PLA") && (param.N < 0.50000)
     ; end util.foreach()
 
     ; extruder_m221() END
-    M207 P0 R-0.0100
+    M207 P0 F2700 R-0.0100 S0.2500 Z0.0750
     ; apply_tool_mode() END
 
 
@@ -78,7 +78,7 @@ if (param.T == 0) && (param.F == "PLA") && (param.N >= 0.50000)
     ; end util.foreach()
 
     ; extruder_m221() END
-    M207 P0 R-0.0100
+    M207 P0 F2700 R-0.0100 S0.2500 Z0.0750
     ; apply_tool_mode() END
 
 
@@ -132,7 +132,7 @@ if (param.T == 1) && (param.F == "PLA") && (param.N < 0.50000)
     ; end util.foreach()
 
     ; extruder_m221() END
-    M207 P1 R-0.0100
+    M207 P1 F2700 R-0.0100 S0.2500 Z0.0750
     ; apply_tool_mode() END
 
 
@@ -150,7 +150,7 @@ if (param.T == 1) && (param.F == "PLA") && (param.N >= 0.50000)
     ; end util.foreach()
 
     ; extruder_m221() END
-    M207 P1 R-0.0100
+    M207 P1 F2700 R-0.0100 S0.2500 Z0.0750
     ; apply_tool_mode() END
 
 
@@ -204,7 +204,7 @@ if (param.T == 2) && (param.F == "PLA") && (param.N < 0.50000)
     ; end util.foreach()
 
     ; extruder_m221() END
-    M207 P2 R-0.5000 Z0.0750
+    M207 P2 F2000 R-0.5000 S10 Z0.0750
     ; apply_tool_mode() END
 
 
@@ -222,7 +222,7 @@ if (param.T == 2) && (param.F == "PLA") && (param.N >= 0.50000)
     ; end util.foreach()
 
     ; extruder_m221() END
-    M207 P2 R-0.5000 Z0.0750
+    M207 P2 F2000 R-0.5000 S10 Z0.0750
     ; apply_tool_mode() END
 
 
@@ -276,7 +276,7 @@ if (param.T == 3) && (param.F == "PLA") && (param.N < 0.50000)
     ; end util.foreach()
 
     ; extruder_m221() END
-    M207 P3 R-0.5000 Z0.0750
+    M207 P3 F2000 R-0.5000 S10 Z0.0750
     ; apply_tool_mode() END
 
 
@@ -294,7 +294,7 @@ if (param.T == 3) && (param.F == "PLA") && (param.N >= 0.50000)
     ; end util.foreach()
 
     ; extruder_m221() END
-    M207 P3 R-0.5000 Z0.0750
+    M207 P3 F2000 R-0.5000 S10 Z0.0750
     ; apply_tool_mode() END
 
 
