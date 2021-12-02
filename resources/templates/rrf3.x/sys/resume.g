@@ -1,5 +1,12 @@
 ; Resume macro file
-; TODO do a prime/wipe cycle here to get rid of any filament that has oozed out
+
+{% from 'sys/usr/prime.g' import reset_global_prime_vars %}
+
+; force large extrusions on next primings
+{{ reset_global_prime_vars() }}
+
+;prime nozzle
+M98 P"/sys/usr/prime.g"
 
 G1 R1 X0 Y0 Z2 F5000 		; go to 5mm above position of the last print move
 G1 R1 X0 Y0 Z0 				; go back to the last print move

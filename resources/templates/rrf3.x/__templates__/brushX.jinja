@@ -4,14 +4,7 @@
 
 {% import '__macros__/move.jinja' as move %}
 
-var src_x = move.axes[{{ axis.X.index }}].userPosition
-var src_y = move.axes[{{ axis.Y.index }}].userPosition
-var on_the_bed = ( var.src_x >= 0 && var.src_y >= 0 && var.src_x <= {{ bed.width }} && var.src_y <= {{ bed.depth }} )
-
 {{ move.avoid_tc_clash() }}
-
-if var.on_the_bed
-    {{ move.rel_move(dz=15, indent=4) }}
 
 {% set min_x = brush.x_max - brush.width -%}
 {% set mid_x = brush.x_max - brush.width / 2 -%}
@@ -47,9 +40,5 @@ G1 X{{ mid_x + (dx * idx) }} Y{{ max_y + 5 }} F50000
 G0 X{{ mid_x }} Y{{ min_y }} F50000
 G0 X{{ mid_x }} Y{{ max_y + 30 }} F50000
 
-if var.on_the_bed
-    ; Return to the point of origin if it is on the bed
-    M98 P"/sys/usr/lib/manhattan_move.g" X{var.src_x} Y{var.src_y} Z0 F50000
-    {{ move.rel_move(dz=-15, indent=4) }}
 
 {% endif %}
