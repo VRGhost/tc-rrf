@@ -276,7 +276,7 @@ if (param.T == 3) && (param.F == "PLA") && (param.N < 0.50000)
     ; end util.foreach()
 
     ; extruder_m221() END
-    M207 P3 F2000 R-0.5000 S10 Z0.0750
+    M207 P3 F2700 R-0.0100 S0.2500 Z0.0750
     ; apply_tool_mode() END
 
 
@@ -294,7 +294,7 @@ if (param.T == 3) && (param.F == "PLA") && (param.N >= 0.50000)
     ; end util.foreach()
 
     ; extruder_m221() END
-    M207 P3 F2000 R-0.5000 S10 Z0.0750
+    M207 P3 F2700 R-0.0100 S0.2500 Z0.0750
     ; apply_tool_mode() END
 
 

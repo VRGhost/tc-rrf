@@ -101,12 +101,12 @@ variables:
       fan: 2 # Fan number
       is_direct: true
       offsets:
-        X: 20.53
+        X: 14.5
         Y: 44.24
-        Z: -5.148
+        Z: -14
       park:
         # X/Y location of the tools' parking position
-        X: -7.4
+        X: -8.5
         Y: 226.3
       extra_settings: &hemera_direct_extra_settings
         M566: # maximum instantaneous speed changes (mm/min)
@@ -122,10 +122,10 @@ variables:
       offsets:
         X: 20.48
         Y: 43.93
-        Z: -5.25
+        Z: -14
       park:
-        X: 81.4
-        Y: 226.55
+        X: 82.9
+        Y: 226.8
       extra_settings: *hemera_direct_extra_settings
     T2: &tool2
       id: 2
@@ -134,7 +134,7 @@ variables:
       offsets:
         X: -8.2
         Y: 39.5
-        Z: -4.638
+        Z: -14
       park:
         X: 218.2
         Y: 242
@@ -148,15 +148,15 @@ variables:
     T3: &tool3
       id: 3
       fan: 8
-      is_direct: false
+      is_direct: true
       offsets:
         X: -8.16
         Y: 39.58
-        Z: -4.55
+        Z: -14
       park:
-        X: 308.6
-        Y: 241.5
-      extra_settings: *hemera_bowden_extra_settings
+        X: 306.5
+        Y: 227.5
+      extra_settings: *hemera_direct_extra_settings
   bed:
     width: 300
     depth: 200

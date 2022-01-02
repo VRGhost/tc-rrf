@@ -92,7 +92,7 @@ M557 X{{ bed_grid_border_x }}:{{ bed.width - bed_grid_border_x }} Y{{ bed_grid_b
 M915 X Y S3 F0 H400 R2				; X / Y Axes
 M915 A B S3 F0 H100 R1
 
-; Heaters
+; Tool Heaters
 M308 S0 P"bedtemp" Y"thermistor" A"Bed" T100000 B4138 C0 		; Set thermistor 
 M950 H0 C"bedheat" T0											; Bed heater
 M143 H0 S225 													; Set temperature limit for heater 0 to 225C
@@ -114,6 +114,13 @@ M308 S4 P"e3temp" Y"thermistor" A"T3" T100000 B4725 C7.06e-8 	; Set thermistor
 M950 H4 C"duex.e3heat" T4										; Extruder 0 heater
 M143 H4 S305 													; Set temperature limit for heater 4 to 300C
 
+
+; Chamber Heater
+M308 S5 P"e4temp" Y"thermistor" A"Chamber" T100000 B4725 C7.06e-8       ; Set thermistor
+M950 H5 C"duex.e4heat" T5                                               ; create chamber heater output on e1heat and map it to sensor 5
+; M307 H5 B0 S1.00                                                      ; disable bang-bang mode for the chamber heater and set PWM limit
+M141 H5                                                                 ; map chamber to heater 2
+M143 H5 S100                                                            ; set temperature limit for heater 2 to 100C
 
 ; Tools
 M563 P0 S"T0" D0 H1 F2 					; Define tool 0
