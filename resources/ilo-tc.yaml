@@ -124,7 +124,7 @@ variables:
         Y: 43.93
         Z: -14
       park:
-        X: 82.9
+        X: 81.7
         Y: 226.8
       extra_settings: *hemera_direct_extra_settings
     T2: &tool2
