@@ -21,22 +21,22 @@ if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere
 M98 P"/sys/usr/pre_dock.g"
 
 ;Move In
-G53 G1 X218.2 Y150 F50000
+G53 G1 X217.8 Y150.0 F50000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #0 (tool 2)"
 
-G53 G1 X218.2 Y200 F50000
+G53 G1 X217.8 Y200.0 F50000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #1 (tool 2)"
 
-G53 G1 X218.2 Y220 F50000
+G53 G1 X217.8 Y220.0 F50000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #2 (tool 2)"
 
 
 M913 X60 Y60 ; Set the motor current to 60%
 
-G53 G1 X218.2 Y242 F5000
+G53 G1 X217.8 Y242.4 F5000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #3 (tool 2)"
 
@@ -65,5 +65,5 @@ M207 F2400 S10
 
 
 ;Move Out
-G53 G1 X218.2 Y175 F50000
+G53 G1 X217.8 Y175.0 F50000
 M98 P"/sys/usr/reset_tool_offsets.g"

@@ -136,8 +136,8 @@ variables:
         Y: 39.5
         Z: -14
       park:
-        X: 218.2
-        Y: 242
+        X: 217.8
+        Y: 242.4
       extra_settings: &hemera_bowden_extra_settings
         M566: # maximum instantaneous speed changes (mm/min)
           X: 300
@@ -154,7 +154,7 @@ variables:
         Y: 39.58
         Z: -14
       park:
-        X: 306.5
+        X: 305.4
         Y: 227.5
       extra_settings: *hemera_direct_extra_settings
   bed:
