@@ -5,9 +5,9 @@
 
 
 ;Drop the bed
-G91
-G1 Z4 F1000
-G90
+;G91
+;G1 Z4 F1000
+;G90
 
 ; Just in case - take care not to clash with the environment
 if move.axes[2].homed && move.axes[2].userPosition < 10 ; if Z < 10

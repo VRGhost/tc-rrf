@@ -37,10 +37,10 @@ set {{out_var}} = 0 ; set to 'False' by default
 {% set cur_nozzle_temp = py.unique_var('cur_nozzle_temp') -%}
 {% set idx = py.unique_var('idx') -%}
 var {{ cur_nozzle_temp }} = -273
-echo "Current tool: " ^ state.currentTool
+; echo "Current tool: " ^ state.currentTool
 {{ get_nozzle_temp('var.' + cur_nozzle_temp, 'state.currentTool') }}
 
-echo "Tool temp: " ^ var.{{ cur_nozzle_temp }}
+; echo "Tool temp: " ^ var.{{ cur_nozzle_temp }}
 ; Allow some cooldown (just in case)
 set {{out_var}} = (var.{{ cur_nozzle_temp }} - 5) > heat.coldExtrudeTemperature ? 1 : 0
 

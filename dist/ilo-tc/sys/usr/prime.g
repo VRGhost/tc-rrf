@@ -13,7 +13,7 @@ var can_extrude = 0
 set var.can_extrude = 0 ; set to 'False' by default
 
 var cur_nozzle_temp_37 = -273
-echo "Current tool: " ^ state.currentTool
+; echo "Current tool: " ^ state.currentTool
 
 ; ------ get_nozzle_temp(var.cur_nozzle_temp_37, state.currentTool)
 set var.cur_nozzle_temp_37 = -273
@@ -35,7 +35,7 @@ if state.currentTool >= 0
 ; ------ get_nozzle_temp() END
 
 
-echo "Tool temp: " ^ var.cur_nozzle_temp_37
+; echo "Tool temp: " ^ var.cur_nozzle_temp_37
 ; Allow some cooldown (just in case)
 set var.can_extrude = (var.cur_nozzle_temp_37 - 5) > heat.coldExtrudeTemperature ? 1 : 0
 
@@ -44,7 +44,7 @@ set var.can_extrude = (var.cur_nozzle_temp_37 - 5) > heat.coldExtrudeTemperature
 
 
 if var.can_extrude <= 0
-    echo "Too cold to extrude, skipping priming"
+    ; "Too cold to extrude, skipping priming"
     M99 ; return
 
 var is_first_use = false

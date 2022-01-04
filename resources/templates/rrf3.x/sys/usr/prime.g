@@ -19,7 +19,7 @@ var can_extrude = 0
 {{ heat.is_hot_enough_to_extrude('var.can_extrude') }}
 
 if var.can_extrude <= 0
-    echo "Too cold to extrude, skipping priming"
+    ; "Too cold to extrude, skipping priming"
     M99 ; return
 
 {% macro check_and_mark_first_nozzle_use(tool_idx) -%}

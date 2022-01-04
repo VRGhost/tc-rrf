@@ -5,9 +5,9 @@
 
 
 ;Drop the bed
-G91
-G1 Z4 F1000
-G90
+;G91
+;G1 Z4 F1000
+;G90
 
 ; Just in case - take care not to clash with the environment
 if move.axes[2].homed && move.axes[2].userPosition < 10 ; if Z < 10
@@ -21,22 +21,22 @@ if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere
 M98 P"/sys/usr/pre_dock.g"
 
 ;Move In
-G53 G1 X305.4 Y130.0 F50000
+G53 G1 X306.2 Y130.0 F50000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #0 (tool 3)"
 
-G53 G1 X305.4 Y180.0 F50000
+G53 G1 X306.2 Y180.0 F50000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #1 (tool 3)"
 
-G53 G1 X305.4 Y200.0 F50000
+G53 G1 X306.2 Y200.0 F50000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #2 (tool 3)"
 
 
 M913 X60 Y60 ; Set the motor current to 60%
 
-G53 G1 X305.4 Y227.5 F5000
+G53 G1 X306.2 Y226.9 F5000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #3 (tool 3)"
 
@@ -65,5 +65,5 @@ M207 F2400 S10
 
 
 ;Move Out
-G53 G1 X305.4 Y155.0 F50000
+G53 G1 X306.2 Y155.0 F50000
 M98 P"/sys/usr/reset_tool_offsets.g"

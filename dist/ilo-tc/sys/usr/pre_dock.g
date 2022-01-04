@@ -10,7 +10,7 @@ var can_extrude = 0
 set var.can_extrude = 0 ; set to 'False' by default
 
 var cur_nozzle_temp_33 = -273
-echo "Current tool: " ^ state.currentTool
+; echo "Current tool: " ^ state.currentTool
 
 ; ------ get_nozzle_temp(var.cur_nozzle_temp_33, state.currentTool)
 set var.cur_nozzle_temp_33 = -273
@@ -32,7 +32,7 @@ if state.currentTool >= 0
 ; ------ get_nozzle_temp() END
 
 
-echo "Tool temp: " ^ var.cur_nozzle_temp_33
+; echo "Tool temp: " ^ var.cur_nozzle_temp_33
 ; Allow some cooldown (just in case)
 set var.can_extrude = (var.cur_nozzle_temp_33 - 5) > heat.coldExtrudeTemperature ? 1 : 0
 
@@ -41,7 +41,7 @@ set var.can_extrude = (var.cur_nozzle_temp_33 - 5) > heat.coldExtrudeTemperature
 
 
 if var.can_extrude <= 0
-    echo "Too cold to extrude, skipping cleanup"
+    ; Too cold to extrude, skipping cleanup
     M99 ; return
 
 M98 P"/macros/Go To Purge Spot"

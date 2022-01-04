@@ -10,6 +10,8 @@ if !move.axes[{{ axis.Y.index }}].homed
 else
     ; Avoid accidentally clashing with the tools/Z column
     {{ avoid_tc_clash(indent=4)}}
+    G1 H1 Y-400 F3000           ; move to the front 400mm (Y axis), stopping at the endstop
+    G1 H1 Y2 F2000              ; move away from end
 
 if state.currentTool >= 0
     abort "Refusing to home X with tool attached."

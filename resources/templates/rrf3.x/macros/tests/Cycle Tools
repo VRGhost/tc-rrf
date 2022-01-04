@@ -1,0 +1,8 @@
+{% for iter in range(10) %}
+T-1
+{% for tool in range(4) %}
+T{{ tool }}
+M98 P"/macros/Move to Middle"
+{% endfor %}
+T-1
+{% endfor %}
