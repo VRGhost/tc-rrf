@@ -9,6 +9,7 @@ G90
 {%- endfilter %}
 {% endmacro %}
 
+
 {% macro avoid_tc_clash(indent=0) -%}
 {% filter indent(width=indent) -%}
 if move.axes[{{ py.g.axis.Z.index }}].homed && move.axes[{{ py.g.axis.Z.index }}].userPosition < 10 ; if Z < 10
@@ -17,4 +18,18 @@ if move.axes[{{ py.g.axis.Z.index }}].homed && move.axes[{{ py.g.axis.Z.index }}
 if move.axes[{{ py.g.axis.Y.index }}].homed && move.axes[{{ py.g.axis.Y.index }}].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
     G1 Y200 F2500 ; slowly back out
 {%- endfilter %}
+{% endmacro %}
+
+
+{% macro feedrate_changing_sequence(start_x, start_y, start_feed, end_x, end_y, end_feed, steps=10) -%}
+{% for step_id in range(steps) -%}
+{% set move_percentage = step_id / (steps - 1) -%}
+{{
+    caller({
+        "X": start_x + move_percentage * (end_x - start_x),
+        "Y": start_y + move_percentage * (end_y - start_y),
+        "F": start_feed + move_percentage * (end_feed - start_feed),
+    })
+}}
+{% endfor -%}
 {% endmacro %}

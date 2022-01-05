@@ -20,25 +20,20 @@ if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere
 ;Purge nozzle
 M98 P"/sys/usr/pre_dock.g"
 
-;Move In
-G53 G1 X217.8 Y150.0 F50000
-if result != 0
-    abort "[ERROR]: Unable to complete approach step #0 (tool 2)"
-
-G53 G1 X217.8 Y200.0 F50000
-if result != 0
-    abort "[ERROR]: Unable to complete approach step #1 (tool 2)"
-
-G53 G1 X217.8 Y220.0 F50000
-if result != 0
-    abort "[ERROR]: Unable to complete approach step #2 (tool 2)"
-
-
 M913 X60 Y60 ; Set the motor current to 60%
 
-G53 G1 X217.8 Y242.4 F5000
-if result != 0
-    abort "[ERROR]: Unable to complete approach step #3 (tool 2)"
+; Approach at reducing speed
+G53 G1 F10000.0000 X217.8000 Y140.5000
+G53 G1 F9444.4444 X217.8000 Y151.8222
+G53 G1 F8888.8889 X217.8000 Y163.1444
+G53 G1 F8333.3333 X217.8000 Y174.4667
+G53 G1 F7777.7778 X217.8000 Y185.7889
+G53 G1 F7222.2222 X217.8000 Y197.1111
+G53 G1 F6666.6667 X217.8000 Y208.4333
+G53 G1 F6111.1111 X217.8000 Y219.7556
+G53 G1 F5555.5556 X217.8000 Y231.0778
+G53 G1 F5000.0000 X217.8000 Y242.4000
+
 
 
 M913 X100 Y100 ; Restore the motor current
@@ -65,5 +60,5 @@ M207 F2400 S10
 
 
 ;Move Out
-G53 G1 X217.8 Y175.0 F50000
+G53 G1 X217.8 Y180 F50000
 M98 P"/sys/usr/reset_tool_offsets.g"

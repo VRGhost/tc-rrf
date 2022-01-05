@@ -2,7 +2,7 @@
 ; called before tool {{ tool.id }} is selected
 
 {% import '__macros__/errors.jinja' as err %}
-{% from "__macros__/move.jinja" import avoid_tc_clash %}
+{% from "__macros__/move.jinja" import avoid_tc_clash, feedrate_changing_sequence %}
 
 ; Just in case - take care not to clash with the environment
 {{ avoid_tc_clash() }}
@@ -11,19 +11,20 @@ M98 P"/sys/usr/reset_tool_offsets.g"
 ;Unlock Coupler
 M98 P"/macros/Coupler - Unlock"
 
-{% set rounded_Y = (tool.park.Y // 20) * 20 -%}
+{% set move_start_y = 180 -%}
 
 ;Move to location
-G53 G1 X{{ tool.park.X }} Y{{ rounded_Y - 40 }} F50000
-{{ err.abort_on_error("Unable to complete approach step #0 (tool {id})".format(**tool)) }}
-G53 G1 X{{ tool.park.X }} Y{{ rounded_Y - 10 }} F50000
-{{ err.abort_on_error("Unable to complete approach step #1 (tool {id})".format(**tool)) }}
+G53 G1 X{{ tool.park.X }} Y{{ move_start_y }} F50000
 
 M913 X60 Y60 ; Set the motor current to 60%
 
+; Approach at reducing speed
+{% call(move_params) feedrate_changing_sequence(tool.park.X, move_start_y, 10000, tool.park.X, tool.park.Y, 5000) -%}
+G53 G1 {{ py.format_gcode_param_str(move_params) }}
+{%- endcall %}
+
 ;Collect
 G53 G1 X{{ tool.park.X }} Y{{ tool.park.Y }} F2500
-{{ err.abort_on_error("Unable to complete approach step #2 (tool {id})".format(**tool)) }}
 
 
 ;Close Coupler
@@ -49,4 +50,4 @@ M913 X100 Y100 ; Restore the motor current
 {% endif %}
 
 ;Move Out
-G53 G1 X{{ tool.park.X }} Y{{ rounded_Y - 90 }} F4000
+G53 G1 X{{ tool.park.X }} Y{{ move_start_y - tool.offsets.Y }} F4000

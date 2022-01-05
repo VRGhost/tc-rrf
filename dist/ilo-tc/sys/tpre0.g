@@ -17,22 +17,25 @@ M98 P"/sys/usr/reset_tool_offsets.g"
 M98 P"/macros/Coupler - Unlock"
 
 ;Move to location
-G53 G1 X-8 Y180.0 F50000
-if result != 0
-    abort "[ERROR]: Unable to complete approach step #0 (tool 0)"
-
-G53 G1 X-8 Y210.0 F50000
-if result != 0
-    abort "[ERROR]: Unable to complete approach step #1 (tool 0)"
-
+G53 G1 X-8 Y180 F50000
 
 M913 X60 Y60 ; Set the motor current to 60%
 
+; Approach at reducing speed
+G53 G1 F10000.0000 X-8.0000 Y180.0000
+G53 G1 F9444.4444 X-8.0000 Y185.1444
+G53 G1 F8888.8889 X-8.0000 Y190.2889
+G53 G1 F8333.3333 X-8.0000 Y195.4333
+G53 G1 F7777.7778 X-8.0000 Y200.5778
+G53 G1 F7222.2222 X-8.0000 Y205.7222
+G53 G1 F6666.6667 X-8.0000 Y210.8667
+G53 G1 F6111.1111 X-8.0000 Y216.0111
+G53 G1 F5555.5556 X-8.0000 Y221.1556
+G53 G1 F5000.0000 X-8.0000 Y226.3000
+
+
 ;Collect
 G53 G1 X-8 Y226.3 F2500
-if result != 0
-    abort "[ERROR]: Unable to complete approach step #2 (tool 0)"
-
 
 
 ;Close Coupler
@@ -57,4 +60,4 @@ M201 P0 X3500 Y3500
 
 
 ;Move Out
-G53 G1 X-8 Y130.0 F4000
+G53 G1 X-8 Y135.76 F4000

@@ -2,7 +2,7 @@
 ; called when tool {{ tool.id }} is freed
 
 {% import '__macros__/errors.jinja' as err %}
-{% from "__macros__/move.jinja" import avoid_tc_clash %}
+{% from "__macros__/move.jinja" import avoid_tc_clash, feedrate_changing_sequence %}
 
 ;Drop the bed
 ;G91
@@ -15,19 +15,14 @@
 ;Purge nozzle
 M98 P"/sys/usr/pre_dock.g"
 
-;Move In
-{% set rounded_Y = (tool.park.Y // 20) * 20 -%}
-G53 G1 X{{ tool.park.X }} Y{{ rounded_Y - 90 }} F50000
-{{ err.abort_on_error("Unable to complete approach step #0 (tool {id})".format(**tool)) }}
-G53 G1 X{{ tool.park.X }} Y{{ rounded_Y - 40 }} F50000
-{{ err.abort_on_error("Unable to complete approach step #1 (tool {id})".format(**tool)) }}
-G53 G1 X{{ tool.park.X }} Y{{ rounded_Y - 20 }} F50000
-{{ err.abort_on_error("Unable to complete approach step #2 (tool {id})".format(**tool)) }}
-
 M913 X60 Y60 ; Set the motor current to 60%
 
-G53 G1 X{{ tool.park.X }} Y{{ tool.park.Y }} F5000
-{{ err.abort_on_error("Unable to complete approach step #3 (tool {id})".format(**tool)) }}
+{% set move_start_y = 180 - tool.offsets.Y -%}
+; Approach at reducing speed
+{% call(move_params) feedrate_changing_sequence(tool.park.X, move_start_y, 10000, tool.park.X, tool.park.Y, 5000) -%}
+G53 G1 {{ py.format_gcode_param_str(move_params) }}
+{%- endcall %}
+
 
 M913 X100 Y100 ; Restore the motor current
 
@@ -42,5 +37,5 @@ M106 P{{ tool.fan }} S0
 {{ apply_global_settings() }}
 
 ;Move Out
-G53 G1 X{{ tool.park.X }} Y{{ rounded_Y - 65 }} F50000
+G53 G1 X{{ tool.park.X }} Y180 F50000
 M98 P"/sys/usr/reset_tool_offsets.g"
