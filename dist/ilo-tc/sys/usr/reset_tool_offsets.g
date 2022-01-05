@@ -15,12 +15,12 @@ G10 P0 X20.3600 Y44.0400 Z-22.5000
 G10 P1 X17.5000 Y44.3900 Z-22.5000
 ; --- apply_tool_offsets() END
 ; ---- T2
-; --- apply_tool_offsets(2, {'X': -8.2, 'Y': 39.5, 'Z': -14})
-G10 P2 X-8.2000 Y39.5000 Z-14
+; --- apply_tool_offsets(2, {'X': -8.18, 'Y': 39.44, 'Z': -14})
+G10 P2 X-8.1800 Y39.4400 Z-14
 ; --- apply_tool_offsets() END
 ; ---- T3
-; --- apply_tool_offsets(3, {'X': -8.16, 'Y': 39.58, 'Z': -22.5})
-G10 P3 X-8.1600 Y39.5800 Z-22.5000
+; --- apply_tool_offsets(3, {'X': 20.34, 'Y': 43.68, 'Z': -22.5})
+G10 P3 X20.3400 Y43.6800 Z-22.5000
 ; --- apply_tool_offsets() END
 
 
