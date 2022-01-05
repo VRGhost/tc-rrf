@@ -60,11 +60,6 @@ if var.curToolTemp < 55 && var.targetToolTemp > 100
 
 M116 P2
 
-var toolZOffset = 0
-if state.currentTool >= 0
-    set var.toolZOffset = tools[state.currentTool].offsets[2]
-
-G1 A{var.toolZOffset} B{var.toolZOffset}
 M106 R2 ; restore print cooling fan speed
 
 ;prime nozzle

@@ -14,15 +14,15 @@ M98 P"/macros/Coupler - Unlock"
 {% set rounded_Y = (tool.park.Y // 20) * 20 -%}
 
 ;Move to location
-G1 X{{ tool.park.X }} Y{{ rounded_Y - 40 }} F50000
+G53 G1 X{{ tool.park.X }} Y{{ rounded_Y - 40 }} F50000
 {{ err.abort_on_error("Unable to complete approach step #0 (tool {id})".format(**tool)) }}
-G1 X{{ tool.park.X }} Y{{ rounded_Y - 10 }} F50000
+G53 G1 X{{ tool.park.X }} Y{{ rounded_Y - 10 }} F50000
 {{ err.abort_on_error("Unable to complete approach step #1 (tool {id})".format(**tool)) }}
 
 M913 X60 Y60 ; Set the motor current to 60%
 
 ;Collect
-G1 X{{ tool.park.X }} Y{{ tool.park.Y }} F2500
+G53 G1 X{{ tool.park.X }} Y{{ tool.park.Y }} F2500
 {{ err.abort_on_error("Unable to complete approach step #2 (tool {id})".format(**tool)) }}
 
 
@@ -34,6 +34,8 @@ M98 P"/macros/Coupler - Lock"
 G91
 G1 Z{{ -2 * tool.offsets.Z }} F1000
 G90
+
+G1 A{{ -1 * tool.offsets.Z }} B{{ -1 * tool.offsets.Z }}  ; Adjust brush heights
 
 M913 X100 Y100 ; Restore the motor current
 
@@ -47,4 +49,4 @@ M913 X100 Y100 ; Restore the motor current
 {% endif %}
 
 ;Move Out
-G1 X{{ tool.park.X }} Y{{ rounded_Y - 90 }} F4000
+G53 G1 X{{ tool.park.X }} Y{{ rounded_Y - 90 }} F4000

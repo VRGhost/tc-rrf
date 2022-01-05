@@ -7,20 +7,20 @@
 ; Hemera-tool: X20 Y43.5 Z-6
 
 ; ---- T0
-; --- apply_tool_offsets(0, {'X': 14.5, 'Y': 44.24, 'Z': -14})
-G10 P0 X14.5000 Y44.2400 Z-14
+; --- apply_tool_offsets(0, {'X': 14.5, 'Y': 44.24, 'Z': -22.5})
+G10 P0 X14.5000 Y44.2400 Z-22.5000
 ; --- apply_tool_offsets() END
 ; ---- T1
-; --- apply_tool_offsets(1, {'X': 20.48, 'Y': 43.93, 'Z': -14})
-G10 P1 X20.4800 Y43.9300 Z-14
+; --- apply_tool_offsets(1, {'X': 20.48, 'Y': 43.93, 'Z': -22.5})
+G10 P1 X20.4800 Y43.9300 Z-22.5000
 ; --- apply_tool_offsets() END
 ; ---- T2
 ; --- apply_tool_offsets(2, {'X': -8.2, 'Y': 39.5, 'Z': -14})
 G10 P2 X-8.2000 Y39.5000 Z-14
 ; --- apply_tool_offsets() END
 ; ---- T3
-; --- apply_tool_offsets(3, {'X': -8.16, 'Y': 39.58, 'Z': -14})
-G10 P3 X-8.1600 Y39.5800 Z-14
+; --- apply_tool_offsets(3, {'X': -8.16, 'Y': 39.58, 'Z': -22.5})
+G10 P3 X-8.1600 Y39.5800 Z-22.5000
 ; --- apply_tool_offsets() END
 
 

@@ -17,11 +17,11 @@ M98 P"/sys/usr/reset_tool_offsets.g"
 M98 P"/macros/Coupler - Unlock"
 
 ;Move to location
-G1 X82 Y180.0 F50000
+G53 G1 X82 Y180.0 F50000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #0 (tool 1)"
 
-G1 X82 Y210.0 F50000
+G53 G1 X82 Y210.0 F50000
 if result != 0
     abort "[ERROR]: Unable to complete approach step #1 (tool 1)"
 
@@ -29,7 +29,7 @@ if result != 0
 M913 X60 Y60 ; Set the motor current to 60%
 
 ;Collect
-G1 X82 Y226.9 F2500
+G53 G1 X82 Y226.9 F2500
 if result != 0
     abort "[ERROR]: Unable to complete approach step #2 (tool 1)"
 
@@ -41,8 +41,10 @@ M98 P"/macros/Coupler - Lock"
 ;WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!
 ;if you are using non-standard length hotends ensure the bed is lowered enough BEFORE undocking the tool!
 G91
-G1 Z28 F1000
+G1 Z45.0 F1000
 G90
+
+G1 A22.5 B22.5  ; Adjust brush heights
 
 M913 X100 Y100 ; Restore the motor current
 
@@ -55,4 +57,4 @@ M201 P1 X3500 Y3500
 
 
 ;Move Out
-G1 X82 Y130.0 F4000
+G53 G1 X82 Y130.0 F4000
