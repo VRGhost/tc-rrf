@@ -44,10 +44,10 @@ M98 P"/macros/Coupler - Lock"
 ;WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!
 ;if you are using non-standard length hotends ensure the bed is lowered enough BEFORE undocking the tool!
 G91
-G1 Z28 F1000
+G1 Z26.5 F1000
 G90
 
-G1 A14 B14  ; Adjust brush heights
+G1 A13.25 B13.25  ; Adjust brush heights
 
 M913 X100 Y100 ; Restore the motor current
 

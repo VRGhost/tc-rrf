@@ -4,7 +4,7 @@
 
 G91
 M400                        ; Wait for any moves to finish
-M913 B20                    ; MOTORS TO 60% CURRENT
+M913 B30                    ; MOTORS TO 30% CURRENT
 G1 H2 B-40 F50000
 G1 H2 B1                            ; Back out a little bit
 G92 B-8.3                    ; Mark B as homed
