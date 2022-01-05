@@ -132,8 +132,8 @@ variables:
       fan: 6
       is_direct: false
       offsets:
-        X: -8.2
-        Y: 39.5
+        X: -8.18
+        Y: 39.44
         Z: -14
       park:
         X: 217.8
