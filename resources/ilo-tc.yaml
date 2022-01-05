@@ -103,7 +103,7 @@ variables:
       offsets:
         X: 20.36
         Y: 44.04
-        Z: -22.5
+        Z: -13.7
       park:
         # X/Y location of the tools' parking position
         X: -8
@@ -122,7 +122,7 @@ variables:
       offsets:
         X: 17.5
         Y: 44.39
-        Z: -22.5
+        Z: -13.55
       park:
         X: 82
         Y: 226.9
