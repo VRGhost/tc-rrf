@@ -36,7 +36,7 @@ M584 X0 Y1 Z2 C7 E3:4:5:6 A8 B9                             ; Apply custom drive
 
 ; Set axis maxima & minima
 M208 X-29.6:333.9 Y-46.8:245.2 Z0:290
-M208 C-45:360 A-11:19 B-8.3:21.7
+M208 C-45:360 A-1.1:28.9 B3.8:33.8
 
 ; Set steps per mm assuming x16 microstepping
 M92 X100 Y100 Z800 C91.022
@@ -49,7 +49,7 @@ M350 C16 I10											; without interpolation
 M350 X16 Y16 Z16 I1										; with interpolation
 M350 A16 B16 I1
 
-M906 X1800 Y1800 Z1330 A800 B800 I30                          ; Idle motion motors to 30%
+M906 X1800 Y1800 Z1330 A1330 B1330 I30                          ; Idle motion motors to 30%
 M906 E1000:1000:1000:1000 C500 I10                          ; Idle extruder motors to 10%
 
 ; ----- apply_global_settings()

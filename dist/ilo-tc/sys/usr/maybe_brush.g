@@ -10,5 +10,3 @@ if global.maybe_brush_last_tool != state.currentTool || (global.maybe_brush_last
     G10 ; retract
     M98 P"/sys/usr/brush.g"
     G11 ; unretract
-else
-    echo "maybe_brush.g: skip"

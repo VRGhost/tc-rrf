@@ -88,11 +88,11 @@ variables:
     # Brushes
     A: &brush_axis_a
       index: 3
-      min: -11
+      min: -1.1
       width: 30
     B: &brush_axis_b
       index: 4
-      min: -8.3
+      min: 3.8
       width: 30
   tools:
     # Tool infos
@@ -185,9 +185,12 @@ variables:
           0.4: # this must be float!
             M221: # Set extrude factor override percentage
               S: 93 # Extrude factor override percentage
+          0.6:
+            M221: # Set extrude factor override percentage
+              S: 93 # Extrude factor override percentage
           0.8:
             M221:
-              S: 60
+              S: 93
         extruders:
           direct:
             M207: # Set retract length
@@ -212,9 +215,9 @@ variables:
               Z: 0.075
           bowden:
             M207:
-              S: 10 # positive length to retract, in mm
+              S: 2.5 # positive length to retract, in mm
               F: 2000 # retraction feedrate, in mm/min (45 mm / s)
-              R: -0.5
+              R: -0.02
               Z: 0.075
     default:
       M221:

@@ -49,7 +49,7 @@ M350 C16 I10											; without interpolation
 M350 X16 Y16 Z16 I1										; with interpolation
 M350 A16 B16 I1
 
-M906 X1800 Y1800 Z1330 A800 B800 I30                          ; Idle motion motors to 30%
+M906 X1800 Y1800 Z1330 A1330 B1330 I30                          ; Idle motion motors to 30%
 M906 E1000:1000:1000:1000 C500 I10                          ; Idle extruder motors to 10%
 
 {% macro apply_global_settings() -%}
