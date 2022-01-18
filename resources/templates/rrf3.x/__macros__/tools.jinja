@@ -1,14 +1,10 @@
-{% macro apply_tool_offsets(settings, tool_number=None) -%}
-; --- apply_tool_offsets({{tool_number}}, {{settings}})
-G10 {{ py.format_gcode_param_str(settings, P=tool_number) }}
-; --- apply_tool_offsets() END
-{%- endmacro -%}
+{% import '__macros__/util.jinja' as util %}
 
 {% macro amend_current_tool_offsets(dx=0, dy=0, dz=0) %}
 ; --- amend_current_tool_offsets({{dx}},  {{dy}}, {{dz}})
 if state.currentTool >= 0
     echo "Amending offsets for the T" ^ state.currentTool
-    M98 P"/sys/usr/reset_tool_offsets.g" ; Ensure that all offsets are set to stock
+    M98 P"/sys/usr/configure_tool.g" T{ state.currentTool }
     var new_x = tools[state.currentTool].offsets[{{ py.g.axis.X.index }}] + ({{ dx }})
     var new_y = tools[state.currentTool].offsets[{{ py.g.axis.Y.index }}] + ({{ dy }})
     var new_z = tools[state.currentTool].offsets[{{ py.g.axis.Z.index }}] + ({{ dz }})
@@ -18,4 +14,14 @@ if state.currentTool >= 0
 else
     echo "amend_current_tool_offsets: No tool is currently selected"
 ; --- amend_current_tool_offsets() END
+{% endmacro %}
+
+
+{% macro foreach_extruder(tool_id) %}
+; tools.foreach_extruder({{ tool_id }})
+{%- set extruder_caller=caller -%}
+{%- call(drive_id) util.foreach('tools[{}].extruders'.format(tool_id)) -%}
+{{ extruder_caller(drive_id) }}
+{%- endcall -%}
+; end tools.foreach_extruder({{ tool_id }})
 {% endmacro %}

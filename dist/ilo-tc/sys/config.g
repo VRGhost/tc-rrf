@@ -40,7 +40,7 @@ M208 C-45:360 A-1.1:28.9 B3.8:33.8
 
 ; Set steps per mm assuming x16 microstepping
 M92 X100 Y100 Z800 C91.022
-M92 E409:409:392:392
+M92 E399.4:399.4:404:399.4
 M92 A400 B400
 
 ; Configure microstepping
@@ -52,17 +52,8 @@ M350 A16 B16 I1
 M906 X1800 Y1800 Z1330 A1330 B1330 I30                          ; Idle motion motors to 30%
 M906 E1000:1000:1000:1000 C500 I10                          ; Idle extruder motors to 10%
 
-; ----- apply_global_settings()
-; This macro applies all global settings that can be overriden in some other scripts
-M566 A2 B2 C2 E2:2:2:2 X400 Y400 Z8
 
-M203 A7000 B7000 C5000 E5000:5000:5000:5000 X35000 Y35000 Z1200
-
-M201 A500 B500 C500 E2500:2500:2500:2500 X6000 Y6000 Z400
-
-M207 F2400 S10
-
-; ----- apply_global_settings() END
+M98 P"/sys/usr/configure_tool.g" T-1
 
 
 ; Endstops
@@ -76,8 +67,6 @@ M574 A1 B1  S3       ; Brushes use stall detection
 M558 C"zstop" F360 H3 I0 P8 T20000
 
 G31 P200 X0 Y0 Z0
-
-; ----- apply_global_settings() END
 
 M557 X10:290 Y20:180 S40 			; Define mesh grid
 
@@ -154,8 +143,6 @@ M106 P8 S0						; T3 PCF
 M593 F42.2						; cancel ringing at 42.2Hz (https://forum.e3d-online.com/threads/accelerometer-and-resonance-measurements-of-the-motion-system.3445/)
 ;M376 H15						; bed compensation taper
 
-
-M98 P"/sys/usr/reset_tool_offsets.g"
 
 
 M575 P1 S1 B57600				; Enable LCD

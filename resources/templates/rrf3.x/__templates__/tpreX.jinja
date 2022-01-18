@@ -7,7 +7,6 @@
 ; Just in case - take care not to clash with the environment
 {{ avoid_tc_clash() }}
 
-M98 P"/sys/usr/reset_tool_offsets.g"
 ;Unlock Coupler
 M98 P"/macros/Coupler - Unlock"
 
@@ -30,6 +29,8 @@ G53 G1 X{{ tool.park.X }} Y{{ tool.park.Y }} F2500
 ;Close Coupler
 M98 P"/macros/Coupler - Lock"
 
+M98 P"/sys/usr/configure_tool.g" T{{ tool.id }}
+
 ;WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!
 ;if you are using non-standard length hotends ensure the bed is lowered enough BEFORE undocking the tool!
 G91
@@ -39,15 +40,6 @@ G90
 G1 A{{ -1 * tool.offsets.Z }} B{{ -1 * tool.offsets.Z }}  ; Adjust brush heights
 
 M913 X100 Y100 ; Restore the motor current
-
-{% if 'extra_settings' in tool %}
-; {{ tool.extra_settings }}
-{% for (cmd, params) in tool.extra_settings.items() -%}
-
-{{ cmd }} {{ py.format_gcode_param_str(params, P=tool.id) }}
-
-{% endfor -%}
-{% endif %}
 
 ;Move Out
 G53 G1 X{{ tool.park.X }} Y{{ move_start_y - tool.offsets.Y }} F4000

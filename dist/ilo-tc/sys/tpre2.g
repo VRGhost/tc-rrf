@@ -12,7 +12,6 @@ if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere
     G1 Y200 F2500 ; slowly back out
 
 
-M98 P"/sys/usr/reset_tool_offsets.g"
 ;Unlock Coupler
 M98 P"/macros/Coupler - Unlock"
 
@@ -41,6 +40,8 @@ G53 G1 X217.8 Y242.4 F2500
 ;Close Coupler
 M98 P"/macros/Coupler - Lock"
 
+M98 P"/sys/usr/configure_tool.g" T2
+
 ;WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!
 ;if you are using non-standard length hotends ensure the bed is lowered enough BEFORE undocking the tool!
 G91
@@ -50,14 +51,6 @@ G90
 G1 A13.25 B13.25  ; Adjust brush heights
 
 M913 X100 Y100 ; Restore the motor current
-
-
-; {'M566': {'X': 300, 'Y': 300}, 'M201': {'X': 3700, 'Y': 3700}}
-M566 P2 X300 Y300
-
-M201 P2 X3700 Y3700
-
-
 
 ;Move Out
 G53 G1 X217.8 Y140.56 F4000

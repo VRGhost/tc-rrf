@@ -55,13 +55,13 @@ variables:
       steps: 91.022
       reversed: true
     E0: &direct_hemera_extrude_motor
-      steps: 409 # direct_hemera_esteps
+      steps: 399.4 # direct_hemera_esteps
       reversed: false # Motor direction
     E1: *direct_hemera_extrude_motor
     E2: &bowden_hemera_extrude_motor
-      steps: 392
+      steps: 404
       reversed: false
-    E3: *bowden_hemera_extrude_motor
+    E3: *direct_hemera_extrude_motor
     # Brushes
     A: &brush_motor
       steps: 400
@@ -115,6 +115,9 @@ variables:
         M201: #  Set accelerations (mm/s^2)
           X: 3500
           Y: 3500
+      extruder_settings: &hemera_direct_extruder_settings
+        M572: # Pressure advance
+          S: 0.025
     T1: &tool1
       id: 1
       fan: 4
@@ -127,6 +130,7 @@ variables:
         X: 82
         Y: 226.9
       extra_settings: *hemera_direct_extra_settings
+      extruder_settings: *hemera_direct_extruder_settings
     T2: &tool2
       id: 2
       fan: 6
@@ -145,6 +149,9 @@ variables:
         M201: #  Set accelerations (mm/s^2)
           X: 3700
           Y: 3700
+      extruder_settings:
+        M572: # Pressure advance
+          S: 0.5
     T3: &tool3
       id: 3
       fan: 8
@@ -157,6 +164,7 @@ variables:
         X: 306.2
         Y: 226.9
       extra_settings: *hemera_direct_extra_settings
+      extruder_settings: *hemera_direct_extruder_settings
   bed:
     width: 300
     depth: 200
@@ -205,7 +213,7 @@ variables:
               S: 89
           0.6:
             M221:
-              S: 87
+              S: 104.2
         extruders:
           direct:
             M207:  # Set retract lengthс
@@ -215,7 +223,7 @@ variables:
               Z: 0.075
           bowden:
             M207:
-              S: 2.5 # positive length to retract, in mm
+              S: 4 # positive length to retract, in mm
               F: 2000 # retraction feedrate, in mm/min (45 mm / s)
               R: -0.02
               Z: 0.075

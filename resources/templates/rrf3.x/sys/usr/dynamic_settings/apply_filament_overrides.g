@@ -6,11 +6,11 @@
 ;
 ; Known filament names are: "PET", "PLA"
 
-{% import '__macros__/util.jinja' as util %}
+{% import '__macros__/tools.jinja' as tools_mod %}
 
 {% macro extruder_m221(tool_id, m221_kwargs) -%}
-; extruder_m221({{tool_id}}, {{m221_kwargs}})
-{% call(drive_id) util.foreach('tools[{}].extruders'.format(tool_id)) -%}
+; extruder_m221({{tool_id}}, {{m221_kwargs}}) ( Set extrude factor override percentage )
+{% call(drive_id) tools_mod.foreach_extruder(tool_id) -%}
 
 M221 D{ {{drive_id}} } {{ py.format_gcode_param_str(m221_kwargs) }}
 

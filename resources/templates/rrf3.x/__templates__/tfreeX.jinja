@@ -29,13 +29,10 @@ M913 X100 Y100 ; Restore the motor current
 ;Open Coupler
 M98 P"/macros/Coupler - Unlock"
 
+M98 P"/sys/usr/configure_tool.g" T-1
+
 ;fan off
 M106 P{{ tool.fan }} S0
 
-; Restore global extra settings
-{% from 'sys/config.g' import apply_global_settings with context  %}
-{{ apply_global_settings() }}
-
 ;Move Out
 G53 G1 X{{ tool.park.X }} Y180 F50000
-M98 P"/sys/usr/reset_tool_offsets.g"

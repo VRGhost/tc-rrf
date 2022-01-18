@@ -41,24 +41,10 @@ M913 X100 Y100 ; Restore the motor current
 ;Open Coupler
 M98 P"/macros/Coupler - Unlock"
 
+M98 P"/sys/usr/configure_tool.g" T-1
+
 ;fan off
 M106 P6 S0
 
-; Restore global extra settings
-
-; ----- apply_global_settings()
-; This macro applies all global settings that can be overriden in some other scripts
-M566 A2 B2 C2 E2:2:2:2 X400 Y400 Z8
-
-M203 A7000 B7000 C5000 E5000:5000:5000:5000 X35000 Y35000 Z1200
-
-M201 A500 B500 C500 E2500:2500:2500:2500 X6000 Y6000 Z400
-
-M207 F2400 S10
-
-; ----- apply_global_settings() END
-
-
 ;Move Out
 G53 G1 X217.8 Y180 F50000
-M98 P"/sys/usr/reset_tool_offsets.g"

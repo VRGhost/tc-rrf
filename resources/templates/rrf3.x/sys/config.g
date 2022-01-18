@@ -52,20 +52,9 @@ M350 A16 B16 I1
 M906 X1800 Y1800 Z1330 A1330 B1330 I30                          ; Idle motion motors to 30%
 M906 E1000:1000:1000:1000 C500 I10                          ; Idle extruder motors to 10%
 
-{% macro apply_global_settings() -%}
-; ----- apply_global_settings()
-; This macro applies all global settings that can be overriden in some other scripts
-{% if extra_settings -%}
-{% for (cmd, params) in extra_settings.items() -%}
 
-{{ cmd }} {{ py.format_gcode_param_str(params) }}
+M98 P"/sys/usr/configure_tool.g" T-1
 
-{% endfor -%}
-{% endif -%}
-; ----- apply_global_settings() END
-{% endmacro -%}
-
-{{ apply_global_settings() }}
 
 ; Endstops
 M574 X1 S1 P"xstop"   ; X min active high endstop switch
@@ -82,7 +71,6 @@ M574 A1 B1  S3       ; Brushes use stall detection
 
 {% endfor -%}
 {% endif -%}
-; ----- apply_global_settings() END
 
 {% set bed_grid_border_x = 10 -%}
 {% set bed_grid_border_y = 20 -%}
@@ -161,8 +149,6 @@ M106 P8 S0						; T3 PCF
 M593 F42.2						; cancel ringing at 42.2Hz (https://forum.e3d-online.com/threads/accelerometer-and-resonance-measurements-of-the-motion-system.3445/)
 ;M376 H15						; bed compensation taper
 
-
-M98 P"/sys/usr/reset_tool_offsets.g"
 
 
 M575 P1 S1 B57600				; Enable LCD

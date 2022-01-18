@@ -75,119 +75,119 @@ var dst_y = param.Y
 
 ; ---- find_nearest_manhattan_point(var.p1_x, var.p1_y, var.src_x, var.src_y, 0, 0, 285, 185)
 
-var dx_25 = 0
-var dy_26 = 0
+var dx_29 = 0
+var dy_30 = 0
 
 ; Step 1 - move to the nearest edge
 ; --- Find the minimum dx/dy to move to the rectangle
 
 ; ----- Find min dx (by abs)
-set var.dx_25 = 0 - var.src_x
-if abs(var.dx_25) > abs(285 - var.src_x)
-    set var.dx_25 = 285 - var.src_x
+set var.dx_29 = 0 - var.src_x
+if abs(var.dx_29) > abs(285 - var.src_x)
+    set var.dx_29 = 285 - var.src_x
 
 ; ------ Find min dy (by abs)
-set var.dy_26 = 0 - var.src_y
-if abs(var.dy_26) > abs(185 - var.src_y)
-    set var.dy_26 = 185 - var.src_y
+set var.dy_30 = 0 - var.src_y
+if abs(var.dy_30) > abs(185 - var.src_y)
+    set var.dy_30 = 185 - var.src_y
 
 ; --- Pick the side with minimum delta
-if abs(var.dx_25) > abs(var.dy_26)
-    set var.dx_25 = 0
+if abs(var.dx_29) > abs(var.dy_30)
+    set var.dx_29 = 0
 else
-    set var.dy_26 = 0
+    set var.dy_30 = 0
 
-set var.p1_x = var.src_x + var.dx_25
-set var.p1_y = var.src_y + var.dy_26
+set var.p1_x = var.src_x + var.dx_29
+set var.p1_y = var.src_y + var.dy_30
 
 ; ---- find_nearest_manhattan_point() END
 
 ; ---- find_nearest_manhattan_point(var.p5_x, var.p5_y, var.dst_x, var.dst_y, 0, 0, 285, 185)
 
-var dx_27 = 0
-var dy_28 = 0
+var dx_31 = 0
+var dy_32 = 0
 
 ; Step 1 - move to the nearest edge
 ; --- Find the minimum dx/dy to move to the rectangle
 
 ; ----- Find min dx (by abs)
-set var.dx_27 = 0 - var.dst_x
-if abs(var.dx_27) > abs(285 - var.dst_x)
-    set var.dx_27 = 285 - var.dst_x
+set var.dx_31 = 0 - var.dst_x
+if abs(var.dx_31) > abs(285 - var.dst_x)
+    set var.dx_31 = 285 - var.dst_x
 
 ; ------ Find min dy (by abs)
-set var.dy_28 = 0 - var.dst_y
-if abs(var.dy_28) > abs(185 - var.dst_y)
-    set var.dy_28 = 185 - var.dst_y
+set var.dy_32 = 0 - var.dst_y
+if abs(var.dy_32) > abs(185 - var.dst_y)
+    set var.dy_32 = 185 - var.dst_y
 
 ; --- Pick the side with minimum delta
-if abs(var.dx_27) > abs(var.dy_28)
-    set var.dx_27 = 0
+if abs(var.dx_31) > abs(var.dy_32)
+    set var.dx_31 = 0
 else
-    set var.dy_28 = 0
+    set var.dy_32 = 0
 
-set var.p5_x = var.dst_x + var.dx_27
-set var.p5_y = var.dst_y + var.dy_28
+set var.p5_x = var.dst_x + var.dx_31
+set var.p5_y = var.dst_y + var.dy_32
 
 ; ---- find_nearest_manhattan_point() END
 
 
 ; ---- find_nearest_manhattan_corner(var.p2_x, var.p2_y, var.p1_x, var.p1_y, 0, 0, 285, 185)
 
-var cur_min_dist_29 = 99999999999
-var cur_check_dist_30 = 0
+var cur_min_dist_33 = 99999999999
+var cur_check_dist_34 = 0
 
  ; x loop
  ; y loop
 
-; ---- get_dist_sqr(var.cur_check_dist_30, 0, 0, var.p1_x, var.p1_y)
+; ---- get_dist_sqr(var.cur_check_dist_34, 0, 0, var.p1_x, var.p1_y)
 ;  Return square of distance between coordinates
-set var.cur_check_dist_30 = ( (0 - var.p1_x)*(0 - var.p1_x) ) + ( (0 - var.p1_y)*(0 - var.p1_y) )
+set var.cur_check_dist_34 = ( (0 - var.p1_x)*(0 - var.p1_x) ) + ( (0 - var.p1_y)*(0 - var.p1_y) )
 ; ---- get_dist_sqr() END
 
-if var.cur_min_dist_29 > var.cur_check_dist_30 && ( 0 == var.p1_x || 0 == var.p1_y) ; (only check pairs that are on the same axis)
+if var.cur_min_dist_33 > var.cur_check_dist_34 && ( 0 == var.p1_x || 0 == var.p1_y) ; (only check pairs that are on the same axis)
     ; Found a closer corner
     set var.p2_x = 0
     set var.p2_y = 0
-    set var.cur_min_dist_29 = var.cur_check_dist_30
+    set var.cur_min_dist_33 = var.cur_check_dist_34
  ; y loop
 
-; ---- get_dist_sqr(var.cur_check_dist_30, 0, 185, var.p1_x, var.p1_y)
+; ---- get_dist_sqr(var.cur_check_dist_34, 0, 185, var.p1_x, var.p1_y)
 ;  Return square of distance between coordinates
-set var.cur_check_dist_30 = ( (0 - var.p1_x)*(0 - var.p1_x) ) + ( (185 - var.p1_y)*(185 - var.p1_y) )
+set var.cur_check_dist_34 = ( (0 - var.p1_x)*(0 - var.p1_x) ) + ( (185 - var.p1_y)*(185 - var.p1_y) )
 ; ---- get_dist_sqr() END
 
-if var.cur_min_dist_29 > var.cur_check_dist_30 && ( 0 == var.p1_x || 185 == var.p1_y) ; (only check pairs that are on the same axis)
+if var.cur_min_dist_33 > var.cur_check_dist_34 && ( 0 == var.p1_x || 185 == var.p1_y) ; (only check pairs that are on the same axis)
     ; Found a closer corner
     set var.p2_x = 0
     set var.p2_y = 185
-    set var.cur_min_dist_29 = var.cur_check_dist_30
+    set var.cur_min_dist_33 = var.cur_check_dist_34
 
  ; x loop
  ; y loop
 
-; ---- get_dist_sqr(var.cur_check_dist_30, 285, 0, var.p1_x, var.p1_y)
+; ---- get_dist_sqr(var.cur_check_dist_34, 285, 0, var.p1_x, var.p1_y)
 ;  Return square of distance between coordinates
-set var.cur_check_dist_30 = ( (285 - var.p1_x)*(285 - var.p1_x) ) + ( (0 - var.p1_y)*(0 - var.p1_y) )
+set var.cur_check_dist_34 = ( (285 - var.p1_x)*(285 - var.p1_x) ) + ( (0 - var.p1_y)*(0 - var.p1_y) )
 ; ---- get_dist_sqr() END
 
-if var.cur_min_dist_29 > var.cur_check_dist_30 && ( 285 == var.p1_x || 0 == var.p1_y) ; (only check pairs that are on the same axis)
+if var.cur_min_dist_33 > var.cur_check_dist_34 && ( 285 == var.p1_x || 0 == var.p1_y) ; (only check pairs that are on the same axis)
     ; Found a closer corner
     set var.p2_x = 285
     set var.p2_y = 0
-    set var.cur_min_dist_29 = var.cur_check_dist_30
+    set var.cur_min_dist_33 = var.cur_check_dist_34
  ; y loop
 
-; ---- get_dist_sqr(var.cur_check_dist_30, 285, 185, var.p1_x, var.p1_y)
+; ---- get_dist_sqr(var.cur_check_dist_34, 285, 185, var.p1_x, var.p1_y)
 ;  Return square of distance between coordinates
-set var.cur_check_dist_30 = ( (285 - var.p1_x)*(285 - var.p1_x) ) + ( (185 - var.p1_y)*(185 - var.p1_y) )
+set var.cur_check_dist_34 = ( (285 - var.p1_x)*(285 - var.p1_x) ) + ( (185 - var.p1_y)*(185 - var.p1_y) )
 ; ---- get_dist_sqr() END
 
-if var.cur_min_dist_29 > var.cur_check_dist_30 && ( 285 == var.p1_x || 185 == var.p1_y) ; (only check pairs that are on the same axis)
+if var.cur_min_dist_33 > var.cur_check_dist_34 && ( 285 == var.p1_x || 185 == var.p1_y) ; (only check pairs that are on the same axis)
     ; Found a closer corner
     set var.p2_x = 285
     set var.p2_y = 185
-    set var.cur_min_dist_29 = var.cur_check_dist_30
+    set var.cur_min_dist_33 = var.cur_check_dist_34
 
 
 
@@ -195,60 +195,60 @@ if var.cur_min_dist_29 > var.cur_check_dist_30 && ( 285 == var.p1_x || 185 == va
 
 ; ---- find_nearest_manhattan_corner(var.p4_x, var.p4_y, var.p5_x, var.p5_y, 0, 0, 285, 185)
 
-var cur_min_dist_31 = 99999999999
-var cur_check_dist_32 = 0
+var cur_min_dist_35 = 99999999999
+var cur_check_dist_36 = 0
 
  ; x loop
  ; y loop
 
-; ---- get_dist_sqr(var.cur_check_dist_32, 0, 0, var.p5_x, var.p5_y)
+; ---- get_dist_sqr(var.cur_check_dist_36, 0, 0, var.p5_x, var.p5_y)
 ;  Return square of distance between coordinates
-set var.cur_check_dist_32 = ( (0 - var.p5_x)*(0 - var.p5_x) ) + ( (0 - var.p5_y)*(0 - var.p5_y) )
+set var.cur_check_dist_36 = ( (0 - var.p5_x)*(0 - var.p5_x) ) + ( (0 - var.p5_y)*(0 - var.p5_y) )
 ; ---- get_dist_sqr() END
 
-if var.cur_min_dist_31 > var.cur_check_dist_32 && ( 0 == var.p5_x || 0 == var.p5_y) ; (only check pairs that are on the same axis)
+if var.cur_min_dist_35 > var.cur_check_dist_36 && ( 0 == var.p5_x || 0 == var.p5_y) ; (only check pairs that are on the same axis)
     ; Found a closer corner
     set var.p4_x = 0
     set var.p4_y = 0
-    set var.cur_min_dist_31 = var.cur_check_dist_32
+    set var.cur_min_dist_35 = var.cur_check_dist_36
  ; y loop
 
-; ---- get_dist_sqr(var.cur_check_dist_32, 0, 185, var.p5_x, var.p5_y)
+; ---- get_dist_sqr(var.cur_check_dist_36, 0, 185, var.p5_x, var.p5_y)
 ;  Return square of distance between coordinates
-set var.cur_check_dist_32 = ( (0 - var.p5_x)*(0 - var.p5_x) ) + ( (185 - var.p5_y)*(185 - var.p5_y) )
+set var.cur_check_dist_36 = ( (0 - var.p5_x)*(0 - var.p5_x) ) + ( (185 - var.p5_y)*(185 - var.p5_y) )
 ; ---- get_dist_sqr() END
 
-if var.cur_min_dist_31 > var.cur_check_dist_32 && ( 0 == var.p5_x || 185 == var.p5_y) ; (only check pairs that are on the same axis)
+if var.cur_min_dist_35 > var.cur_check_dist_36 && ( 0 == var.p5_x || 185 == var.p5_y) ; (only check pairs that are on the same axis)
     ; Found a closer corner
     set var.p4_x = 0
     set var.p4_y = 185
-    set var.cur_min_dist_31 = var.cur_check_dist_32
+    set var.cur_min_dist_35 = var.cur_check_dist_36
 
  ; x loop
  ; y loop
 
-; ---- get_dist_sqr(var.cur_check_dist_32, 285, 0, var.p5_x, var.p5_y)
+; ---- get_dist_sqr(var.cur_check_dist_36, 285, 0, var.p5_x, var.p5_y)
 ;  Return square of distance between coordinates
-set var.cur_check_dist_32 = ( (285 - var.p5_x)*(285 - var.p5_x) ) + ( (0 - var.p5_y)*(0 - var.p5_y) )
+set var.cur_check_dist_36 = ( (285 - var.p5_x)*(285 - var.p5_x) ) + ( (0 - var.p5_y)*(0 - var.p5_y) )
 ; ---- get_dist_sqr() END
 
-if var.cur_min_dist_31 > var.cur_check_dist_32 && ( 285 == var.p5_x || 0 == var.p5_y) ; (only check pairs that are on the same axis)
+if var.cur_min_dist_35 > var.cur_check_dist_36 && ( 285 == var.p5_x || 0 == var.p5_y) ; (only check pairs that are on the same axis)
     ; Found a closer corner
     set var.p4_x = 285
     set var.p4_y = 0
-    set var.cur_min_dist_31 = var.cur_check_dist_32
+    set var.cur_min_dist_35 = var.cur_check_dist_36
  ; y loop
 
-; ---- get_dist_sqr(var.cur_check_dist_32, 285, 185, var.p5_x, var.p5_y)
+; ---- get_dist_sqr(var.cur_check_dist_36, 285, 185, var.p5_x, var.p5_y)
 ;  Return square of distance between coordinates
-set var.cur_check_dist_32 = ( (285 - var.p5_x)*(285 - var.p5_x) ) + ( (185 - var.p5_y)*(185 - var.p5_y) )
+set var.cur_check_dist_36 = ( (285 - var.p5_x)*(285 - var.p5_x) ) + ( (185 - var.p5_y)*(185 - var.p5_y) )
 ; ---- get_dist_sqr() END
 
-if var.cur_min_dist_31 > var.cur_check_dist_32 && ( 285 == var.p5_x || 185 == var.p5_y) ; (only check pairs that are on the same axis)
+if var.cur_min_dist_35 > var.cur_check_dist_36 && ( 285 == var.p5_x || 185 == var.p5_y) ; (only check pairs that are on the same axis)
     ; Found a closer corner
     set var.p4_x = 285
     set var.p4_y = 185
-    set var.cur_min_dist_31 = var.cur_check_dist_32
+    set var.cur_min_dist_35 = var.cur_check_dist_36
 
 
 
@@ -258,56 +258,56 @@ if var.cur_min_dist_31 > var.cur_check_dist_32 && ( 285 == var.p5_x || 185 == va
 
 ; ---- find_manhattan_midpoint(var.p3_x, var.p3_y, var.p2_x, var.p2_y, var.p4_x, var.p4_y)
 
-var cur_min_dist_33 = 99999999999
-var cur_check_dist_total_34 = 0
-var cur_check_dist_p1_35 = 0
-var cur_check_dist_p2_36 = 0
+var cur_min_dist_37 = 99999999999
+var cur_check_dist_total_38 = 0
+var cur_check_dist_p1_39 = 0
+var cur_check_dist_p2_40 = 0
 
 
 
 
-; ---- get_dist_sqr(var.cur_check_dist_p1_35, var.p2_x, var.p4_y, var.p2_x, var.p2_y)
+; ---- get_dist_sqr(var.cur_check_dist_p1_39, var.p2_x, var.p4_y, var.p2_x, var.p2_y)
 ;  Return square of distance between coordinates
-set var.cur_check_dist_p1_35 = ( (var.p2_x - var.p2_x)*(var.p2_x - var.p2_x) ) + ( (var.p4_y - var.p2_y)*(var.p4_y - var.p2_y) )
+set var.cur_check_dist_p1_39 = ( (var.p2_x - var.p2_x)*(var.p2_x - var.p2_x) ) + ( (var.p4_y - var.p2_y)*(var.p4_y - var.p2_y) )
 ; ---- get_dist_sqr() END
 
 
-; ---- get_dist_sqr(var.cur_check_dist_p2_36, var.p2_x, var.p4_y, var.p4_x, var.p4_y)
+; ---- get_dist_sqr(var.cur_check_dist_p2_40, var.p2_x, var.p4_y, var.p4_x, var.p4_y)
 ;  Return square of distance between coordinates
-set var.cur_check_dist_p2_36 = ( (var.p2_x - var.p4_x)*(var.p2_x - var.p4_x) ) + ( (var.p4_y - var.p4_y)*(var.p4_y - var.p4_y) )
+set var.cur_check_dist_p2_40 = ( (var.p2_x - var.p4_x)*(var.p2_x - var.p4_x) ) + ( (var.p4_y - var.p4_y)*(var.p4_y - var.p4_y) )
 ; ---- get_dist_sqr() END
 
 
-set var.cur_check_dist_total_34 = var.cur_check_dist_p1_35 + var.cur_check_dist_p2_36
+set var.cur_check_dist_total_38 = var.cur_check_dist_p1_39 + var.cur_check_dist_p2_40
 
-if var.cur_min_dist_33 > var.cur_check_dist_total_34
+if var.cur_min_dist_37 > var.cur_check_dist_total_38
     ; Found a closer corner
     set var.p3_x = var.p2_x
     set var.p3_y = var.p4_y
-    set var.cur_min_dist_33 = var.cur_check_dist_total_34
+    set var.cur_min_dist_37 = var.cur_check_dist_total_38
 
 
 
 
-; ---- get_dist_sqr(var.cur_check_dist_p1_35, var.p4_x, var.p2_y, var.p2_x, var.p2_y)
+; ---- get_dist_sqr(var.cur_check_dist_p1_39, var.p4_x, var.p2_y, var.p2_x, var.p2_y)
 ;  Return square of distance between coordinates
-set var.cur_check_dist_p1_35 = ( (var.p4_x - var.p2_x)*(var.p4_x - var.p2_x) ) + ( (var.p2_y - var.p2_y)*(var.p2_y - var.p2_y) )
+set var.cur_check_dist_p1_39 = ( (var.p4_x - var.p2_x)*(var.p4_x - var.p2_x) ) + ( (var.p2_y - var.p2_y)*(var.p2_y - var.p2_y) )
 ; ---- get_dist_sqr() END
 
 
-; ---- get_dist_sqr(var.cur_check_dist_p2_36, var.p4_x, var.p2_y, var.p4_x, var.p4_y)
+; ---- get_dist_sqr(var.cur_check_dist_p2_40, var.p4_x, var.p2_y, var.p4_x, var.p4_y)
 ;  Return square of distance between coordinates
-set var.cur_check_dist_p2_36 = ( (var.p4_x - var.p4_x)*(var.p4_x - var.p4_x) ) + ( (var.p2_y - var.p4_y)*(var.p2_y - var.p4_y) )
+set var.cur_check_dist_p2_40 = ( (var.p4_x - var.p4_x)*(var.p4_x - var.p4_x) ) + ( (var.p2_y - var.p4_y)*(var.p2_y - var.p4_y) )
 ; ---- get_dist_sqr() END
 
 
-set var.cur_check_dist_total_34 = var.cur_check_dist_p1_35 + var.cur_check_dist_p2_36
+set var.cur_check_dist_total_38 = var.cur_check_dist_p1_39 + var.cur_check_dist_p2_40
 
-if var.cur_min_dist_33 > var.cur_check_dist_total_34
+if var.cur_min_dist_37 > var.cur_check_dist_total_38
     ; Found a closer corner
     set var.p3_x = var.p4_x
     set var.p3_y = var.p2_y
-    set var.cur_min_dist_33 = var.cur_check_dist_total_34
+    set var.cur_min_dist_37 = var.cur_check_dist_total_38
 
 
 
