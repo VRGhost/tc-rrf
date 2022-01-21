@@ -13,11 +13,11 @@
 if (param.T < 0)
     ; No tool configured
     ; ----- apply_global_settings()
-    M566 A2 B2 C2 E2:2:2:2 X400 Y400 Z8
+    M566 A12 B12 C4 E120:120:120:120 X900 Y900 Z12
 
     M203 A7000 B7000 C5000 E5000:5000:5000:5000 X35000 Y35000 Z1200
 
-    M201 A500 B500 C500 E2500:2500:2500:2500 X6000 Y6000 Z400
+    M201 A500 B500 C500 E6000:6000:6000:6000 X6000 Y6000 Z400
 
     M207 F2400 S10
 
@@ -27,11 +27,11 @@ if (param.T < 0)
 if (param.T == 0)
     ; ---- T0
     ; ----- apply_global_settings()
-    M566 A2 B2 C2 E2:2:2:2 X400 Y400 Z8
+    M566 A12 B12 C4 E120:120:120:120 X900 Y900 Z12
 
     M203 A7000 B7000 C5000 E5000:5000:5000:5000 X35000 Y35000 Z1200
 
-    M201 A500 B500 C500 E2500:2500:2500:2500 X6000 Y6000 Z400
+    M201 A500 B500 C500 E6000:6000:6000:6000 X6000 Y6000 Z400
 
     M207 F2400 S10
 
@@ -51,7 +51,7 @@ if (param.T == 0)
 
     var foreach_idx_5 = 0
     while var.foreach_idx_5 < #tools[0].extruders
-        M572 D{ tools[0].extruders[var.foreach_idx_5] } S0.0250 ; pressure advance
+        
         set var.foreach_idx_5 = var.foreach_idx_5 + 1
 
     ; end util.foreach()
@@ -61,11 +61,11 @@ if (param.T == 0)
 if (param.T == 1)
     ; ---- T1
     ; ----- apply_global_settings()
-    M566 A2 B2 C2 E2:2:2:2 X400 Y400 Z8
+    M566 A12 B12 C4 E120:120:120:120 X900 Y900 Z12
 
     M203 A7000 B7000 C5000 E5000:5000:5000:5000 X35000 Y35000 Z1200
 
-    M201 A500 B500 C500 E2500:2500:2500:2500 X6000 Y6000 Z400
+    M201 A500 B500 C500 E6000:6000:6000:6000 X6000 Y6000 Z400
 
     M207 F2400 S10
 
@@ -77,7 +77,7 @@ if (param.T == 1)
     M566 P1 X300 Y300
     M201 P1 X3500 Y3500
 
-    G10 P1 X17.5000 Y44.3900 Z-13.5500
+    G10 P1 X17.5000 Y44.3900 Z-13.9700
 
         
     ; tools.foreach_extruder(1)
@@ -85,7 +85,7 @@ if (param.T == 1)
 
     var foreach_idx_6 = 0
     while var.foreach_idx_6 < #tools[1].extruders
-        M572 D{ tools[1].extruders[var.foreach_idx_6] } S0.0250 ; pressure advance
+        
         set var.foreach_idx_6 = var.foreach_idx_6 + 1
 
     ; end util.foreach()
@@ -95,11 +95,11 @@ if (param.T == 1)
 if (param.T == 2)
     ; ---- T2
     ; ----- apply_global_settings()
-    M566 A2 B2 C2 E2:2:2:2 X400 Y400 Z8
+    M566 A12 B12 C4 E120:120:120:120 X900 Y900 Z12
 
     M203 A7000 B7000 C5000 E5000:5000:5000:5000 X35000 Y35000 Z1200
 
-    M201 A500 B500 C500 E2500:2500:2500:2500 X6000 Y6000 Z400
+    M201 A500 B500 C500 E6000:6000:6000:6000 X6000 Y6000 Z400
 
     M207 F2400 S10
 
@@ -119,7 +119,7 @@ if (param.T == 2)
 
     var foreach_idx_7 = 0
     while var.foreach_idx_7 < #tools[2].extruders
-        M572 D{ tools[2].extruders[var.foreach_idx_7] } S0.5000 ; pressure advance
+        
         set var.foreach_idx_7 = var.foreach_idx_7 + 1
 
     ; end util.foreach()
@@ -129,11 +129,11 @@ if (param.T == 2)
 if (param.T == 3)
     ; ---- T3
     ; ----- apply_global_settings()
-    M566 A2 B2 C2 E2:2:2:2 X400 Y400 Z8
+    M566 A12 B12 C4 E120:120:120:120 X900 Y900 Z12
 
     M203 A7000 B7000 C5000 E5000:5000:5000:5000 X35000 Y35000 Z1200
 
-    M201 A500 B500 C500 E2500:2500:2500:2500 X6000 Y6000 Z400
+    M201 A500 B500 C500 E6000:6000:6000:6000 X6000 Y6000 Z400
 
     M207 F2400 S10
 
@@ -153,7 +153,7 @@ if (param.T == 3)
 
     var foreach_idx_8 = 0
     while var.foreach_idx_8 < #tools[3].extruders
-        M572 D{ tools[3].extruders[var.foreach_idx_8] } S0.0250 ; pressure advance
+        
         set var.foreach_idx_8 = var.foreach_idx_8 + 1
 
     ; end util.foreach()

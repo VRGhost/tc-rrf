@@ -86,27 +86,27 @@ if (param.T == 0) && (param.F == "PLA") && (param.N < 0.50000)
     ; end tools.foreach_extruder(0)
 
     ; extruder_m221() END
-    M207 P0 F2700 R-0.0100 S0.2500 Z0.0750
+    M207 P0 F2700 S0.2500 Z0.6000
     ; apply_tool_mode() END
 
 
 if (param.T == 0) && (param.F == "PLA") && (param.N >= 0.50000)
     ; apply_tool_mode(tool=0, nozzle_d=0.6, filament=PLA)
-    ; extruder_m221(0, {'S': 104.2}) ( Set extrude factor override percentage )
+    ; extruder_m221(0, {'S': 73}) ( Set extrude factor override percentage )
 
     ; tools.foreach_extruder(0)
     ; util.foreach(tools[0].extruders)
 
     var foreach_idx_13 = 0
     while var.foreach_idx_13 < #tools[0].extruders
-        M221 D{ tools[0].extruders[var.foreach_idx_13] } S104.2000
+        M221 D{ tools[0].extruders[var.foreach_idx_13] } S73
         set var.foreach_idx_13 = var.foreach_idx_13 + 1
 
     ; end util.foreach()
     ; end tools.foreach_extruder(0)
 
     ; extruder_m221() END
-    M207 P0 F2700 R-0.0100 S0.2500 Z0.0750
+    M207 P0 F2700 S0.2500 Z0.6000
     ; apply_tool_mode() END
 
 
@@ -186,27 +186,27 @@ if (param.T == 1) && (param.F == "PLA") && (param.N < 0.50000)
     ; end tools.foreach_extruder(1)
 
     ; extruder_m221() END
-    M207 P1 F2700 R-0.0100 S0.2500 Z0.0750
+    M207 P1 F2700 S0.2500 Z0.6000
     ; apply_tool_mode() END
 
 
 if (param.T == 1) && (param.F == "PLA") && (param.N >= 0.50000)
     ; apply_tool_mode(tool=1, nozzle_d=0.6, filament=PLA)
-    ; extruder_m221(1, {'S': 104.2}) ( Set extrude factor override percentage )
+    ; extruder_m221(1, {'S': 73}) ( Set extrude factor override percentage )
 
     ; tools.foreach_extruder(1)
     ; util.foreach(tools[1].extruders)
 
     var foreach_idx_18 = 0
     while var.foreach_idx_18 < #tools[1].extruders
-        M221 D{ tools[1].extruders[var.foreach_idx_18] } S104.2000
+        M221 D{ tools[1].extruders[var.foreach_idx_18] } S73
         set var.foreach_idx_18 = var.foreach_idx_18 + 1
 
     ; end util.foreach()
     ; end tools.foreach_extruder(1)
 
     ; extruder_m221() END
-    M207 P1 F2700 R-0.0100 S0.2500 Z0.0750
+    M207 P1 F2700 S0.2500 Z0.6000
     ; apply_tool_mode() END
 
 
@@ -286,27 +286,27 @@ if (param.T == 2) && (param.F == "PLA") && (param.N < 0.50000)
     ; end tools.foreach_extruder(2)
 
     ; extruder_m221() END
-    M207 P2 F2000 R-0.0200 S4 Z0.0750
+    M207 P2 F2000 S2 Z0.6000
     ; apply_tool_mode() END
 
 
 if (param.T == 2) && (param.F == "PLA") && (param.N >= 0.50000)
     ; apply_tool_mode(tool=2, nozzle_d=0.6, filament=PLA)
-    ; extruder_m221(2, {'S': 104.2}) ( Set extrude factor override percentage )
+    ; extruder_m221(2, {'S': 73}) ( Set extrude factor override percentage )
 
     ; tools.foreach_extruder(2)
     ; util.foreach(tools[2].extruders)
 
     var foreach_idx_23 = 0
     while var.foreach_idx_23 < #tools[2].extruders
-        M221 D{ tools[2].extruders[var.foreach_idx_23] } S104.2000
+        M221 D{ tools[2].extruders[var.foreach_idx_23] } S73
         set var.foreach_idx_23 = var.foreach_idx_23 + 1
 
     ; end util.foreach()
     ; end tools.foreach_extruder(2)
 
     ; extruder_m221() END
-    M207 P2 F2000 R-0.0200 S4 Z0.0750
+    M207 P2 F2000 S2 Z0.6000
     ; apply_tool_mode() END
 
 
@@ -386,27 +386,27 @@ if (param.T == 3) && (param.F == "PLA") && (param.N < 0.50000)
     ; end tools.foreach_extruder(3)
 
     ; extruder_m221() END
-    M207 P3 F2700 R-0.0100 S0.2500 Z0.0750
+    M207 P3 F2700 S0.2500 Z0.6000
     ; apply_tool_mode() END
 
 
 if (param.T == 3) && (param.F == "PLA") && (param.N >= 0.50000)
     ; apply_tool_mode(tool=3, nozzle_d=0.6, filament=PLA)
-    ; extruder_m221(3, {'S': 104.2}) ( Set extrude factor override percentage )
+    ; extruder_m221(3, {'S': 73}) ( Set extrude factor override percentage )
 
     ; tools.foreach_extruder(3)
     ; util.foreach(tools[3].extruders)
 
     var foreach_idx_28 = 0
     while var.foreach_idx_28 < #tools[3].extruders
-        M221 D{ tools[3].extruders[var.foreach_idx_28] } S104.2000
+        M221 D{ tools[3].extruders[var.foreach_idx_28] } S73
         set var.foreach_idx_28 = var.foreach_idx_28 + 1
 
     ; end util.foreach()
     ; end tools.foreach_extruder(3)
 
     ; extruder_m221() END
-    M207 P3 F2700 R-0.0100 S0.2500 Z0.0750
+    M207 P3 F2700 S0.2500 Z0.6000
     ; apply_tool_mode() END
 
 

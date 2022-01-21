@@ -4,13 +4,13 @@ variables:
   # 'render-global vars'
   extra_settings:
     M566:  # Set maximum instantaneous speed changes (mm/min)
-      X: 400
-      Y: 400
-      Z: 8
-      C: 2
-      E: [2, 2, 2, 2]
-      A: 2
-      B: 2
+      X: 900
+      Y: 900
+      Z: 12
+      C: 4
+      E: [120, 120, 120, 120]
+      A: 12
+      B: 12
     M203:  # Set maximum speeds (mm/min)
       X: 35000
       Y: 35000
@@ -24,7 +24,7 @@ variables:
       Y: 6000
       Z: 400
       C: 500
-      E: [2500, 2500, 2500, 2500]
+      E: [6000, 6000, 6000, 6000]
       A: 500
       B: 500
     M207: # Set retract length
@@ -116,8 +116,8 @@ variables:
           X: 3500
           Y: 3500
       extruder_settings: &hemera_direct_extruder_settings
-        M572: # Pressure advance
-          S: 0.025
+        # M572: # Pressure advance
+        #   S: 0.025
     T1: &tool1
       id: 1
       fan: 4
@@ -125,7 +125,7 @@ variables:
       offsets:
         X: 17.5
         Y: 44.39
-        Z: -13.55
+        Z: -13.97
       park:
         X: 82
         Y: 226.9
@@ -150,8 +150,8 @@ variables:
           X: 3700
           Y: 3700
       extruder_settings:
-        M572: # Pressure advance
-          S: 0.5
+        # M572: # Pressure advance
+        #   S: 0.5
     T3: &tool3
       id: 3
       fan: 8
@@ -213,20 +213,20 @@ variables:
               S: 89
           0.6:
             M221:
-              S: 104.2
+              S: 73
         extruders:
           direct:
             M207:  # Set retract lengthс
               S: 0.25 # positive length to retract, in mm
               F: 2700 # retraction feedrate, in mm/min (45 mm / s)
-              R: -0.01
-              Z: 0.075
+              # R: -0.01
+              Z: 0.6
           bowden:
             M207:
-              S: 4 # positive length to retract, in mm
+              S: 2 # positive length to retract, in mm
               F: 2000 # retraction feedrate, in mm/min (45 mm / s)
-              R: -0.02
-              Z: 0.075
+              # R: -0.02
+              Z: 0.6
     default:
       M221:
         S: 100

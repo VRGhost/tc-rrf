@@ -292,6 +292,7 @@ def main(args):
                 ledger.extend(dir_ledger)
         if ledger:
             execute_ledger(printer, ledger)
+            print(f"{len(ledger)} files synchronised.")
 
     finally:
         printer.disconnect()
