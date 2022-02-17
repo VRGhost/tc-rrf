@@ -103,7 +103,7 @@ variables:
       offsets:
         X: 20.36
         Y: 44.04
-        Z: -13.7
+        Z: -13.6
       park:
         # X/Y location of the tools' parking position
         X: -8
@@ -123,9 +123,9 @@ variables:
       fan: 4
       is_direct: true
       offsets:
-        X: 17.5
-        Y: 44.39
-        Z: -13.97
+        X: 17.6
+        Y: 44.59
+        Z: -13.52
       park:
         X: 82
         Y: 226.9
@@ -194,8 +194,8 @@ variables:
             M221: # Set extrude factor override percentage
               S: 93 # Extrude factor override percentage
           0.6:
-            M221: # Set extrude factor override percentage
-              S: 93 # Extrude factor override percentage
+            M221:
+              S: 93
           0.8:
             M221:
               S: 93
