@@ -125,7 +125,7 @@ variables:
       offsets:
         X: 17.6
         Y: 44.59
-        Z: -13.52
+        Z: -13.65
       park:
         X: 82
         Y: 226.9
@@ -195,7 +195,7 @@ variables:
               S: 93 # Extrude factor override percentage
           0.6:
             M221:
-              S: 93
+              S: 94
           0.8:
             M221:
               S: 93
@@ -217,7 +217,7 @@ variables:
         extruders:
           direct:
             M207:  # Set retract lengthс
-              S: 0.25 # positive length to retract, in mm
+              S: 0.35 # positive length to retract, in mm
               F: 2700 # retraction feedrate, in mm/min (45 mm / s)
               # R: -0.01
               Z: 0.6

@@ -1,0 +1,4 @@
+if !exists(global.measured_x_coord) || !exists(global.measured_y_coord) || !exists(global.measured_z_coord)
+    abort "You must 'Set XYZ coords' first"
+
+G1 X{global.measured_x_coord} Y{global.measured_y_coord} Z{global.measured_z_coord}

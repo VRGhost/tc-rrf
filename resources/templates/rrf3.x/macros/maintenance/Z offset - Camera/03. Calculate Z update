@@ -1,0 +1,9 @@
+if !exists(global.measured_x_coord) || !exists(global.measured_y_coord) || !exists(global.measured_z_coord)
+    abort "You must 'Set Real XY coords' first"
+
+var current_tool_z_offset = 0
+if state.currentTool >= 0
+    ; A tool is selected
+    set var.current_tool_z_offset = tools[state.currentTool].offsets[{{ axis.Z.index }}]
+
+echo "New Tool Z offset is: " ^ (var.current_tool_z_offset - (move.axes[{{ axis.Z.index }}].userPosition - global.measured_z_coord))

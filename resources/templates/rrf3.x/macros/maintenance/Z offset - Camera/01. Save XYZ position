@@ -1,0 +1,17 @@
+if state.currentTool < 0
+    abort "A tool must be equipped"
+
+if !exists(global.measured_x_coord)
+    global measured_x_coord = 0
+
+if !exists(global.measured_y_coord)
+    global measured_y_coord = 0
+
+if !exists(global.measured_z_coord)
+    global measured_z_coord = 0
+
+set global.measured_x_coord = move.axes[{{ axis.X.index }}].userPosition
+set global.measured_y_coord = move.axes[{{ axis.Y.index }}].userPosition
+set global.measured_z_coord = move.axes[{{ axis.Z.index }}].userPosition
+
+echo "Saved base (X, Y, Z) of (" ^ global.measured_x_coord ^ ", " ^ global.measured_y_coord ^ ", " ^ global.measured_y_coord ^ ") mm"
