@@ -13,6 +13,8 @@ if var.do_home
     echo "Some axes not homed. Homing."
     G28
 
+M290 R0 S0  ; clear babystepping
+
 {% from 'sys/usr/prime.g' import reset_global_prime_vars %}
 
 {{ reset_global_prime_vars() }}
