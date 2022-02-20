@@ -45,10 +45,10 @@ M98 P"/sys/usr/configure_tool.g" T1
 ;WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!
 ;if you are using non-standard length hotends ensure the bed is lowered enough BEFORE undocking the tool!
 G91
-G1 Z26.9 F1000
+G1 Z27.06 F1000
 G90
 
-G1 A13.45 B13.45  ; Adjust brush heights
+G1 A13.53 B13.53  ; Adjust brush heights
 
 M913 X100 Y100 ; Restore the motor current
 
