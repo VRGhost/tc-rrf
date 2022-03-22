@@ -11,6 +11,9 @@ if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere
     G1 Y200 F2500 ; slowly back out
 
 
+
+M568 P{ state.currentTool } A1  ; Set target tool temp to standby temperature (to prevent overheating while brushing)
+
 ; Go to the start of the brush
 G0 X-22.0 Y128 F50000
 
@@ -51,4 +54,6 @@ G1 X-18.0 Y166 F50000
 G0 X-22.0 Y128 F50000
 G0 X-22.0 Y191 F50000
 
+
+M568 P{ state.currentTool } A2  ; Restore the active temp
 

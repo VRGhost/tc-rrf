@@ -10,5 +10,5 @@ global maybe_brush_last_time = -99999
 
 
 ; ---- declare_global_prime_vars
-global prime_extrude_delay = 3 ; seconds
+global prime_extrude_delay = 2 ; seconds
 global prime_first_tool_use = 1 ; this int is used to mark what tool hadn't been initially primed

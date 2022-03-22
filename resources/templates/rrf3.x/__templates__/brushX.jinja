@@ -6,12 +6,15 @@
 
 {{ move.avoid_tc_clash() }}
 
+
 {% set min_x = brush.x_max - brush.width -%}
 {% set mid_x = brush.x_max - brush.width / 2 -%}
 {% set max_x = brush.x_max -%}
 
 {% set min_y = brush.y_min -%}
 {% set max_y = brush.y_min + brush.depth -%}
+
+M568 P{ state.currentTool } A1  ; Set target tool temp to standby temperature (to prevent overheating while brushing)
 
 ; Go to the start of the brush
 G0 X{{ mid_x }} Y{{ min_y }} F50000
@@ -40,5 +43,7 @@ G1 X{{ mid_x + (dx * idx) }} Y{{ max_y + 5 }} F50000
 G0 X{{ mid_x }} Y{{ min_y }} F50000
 G0 X{{ mid_x }} Y{{ max_y + 30 }} F50000
 
+
+M568 P{ state.currentTool } A2  ; Restore the active temp
 
 {% endif %}
