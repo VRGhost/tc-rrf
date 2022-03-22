@@ -103,7 +103,7 @@ variables:
       offsets:
         X: 20.36
         Y: 44.04
-        Z: -14.1
+        Z: -14.05
       park:
         # X/Y location of the tools' parking position
         X: -8
