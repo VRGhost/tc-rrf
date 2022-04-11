@@ -74,11 +74,11 @@ M574 A1 B1  S3       ; Brushes use stall detection
 
 {% set bed_grid_border_x = 10 -%}
 {% set bed_grid_border_y = 20 -%}
-M557 X{{ bed_grid_border_x }}:{{ bed.width - bed_grid_border_x }} Y{{ bed_grid_border_y }}:{{ bed.depth - bed_grid_border_y }} S40 			; Define mesh grid
+M557 X{{ bed_grid_border_x }}:{{ bed.width - bed_grid_border_x }} Y{{ bed_grid_border_y }}:{{ bed.depth - bed_grid_border_y }} P14:8 			; Define mesh grid
 
 ;Stall Detection
 M915 X Y S3 F0 H400 R2				; X / Y Axes
-M915 A B S3 F0 H100 R1
+M915 A B S3 F0 H100 R0
 
 ; Tool Heaters
 M308 S0 P"bedtemp" Y"thermistor" A"Bed" T100000 B4138 C0 		; Set thermistor 

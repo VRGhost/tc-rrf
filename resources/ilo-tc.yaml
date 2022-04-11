@@ -103,7 +103,7 @@ variables:
       offsets:
         X: 20.36
         Y: 44.04
-        Z: -14.05
+        Z: -13.775
       park:
         # X/Y location of the tools' parking position
         X: -8
@@ -138,7 +138,7 @@ variables:
       offsets:
         X: -8.18
         Y: 39.44
-        Z: -13.250
+        Z: -13.3
       park:
         X: 217.8
         Y: 242.4
@@ -159,7 +159,7 @@ variables:
       offsets:
         X: 20.34
         Y: 43.68
-        Z: -13.95
+        Z: -13.8
       park:
         X: 306.2
         Y: 226.9
@@ -202,10 +202,14 @@ variables:
         extruders:
           direct:
             M207: # Set retract length
-              R: -0.01 # positive or negative additional length to un-retract, in mm, default zero
+              S: 0.35 # positive length to retract, in mm
+              R: 0 # -0.01 # positive or negative additional length to un-retract, in mm, default zero
+              Z: 0.6
           bowden:
             M207:
+              S: 2 # positive length to retract, in mm
               R: -0.01
+              Z: 0.6
       PLA:
         nozzles:
           0.4:

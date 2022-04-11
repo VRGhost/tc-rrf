@@ -5,8 +5,7 @@
 
 
 if !move.axes[{{ axis.Y.index }}].homed
-    M98 P"homey.g"          ; Home Y
-    M400
+    abort "Please home Y first"
 else
     ; Avoid accidentally clashing with the tools/Z column
     {{ avoid_tc_clash(indent=4)}}

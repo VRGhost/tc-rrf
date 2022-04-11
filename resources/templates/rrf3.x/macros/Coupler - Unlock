@@ -1,6 +1,2 @@
-{% import '__macros__/errors.jinja' as err %}
-
 G1 C241 F10000
-{{ err.abort_on_error("Coupler Unlock G1 error") }}
 M400
-{{ err.abort_on_error("Coupler Unlock M400 error") }}

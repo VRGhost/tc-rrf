@@ -26,7 +26,7 @@ if (param.T == 0) && (param.F == "PET") && (param.N < 0.50000)
     ; end tools.foreach_extruder(0)
 
     ; extruder_m221() END
-    M207 P0 R-0.0100
+    M207 P0 R0 S0.3500 Z0.6000
     ; apply_tool_mode() END
 
 
@@ -46,7 +46,7 @@ if (param.T == 0) && (param.F == "PET") && (param.N >= 0.50000) && (param.N < 0.
     ; end tools.foreach_extruder(0)
 
     ; extruder_m221() END
-    M207 P0 R-0.0100
+    M207 P0 R0 S0.3500 Z0.6000
     ; apply_tool_mode() END
 
 
@@ -66,7 +66,7 @@ if (param.T == 0) && (param.F == "PET") && (param.N >= 0.70000)
     ; end tools.foreach_extruder(0)
 
     ; extruder_m221() END
-    M207 P0 R-0.0100
+    M207 P0 R0 S0.3500 Z0.6000
     ; apply_tool_mode() END
 
 
@@ -126,7 +126,7 @@ if (param.T == 1) && (param.F == "PET") && (param.N < 0.50000)
     ; end tools.foreach_extruder(1)
 
     ; extruder_m221() END
-    M207 P1 R-0.0100
+    M207 P1 R0 S0.3500 Z0.6000
     ; apply_tool_mode() END
 
 
@@ -146,7 +146,7 @@ if (param.T == 1) && (param.F == "PET") && (param.N >= 0.50000) && (param.N < 0.
     ; end tools.foreach_extruder(1)
 
     ; extruder_m221() END
-    M207 P1 R-0.0100
+    M207 P1 R0 S0.3500 Z0.6000
     ; apply_tool_mode() END
 
 
@@ -166,7 +166,7 @@ if (param.T == 1) && (param.F == "PET") && (param.N >= 0.70000)
     ; end tools.foreach_extruder(1)
 
     ; extruder_m221() END
-    M207 P1 R-0.0100
+    M207 P1 R0 S0.3500 Z0.6000
     ; apply_tool_mode() END
 
 
@@ -226,7 +226,7 @@ if (param.T == 2) && (param.F == "PET") && (param.N < 0.50000)
     ; end tools.foreach_extruder(2)
 
     ; extruder_m221() END
-    M207 P2 R-0.0100
+    M207 P2 R-0.0100 S2 Z0.6000
     ; apply_tool_mode() END
 
 
@@ -246,7 +246,7 @@ if (param.T == 2) && (param.F == "PET") && (param.N >= 0.50000) && (param.N < 0.
     ; end tools.foreach_extruder(2)
 
     ; extruder_m221() END
-    M207 P2 R-0.0100
+    M207 P2 R-0.0100 S2 Z0.6000
     ; apply_tool_mode() END
 
 
@@ -266,7 +266,7 @@ if (param.T == 2) && (param.F == "PET") && (param.N >= 0.70000)
     ; end tools.foreach_extruder(2)
 
     ; extruder_m221() END
-    M207 P2 R-0.0100
+    M207 P2 R-0.0100 S2 Z0.6000
     ; apply_tool_mode() END
 
 
@@ -326,7 +326,7 @@ if (param.T == 3) && (param.F == "PET") && (param.N < 0.50000)
     ; end tools.foreach_extruder(3)
 
     ; extruder_m221() END
-    M207 P3 R-0.0100
+    M207 P3 R0 S0.3500 Z0.6000
     ; apply_tool_mode() END
 
 
@@ -346,7 +346,7 @@ if (param.T == 3) && (param.F == "PET") && (param.N >= 0.50000) && (param.N < 0.
     ; end tools.foreach_extruder(3)
 
     ; extruder_m221() END
-    M207 P3 R-0.0100
+    M207 P3 R0 S0.3500 Z0.6000
     ; apply_tool_mode() END
 
 
@@ -366,7 +366,7 @@ if (param.T == 3) && (param.F == "PET") && (param.N >= 0.70000)
     ; end tools.foreach_extruder(3)
 
     ; extruder_m221() END
-    M207 P3 R-0.0100
+    M207 P3 R0 S0.3500 Z0.6000
     ; apply_tool_mode() END
 
 

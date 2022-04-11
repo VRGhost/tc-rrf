@@ -1,8 +1,2 @@
-
 G1 C40 F10000
-if result != 0
-    abort "[ERROR]: Coupler Lock G1 error"
-
 M400
-if result != 0
-    abort "[ERROR]: Coupler Lock M400 error"

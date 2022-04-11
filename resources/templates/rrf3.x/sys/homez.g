@@ -2,8 +2,7 @@
 ; called to home the Z axis
 
 if !move.axes[0].homed || !move.axes[1].homed
-    M98 P"homey.g"          ; Home Y
-    M98 P"homex.g"          ; Home X
+    abort "Please home X and Y first"
 
 if state.currentTool >= 0
     abort "Refusing to home Z with tool attached."

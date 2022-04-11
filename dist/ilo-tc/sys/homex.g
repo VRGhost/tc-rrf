@@ -5,8 +5,7 @@
 
 
 if !move.axes[1].homed
-    M98 P"homey.g"          ; Home Y
-    M400
+    abort "Please home Y first"
 else
     ; Avoid accidentally clashing with the tools/Z column
     if move.axes[2].homed && move.axes[2].userPosition < 10 ; if Z < 10

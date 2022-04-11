@@ -68,11 +68,11 @@ M558 C"zstop" F360 H3 I0 P8 T20000
 
 G31 P200 X0 Y0 Z0
 
-M557 X10:290 Y20:180 S40 			; Define mesh grid
+M557 X10:290 Y20:180 P14:8 			; Define mesh grid
 
 ;Stall Detection
 M915 X Y S3 F0 H400 R2				; X / Y Axes
-M915 A B S3 F0 H100 R1
+M915 A B S3 F0 H100 R0
 
 ; Tool Heaters
 M308 S0 P"bedtemp" Y"thermistor" A"Bed" T100000 B4138 C0 		; Set thermistor 
