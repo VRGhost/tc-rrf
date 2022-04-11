@@ -190,7 +190,7 @@ variables:
     filaments:
       PET:
         default:
-          babystep: 0.2
+          babystep: 0.02
         nozzles:
           0.4: # this must be float!
             M221: # Set extrude factor override percentage
