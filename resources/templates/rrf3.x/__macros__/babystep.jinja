@@ -1,0 +1,34 @@
+{% macro declare_global_babystep_vars() -%}
+
+; ---- declare_global_babystep_vars
+global t0_babystep = 0.0
+global t1_babystep = 0.0
+global t2_babystep = 0.0
+global t3_babystep = 0.0
+
+{% endmacro -%}
+
+{% macro reset_global_babystep_vars() -%}
+
+; ---- reset_global_babystep_vars
+set global.t0_babystep = 0.0
+set global.t1_babystep = 0.0
+set global.t2_babystep = 0.0
+set global.t3_babystep = 0.0
+
+{% endmacro -%}
+
+
+{% macro activate_tool_babystep(tool_id) -%}
+
+; ---- activate_tool_babystep({{ tool_id }})
+M290 S{ global.t{{tool_id}}_babystep } R0 ; R0 for "absolute mode"
+
+{% endmacro -%}
+
+{% macro save_tool_babystep(tool_id) -%}
+
+; ---- save_tool_babystep({{ tool_id }})
+set global.t{{tool_id}}_babystep = move.axes[2].babystep ; only Z babystepping is supported for now
+
+{% endmacro -%}

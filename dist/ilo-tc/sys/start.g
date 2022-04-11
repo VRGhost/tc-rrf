@@ -1,3 +1,6 @@
+
+
+
 ;---- Home if ANY axis is not homed
 
 var do_home = false
@@ -13,10 +16,18 @@ if var.do_home
     echo "Some axes not homed. Homing."
     G28
 
-M290 R0 S0  ; clear babystepping
-
 
 
 ; ---- reset_global_prime_vars
 set global.prime_first_tool_use = 1 ; see /sys/usr/prime.g
 set global.prime_extrude_delay = 2 ; see /sys/usr/prime.g
+
+; ---- reset_global_babystep_vars
+set global.t0_babystep = 0.0
+set global.t1_babystep = 0.0
+set global.t2_babystep = 0.0
+set global.t3_babystep = 0.0
+
+
+
+M290 R0 S0  ; clear babystepping

@@ -1,3 +1,6 @@
+{% from 'sys/usr/prime.g' import reset_global_prime_vars %}
+{% from '__macros__/babystep.jinja' import reset_global_babystep_vars %}
+
 ;---- Home if ANY axis is not homed
 
 var do_home = false
@@ -13,8 +16,9 @@ if var.do_home
     echo "Some axes not homed. Homing."
     G28
 
-M290 R0 S0  ; clear babystepping
 
-{% from 'sys/usr/prime.g' import reset_global_prime_vars %}
 
 {{ reset_global_prime_vars() }}
+{{ reset_global_babystep_vars() }}
+
+M290 R0 S0  ; clear babystepping

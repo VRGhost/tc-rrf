@@ -2,9 +2,14 @@
 ; called after tool 0 has been selected
 
 
+
 M116 P0
 
 M106 R2 ; restore print cooling fan speed
 
 ;prime nozzle
 M98 P"/sys/usr/prime.g"
+
+; ---- activate_tool_babystep(0)
+M290 S{ global.t0_babystep } R0 ; R0 for "absolute mode"
+

@@ -110,6 +110,7 @@ class PyFunctions:
         root_dict = self.global_vars['dynamic_overrides']
 
         effective_dict_queue.append(root_dict.get('default', {}))
+        effective_dict_queue.append(root_dict['filaments'][filament].get('default', {}))
 
         extruder_key = 'direct' if tool_dict['is_direct'] else 'bowden'
         effective_dict_queue.append(root_dict['filaments'][filament]['extruders'][extruder_key])

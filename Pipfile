@@ -8,6 +8,7 @@ duetwebapi = "*"
 Jinja2 = "*"
 PyYAML = "*"
 mergedeep = "*"
+black = "*"
 
 [dev-packages]
 

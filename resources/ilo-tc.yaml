@@ -189,6 +189,8 @@ variables:
   dynamic_overrides:
     filaments:
       PET:
+        default:
+          babystep: 0.2
         nozzles:
           0.4: # this must be float!
             M221: # Set extrude factor override percentage

@@ -7,6 +7,7 @@
 ; Known filament names are: "PET", "PLA"
 
 {% import '__macros__/tools.jinja' as tools_mod %}
+{% import '__macros__/babystep.jinja' as babystep %}
 
 {% macro extruder_m221(tool_id, m221_kwargs) -%}
 ; extruder_m221({{tool_id}}, {{m221_kwargs}}) ( Set extrude factor override percentage )
@@ -25,6 +26,7 @@ M221 D{ {{drive_id}} } {{ py.format_gcode_param_str(m221_kwargs) }}
 {%- set filament_settings = py.get_merged_dynamic_overrides(tool_id=tool.id, nozzle_d=nozzle_d, filament=filament) %}
 {{ extruder_m221(tool.id, filament_settings['M221']) }}
 M207 P{{tool.id}} {{ py.format_gcode_param_str(filament_settings.get('M207', {})) }}
+set global.t{{tool.id}}_babystep = global.t{{tool.id}}_babystep + {{ filament_settings.get('babystep', 0.0) }}
 ; apply_tool_mode() END
 {% endmacro -%}
 

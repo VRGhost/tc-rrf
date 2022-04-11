@@ -3,11 +3,10 @@
 
 {% import '__macros__/errors.jinja' as err %}
 {% from "__macros__/move.jinja" import avoid_tc_clash, feedrate_changing_sequence %}
+{% from '__macros__/babystep.jinja' import save_tool_babystep %}
 
-;Drop the bed
-;G91
-;G1 Z4 F1000
-;G90
+
+{{ save_tool_babystep(tool.id) }}
 
 ; Just in case - take care not to clash with the environment
 {{ avoid_tc_clash() }}

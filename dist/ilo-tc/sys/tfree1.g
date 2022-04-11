@@ -4,10 +4,12 @@
 
 
 
-;Drop the bed
-;G91
-;G1 Z4 F1000
-;G90
+
+
+; ---- save_tool_babystep(1)
+set global.t1_babystep = move.axes[2].babystep ; only Z babystepping is supported for now
+
+
 
 ; Just in case - take care not to clash with the environment
 if move.axes[2].homed && move.axes[2].userPosition < 10 ; if Z < 10

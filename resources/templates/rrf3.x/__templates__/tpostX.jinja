@@ -1,6 +1,7 @@
 ; tpost{{ tool.id }}.g
 ; called after tool {{ tool.id }} has been selected
 
+{% from '__macros__/babystep.jinja' import activate_tool_babystep %}
 
 M116 P{{ tool.id }}
 
@@ -8,3 +9,5 @@ M106 R2 ; restore print cooling fan speed
 
 ;prime nozzle
 M98 P"/sys/usr/prime.g"
+
+{{ activate_tool_babystep(tool.id) }}
