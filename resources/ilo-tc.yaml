@@ -125,7 +125,7 @@ variables:
       offsets:
         X: 17.6
         Y: 44.59
-        Z: -13.65
+        Z: -13.6
       park:
         X: 82
         Y: 226.9
@@ -136,9 +136,9 @@ variables:
       fan: 6
       is_direct: false
       offsets:
-        X: -8.18
-        Y: 39.44
-        Z: -13.3
+        X: -7.98
+        Y: 39.04
+        Z: -13.25
       park:
         X: 217.8
         Y: 242.4
@@ -190,21 +190,21 @@ variables:
     filaments:
       PET:
         default:
-          babystep: 0.02
+          babystep: 0.06
         nozzles:
           0.4: # this must be float!
             M221: # Set extrude factor override percentage
-              S: 93 # Extrude factor override percentage
+              S: 98 # Extrude factor override percentage
           0.6:
             M221:
-              S: 94
+              S: 99
           0.8:
             M221:
-              S: 93
+              S: 98
         extruders:
           direct:
             M207: # Set retract length
-              S: 0.35 # positive length to retract, in mm
+              S: 1 # positive length to retract, in mm
               R: 0 # -0.01 # positive or negative additional length to un-retract, in mm, default zero
               Z: 0.6
           bowden:
@@ -219,12 +219,12 @@ variables:
               S: 89
           0.6:
             M221:
-              S: 73
+              S: 89
         extruders:
           direct:
             M207:  # Set retract lengthс
               S: 0.35 # positive length to retract, in mm
-              F: 2700 # retraction feedrate, in mm/min (45 mm / s)
+              F: 2000 # retraction feedrate, in mm/min (45 mm / s)
               # R: -0.01
               Z: 0.6
           bowden:
