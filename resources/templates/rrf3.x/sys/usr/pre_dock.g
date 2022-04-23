@@ -10,6 +10,5 @@ if var.can_extrude <= 0
     M99 ; return
 
 M98 P"/macros/Go To Purge Spot"
-G1 E-5 F400 ; retract 5mm of filament
 M400
 M98 P"/sys/usr/brush.g"

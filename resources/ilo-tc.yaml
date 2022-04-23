@@ -136,8 +136,8 @@ variables:
       fan: 6
       is_direct: false
       offsets:
-        X: -7.98
-        Y: 39.04
+        X: -8.38
+        Y: 38.94
         Z: -13.25
       park:
         X: 217.8
@@ -204,7 +204,7 @@ variables:
         extruders:
           direct:
             M207: # Set retract length
-              S: 1 # positive length to retract, in mm
+              S: 0.5 # positive length to retract, in mm
               R: 0 # -0.01 # positive or negative additional length to un-retract, in mm, default zero
               Z: 0.6
           bowden:
@@ -229,10 +229,23 @@ variables:
               Z: 0.6
           bowden:
             M207:
-              S: 2 # positive length to retract, in mm
-              F: 2000 # retraction feedrate, in mm/min (45 mm / s)
+              S: 0.5 # positive length to retract, in mm
+              F: 1500 # retraction feedrate, in mm/min (45 mm / s)
               # R: -0.02
               Z: 0.6
+      NYLON:
+        nozzles:
+          0.6:
+            M221:
+              S: 89
+        extruders:
+          direct:
+            M207:  # Set retract lengthс
+              S: 0.35 # positive length to retract, in mm
+              F: 2000 # retraction feedrate, in mm/min (45 mm / s)
+              # R: -0.01
+              Z: 0.6
+          bowden: {}
     default:
       M221:
         S: 100

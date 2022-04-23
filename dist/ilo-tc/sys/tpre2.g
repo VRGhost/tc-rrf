@@ -53,4 +53,4 @@ G1 A13.25 B13.25  ; Adjust brush heights
 M913 X100 Y100 ; Restore the motor current
 
 ;Move Out
-G53 G1 X217.8 Y140.96 F4000
+G53 G1 X217.8 Y141.06 F4000

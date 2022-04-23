@@ -45,4 +45,3 @@ M400
 G4 S{ global.prime_extrude_delay } ; wait
 M98 P"/sys/usr/brush.g"
 M400
-G10 ; retract
