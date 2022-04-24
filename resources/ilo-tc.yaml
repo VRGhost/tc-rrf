@@ -125,7 +125,7 @@ variables:
       offsets:
         X: 17.6
         Y: 44.59
-        Z: -13.6
+        Z: -13.5
       park:
         X: 82
         Y: 226.9
@@ -190,7 +190,7 @@ variables:
     filaments:
       PET:
         default:
-          babystep: 0.06
+          babystep: 0.04
         nozzles:
           0.4: # this must be float!
             M221: # Set extrude factor override percentage
