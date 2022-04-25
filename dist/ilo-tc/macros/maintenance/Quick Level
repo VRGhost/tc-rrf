@@ -1,0 +1,15 @@
+
+
+; --- default_g29_mesh() start
+
+M557 X10:290 Y20:180 P2:2            ; Define mesh grid
+
+; --- default_g29_mesh() end
+
+G29
+
+; --- default_g29_mesh() start
+
+M557 X10:290 Y20:180 P12:7            ; Define mesh grid
+
+; --- default_g29_mesh() end

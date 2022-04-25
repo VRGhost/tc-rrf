@@ -1,0 +1,9 @@
+{% macro define_g29_mesh(bed, px=12, py=7) %}
+; --- default_g29_mesh() start
+
+{% set bed_grid_border_x = 10 -%}
+{% set bed_grid_border_y = 20 -%}
+M557 X{{ bed_grid_border_x }}:{{ bed.width - bed_grid_border_x }} Y{{ bed_grid_border_y }}:{{ bed.depth - bed_grid_border_y }} P{{ px }}:{{ py }}            ; Define mesh grid
+
+; --- default_g29_mesh() end
+{% endmacro %}

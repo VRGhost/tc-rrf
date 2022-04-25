@@ -1,0 +1,4 @@
+{% from '__macros__/bed.jinja' import define_g29_mesh  %}
+{{ define_g29_mesh(bed, px=2, py=2) }}
+G29
+{{ define_g29_mesh(bed) }}
