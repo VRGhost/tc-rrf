@@ -125,7 +125,7 @@ variables:
       offsets:
         X: 17.6
         Y: 44.59
-        Z: -13.5
+        Z: -13.6
       park:
         X: 82
         Y: 226.9
@@ -237,7 +237,7 @@ variables:
         nozzles:
           0.6:
             M221:
-              S: 89
+              S: 68
         extruders:
           direct:
             M207:  # Set retract lengthс

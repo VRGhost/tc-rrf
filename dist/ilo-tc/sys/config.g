@@ -68,7 +68,14 @@ M558 C"zstop" F360 H3 I0 P8 T20000
 
 G31 P200 X0 Y0 Z0
 
-M557 X10:290 Y20:180 P14:8 			; Define mesh grid
+
+
+; --- default_g29_mesh() start
+
+M557 X10:290 Y20:180 P12:7            ; Define mesh grid
+
+; --- default_g29_mesh() end
+
 
 ;Stall Detection
 ;M915 X Y S3 F0 H400 R2				; X / Y Axes

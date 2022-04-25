@@ -72,9 +72,8 @@ M574 C0 Z0  						; No C Z endstop
 {% endfor -%}
 {% endif -%}
 
-{% set bed_grid_border_x = 10 -%}
-{% set bed_grid_border_y = 20 -%}
-M557 X{{ bed_grid_border_x }}:{{ bed.width - bed_grid_border_x }} Y{{ bed_grid_border_y }}:{{ bed.depth - bed_grid_border_y }} P14:8 			; Define mesh grid
+{% from '__macros__/bed.jinja' import define_g29_mesh  %}
+{{ define_g29_mesh(bed) }}
 
 ;Stall Detection
 ;M915 X Y S3 F0 H400 R2				; X / Y Axes
