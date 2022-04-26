@@ -1,5 +1,3 @@
-if move.axes[2].homed && move.axes[2].userPosition < 10 ; if Z < 10
-    G1 Z10 ; slowly lower the bed
 ; ----- AVOID clashing with the TC walls
 if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
     G1 Y200 F2500 ; slowly back out

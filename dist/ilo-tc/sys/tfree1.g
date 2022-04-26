@@ -6,15 +6,12 @@
 
 
 
-
 ; ---- save_tool_babystep(1)
 set global.t1_babystep = move.axes[2].babystep ; only Z babystepping is supported for now
 
 
 
 ; Just in case - take care not to clash with the environment
-if move.axes[2].homed && move.axes[2].userPosition < 10 ; if Z < 10
-    G1 Z10 ; slowly lower the bed
 ; ----- AVOID clashing with the TC walls
 if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
     G1 Y200 F2500 ; slowly back out
@@ -44,7 +41,7 @@ M913 X100 Y100 ; Restore the motor current
 ;Open Coupler
 M98 P"/macros/Coupler - Unlock"
 
-M98 P"/sys/usr/configure_tool.g" T-1
+; M98 P"/sys/usr/configure_tool.g" T-1
 
 ;fan off
 M106 P4 S0
@@ -55,7 +52,9 @@ G53 G1 X82 Y180 F50000
 
 
 ; ---- rel_move()
+M400 ; wait for any pending moves to complete
 G91
 G1 Z-13.6 F1000
+M400 ; wait for relative moves to complete
 G90
 ; ---- rel_move() END

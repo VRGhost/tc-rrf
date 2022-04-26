@@ -20,3 +20,7 @@ global t1_babystep = 0.0
 global t2_babystep = 0.0
 global t3_babystep = 0.0
 
+
+
+; ---- declare_global_toolchange_vars
+global toolchange_orig_z = 0.0

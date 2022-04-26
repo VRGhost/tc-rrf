@@ -1,4 +1,7 @@
-G91 					; use relative positioning
+{% import '__macros__/move.jinja' as move %}
+
+{% call move.rel_move() %}
 G1 S2 Z5 F5000			; lift Z 5mm
-G90 					; back to absolute positioning
+{% endcall %}
+
 G1 X-5 Y200 F50000		; move out the way.

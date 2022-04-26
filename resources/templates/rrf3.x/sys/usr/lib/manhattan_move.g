@@ -128,9 +128,9 @@ if (({{ p1_x }} == {{ p2_x }}) && ({{ p2_x }} == {{ p3_x }})) || (({{ p1_y }} ==
 
 
 
-G91
+{% call move.rel_move() %}
 G0 Z{param.Z}
-G90
+{% endcall %}
 
 ;
 ;           P2 * < < < < < < < < < < < < < < < < < < < < < * P1
@@ -223,9 +223,9 @@ if ({{ dst_x }} != var.prev_mov_x) || ({{ dst_y }} != var.prev_mov_y)
 
 ; ---- manhattan_move() END
 
-G91
+{% call move.rel_move() %}
 G0 Z{-param.Z}
-G90
+{% endcall %}
 
 ; (TEST ONLY)
 ;G0 X{var.src_x} Y{var.src_y}

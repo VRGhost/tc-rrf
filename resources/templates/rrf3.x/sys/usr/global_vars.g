@@ -9,3 +9,6 @@
 {{ declare_global_prime_vars() }}
 
 {{ declare_global_babystep_vars() }}
+
+; ---- declare_global_toolchange_vars
+global toolchange_orig_z = 0.0

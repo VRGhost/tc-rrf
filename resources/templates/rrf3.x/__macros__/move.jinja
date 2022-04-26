@@ -2,8 +2,10 @@
 {% macro rel_move(indent=0) %}
 {% filter indent(width=indent) %}
 ; ---- rel_move()
+M400 ; wait for any pending moves to complete
 G91
 {{- caller() -}}
+M400 ; wait for relative moves to complete
 G90
 ; ---- rel_move() END
 {%- endfilter %}
@@ -12,8 +14,6 @@ G90
 
 {% macro avoid_tc_clash(indent=0) -%}
 {% filter indent(width=indent) -%}
-if move.axes[{{ py.g.axis.Z.index }}].homed && move.axes[{{ py.g.axis.Z.index }}].userPosition < 10 ; if Z < 10
-    G1 Z10 ; slowly lower the bed
 ; ----- AVOID clashing with the TC walls
 if move.axes[{{ py.g.axis.Y.index }}].homed && move.axes[{{ py.g.axis.Y.index }}].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
     G1 Y200 F2500 ; slowly back out

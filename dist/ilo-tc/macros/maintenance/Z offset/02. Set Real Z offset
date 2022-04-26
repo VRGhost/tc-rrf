@@ -14,8 +14,10 @@ G30 S-1
 
 
 ; ---- rel_move()
+M400 ; wait for any pending moves to complete
 G91
 G1 Z10 F500
+M400 ; wait for relative moves to complete
 G90
 ; ---- rel_move() END
 
@@ -29,7 +31,9 @@ echo "Saved base Z height of " ^ global.measured_z_height ^ "mm (Real object hei
 
 
 ; ---- rel_move()
+M400 ; wait for any pending moves to complete
 G91
 G1 Z50 F500
+M400 ; wait for relative moves to complete
 G90
 ; ---- rel_move() END

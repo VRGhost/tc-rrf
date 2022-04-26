@@ -3,10 +3,19 @@
 
 {% import '__macros__/move.jinja' as move %}
 {% import '__macros__/errors.jinja' as err %}
-{% from "__macros__/move.jinja" import avoid_tc_clash, feedrate_changing_sequence %}
+
+{% macro declare_global_toolchange_vars() -%}
+
+; ---- declare_global_toolchange_vars
+global toolchange_orig_z = 0.0
+
+{% endmacro -%}
+
+; save the orig Z
+set global.toolchange_orig_z = move.axes[{{ py.g.axis.Z.index }}].userPosition
 
 ; Just in case - take care not to clash with the environment
-{{ avoid_tc_clash() }}
+{{ move.avoid_tc_clash() }}
 
 ;Unlock Coupler
 M98 P"/macros/Coupler - Unlock"
@@ -19,7 +28,7 @@ G53 G1 X{{ tool.park.X }} Y{{ move_start_y }} F50000
 M913 X60 Y60 ; Set the motor current to 60%
 
 ; Approach at reducing speed
-{% call(move_params) feedrate_changing_sequence(tool.park.X, move_start_y, 10000, tool.park.X, tool.park.Y, 5000) -%}
+{% call(move_params) move.feedrate_changing_sequence(tool.park.X, move_start_y, 10000, tool.park.X, tool.park.Y, 5000) -%}
 G53 G1 {{ py.format_gcode_param_str(move_params) }}
 {%- endcall %}
 
@@ -37,7 +46,7 @@ M98 P"/sys/usr/configure_tool.g" T{{ tool.id }}
 
 
 {% call move.rel_move() %}
-G1 Z{{ -tool.offsets.Z }} F1000
+G1 Z{{ -2 * tool.offsets.Z }} F1000
 {% endcall %}
 
 
@@ -46,4 +55,4 @@ G1 A{{ -1 * tool.offsets.Z }} B{{ -1 * tool.offsets.Z }}  ; Adjust brush heights
 M913 X100 Y100 ; Restore the motor current
 
 ;Move Out
-G53 G1 X{{ tool.park.X }} Y{{ move_start_y - tool.offsets.Y }} F4000
+{{ move.avoid_tc_clash() }}

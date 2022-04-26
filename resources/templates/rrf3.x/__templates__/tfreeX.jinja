@@ -3,14 +3,13 @@
 
 {% import '__macros__/move.jinja' as move %}
 {% import '__macros__/errors.jinja' as err %}
-{% from "__macros__/move.jinja" import avoid_tc_clash, feedrate_changing_sequence %}
 {% from '__macros__/babystep.jinja' import save_tool_babystep %}
 
 
 {{ save_tool_babystep(tool.id) }}
 
 ; Just in case - take care not to clash with the environment
-{{ avoid_tc_clash() }}
+{{ move.avoid_tc_clash() }}
 
 ;Purge nozzle
 M98 P"/sys/usr/pre_dock.g"
@@ -19,7 +18,7 @@ M913 X60 Y60 ; Set the motor current to 60%
 
 {% set move_start_y = 180 - tool.offsets.Y -%}
 ; Approach at reducing speed
-{% call(move_params) feedrate_changing_sequence(tool.park.X, move_start_y, 10000, tool.park.X, tool.park.Y, 5000) -%}
+{% call(move_params) move.feedrate_changing_sequence(tool.park.X, move_start_y, 10000, tool.park.X, tool.park.Y, 5000) -%}
 G53 G1 {{ py.format_gcode_param_str(move_params) }}
 {%- endcall %}
 
@@ -29,7 +28,7 @@ M913 X100 Y100 ; Restore the motor current
 ;Open Coupler
 M98 P"/macros/Coupler - Unlock"
 
-M98 P"/sys/usr/configure_tool.g" T-1
+; M98 P"/sys/usr/configure_tool.g" T-1
 
 ;fan off
 M106 P{{ tool.fan }} S0
