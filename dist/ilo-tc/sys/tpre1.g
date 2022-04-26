@@ -4,6 +4,7 @@
 
 
 
+
 ; Just in case - take care not to clash with the environment
 if move.axes[2].homed && move.axes[2].userPosition < 10 ; if Z < 10
     G1 Z10 ; slowly lower the bed
@@ -44,9 +45,16 @@ M98 P"/sys/usr/configure_tool.g" T1
 
 ;WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!
 ;if you are using non-standard length hotends ensure the bed is lowered enough BEFORE undocking the tool!
+
+
+
+; ---- rel_move()
 G91
 G1 Z27.2 F1000
 G90
+; ---- rel_move() END
+
+
 
 G1 A13.6 B13.6  ; Adjust brush heights
 

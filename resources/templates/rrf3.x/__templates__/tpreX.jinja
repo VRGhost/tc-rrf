@@ -1,6 +1,7 @@
 ; tpre{{ tool.id }}.g
 ; called before tool {{ tool.id }} is selected
 
+{% import '__macros__/move.jinja' as move %}
 {% import '__macros__/errors.jinja' as err %}
 {% from "__macros__/move.jinja" import avoid_tc_clash, feedrate_changing_sequence %}
 
@@ -33,9 +34,11 @@ M98 P"/sys/usr/configure_tool.g" T{{ tool.id }}
 
 ;WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!
 ;if you are using non-standard length hotends ensure the bed is lowered enough BEFORE undocking the tool!
-G91
+
+{% call move.rel_move() %}
 G1 Z{{ -2 * tool.offsets.Z }} F1000
-G90
+{% endcall %}
+
 
 G1 A{{ -1 * tool.offsets.Z }} B{{ -1 * tool.offsets.Z }}  ; Adjust brush heights
 

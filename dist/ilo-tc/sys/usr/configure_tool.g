@@ -49,10 +49,10 @@ if (param.T == 0)
     ; tools.foreach_extruder(0)
     ; util.foreach(tools[0].extruders)
 
-    var foreach_idx_5 = 0
-    while var.foreach_idx_5 < #tools[0].extruders
+    var foreach_idx_49 = 0
+    while var.foreach_idx_49 < #tools[0].extruders
         
-        set var.foreach_idx_5 = var.foreach_idx_5 + 1
+        set var.foreach_idx_49 = var.foreach_idx_49 + 1
 
     ; end util.foreach()
     ; end tools.foreach_extruder(0)
@@ -83,10 +83,10 @@ if (param.T == 1)
     ; tools.foreach_extruder(1)
     ; util.foreach(tools[1].extruders)
 
-    var foreach_idx_6 = 0
-    while var.foreach_idx_6 < #tools[1].extruders
+    var foreach_idx_50 = 0
+    while var.foreach_idx_50 < #tools[1].extruders
         
-        set var.foreach_idx_6 = var.foreach_idx_6 + 1
+        set var.foreach_idx_50 = var.foreach_idx_50 + 1
 
     ; end util.foreach()
     ; end tools.foreach_extruder(1)
@@ -117,10 +117,10 @@ if (param.T == 2)
     ; tools.foreach_extruder(2)
     ; util.foreach(tools[2].extruders)
 
-    var foreach_idx_7 = 0
-    while var.foreach_idx_7 < #tools[2].extruders
+    var foreach_idx_51 = 0
+    while var.foreach_idx_51 < #tools[2].extruders
         
-        set var.foreach_idx_7 = var.foreach_idx_7 + 1
+        set var.foreach_idx_51 = var.foreach_idx_51 + 1
 
     ; end util.foreach()
     ; end tools.foreach_extruder(2)
@@ -151,10 +151,10 @@ if (param.T == 3)
     ; tools.foreach_extruder(3)
     ; util.foreach(tools[3].extruders)
 
-    var foreach_idx_8 = 0
-    while var.foreach_idx_8 < #tools[3].extruders
+    var foreach_idx_52 = 0
+    while var.foreach_idx_52 < #tools[3].extruders
         
-        set var.foreach_idx_8 = var.foreach_idx_8 + 1
+        set var.foreach_idx_52 = var.foreach_idx_52 + 1
 
     ; end util.foreach()
     ; end tools.foreach_extruder(3)

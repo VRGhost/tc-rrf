@@ -13,9 +13,9 @@ G30 S-1
 ; Move back a little
 
 
-; ---- rel_move(None, None, 10, 500, G1)
+; ---- rel_move()
 G91
-G1 F500 Z10
+G1 Z10 F500
 G90
 ; ---- rel_move() END
 
@@ -28,8 +28,8 @@ echo "Saved base Z height of " ^ global.measured_z_height ^ "mm (Real object hei
 
 
 
-; ---- rel_move(None, None, 50, 500, G1)
+; ---- rel_move()
 G91
-G1 F500 Z50
+G1 Z50 F500
 G90
 ; ---- rel_move() END

@@ -11,7 +11,9 @@ if !exists(global.measured_z_height)
 
 G30 S-1
 ; Move back a little
-{{ move.rel_move(dz=10, cmd='G1', F=500) }}
+{% call move.rel_move() %}
+G1 Z10 F500
+{% endcall %}
 G30 S-1 ; try again
 
 set global.measured_z_height = move.axes[{{ axis.Z.index }}].userPosition
@@ -19,4 +21,6 @@ var zProbeTriggerHeight = sensors.probes[0].triggerHeight
 
 echo "Saved base Z height of " ^ global.measured_z_height ^ "mm (Real object height: "^ (global.measured_z_height - var.zProbeTriggerHeight) ^"mm)"
 
-{{ move.rel_move(dz=50, cmd='G1', F=500) }}
+{% call move.rel_move() %}
+G1 Z50 F500
+{% endcall %}

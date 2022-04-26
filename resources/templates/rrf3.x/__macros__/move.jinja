@@ -1,9 +1,9 @@
 
-{% macro rel_move(dx=None, dy=None, dz=0, F=None, cmd='G0', indent=0) %}
+{% macro rel_move(indent=0) %}
 {% filter indent(width=indent) %}
-; ---- rel_move({{dx}}, {{dy}}, {{dz}}, {{F}}, {{cmd}})
+; ---- rel_move()
 G91
-{{cmd}} {{ py.format_gcode_param_str(X=dx, Y=dy, Z=dz, F=F) }}
+{{- caller() -}}
 G90
 ; ---- rel_move() END
 {%- endfilter %}
