@@ -48,9 +48,10 @@ M98 P"/sys/usr/configure_tool.g" T3
 
 
 
+
 ; ---- rel_move()
 G91
-G1 Z27.6 F1000
+G1 Z13.8 F1000
 G90
 ; ---- rel_move() END
 

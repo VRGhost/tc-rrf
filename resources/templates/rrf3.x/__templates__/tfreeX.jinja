@@ -1,6 +1,7 @@
 ; tfree{{ tool.id }}.g
 ; called when tool {{ tool.id }} is freed
 
+{% import '__macros__/move.jinja' as move %}
 {% import '__macros__/errors.jinja' as err %}
 {% from "__macros__/move.jinja" import avoid_tc_clash, feedrate_changing_sequence %}
 {% from '__macros__/babystep.jinja' import save_tool_babystep %}
@@ -35,3 +36,7 @@ M106 P{{ tool.fan }} S0
 
 ;Move Out
 G53 G1 X{{ tool.park.X }} Y180 F50000
+
+{% call move.rel_move() %}
+G1 Z{{ tool.offsets.Z }} F1000
+{% endcall %}

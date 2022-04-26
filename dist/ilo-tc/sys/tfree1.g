@@ -6,6 +6,7 @@
 
 
 
+
 ; ---- save_tool_babystep(1)
 set global.t1_babystep = move.axes[2].babystep ; only Z babystepping is supported for now
 
@@ -50,3 +51,11 @@ M106 P4 S0
 
 ;Move Out
 G53 G1 X82 Y180 F50000
+
+
+
+; ---- rel_move()
+G91
+G1 Z-13.6 F1000
+G90
+; ---- rel_move() END

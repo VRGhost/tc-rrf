@@ -35,8 +35,9 @@ M98 P"/sys/usr/configure_tool.g" T{{ tool.id }}
 ;WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!
 ;if you are using non-standard length hotends ensure the bed is lowered enough BEFORE undocking the tool!
 
+
 {% call move.rel_move() %}
-G1 Z{{ -2 * tool.offsets.Z }} F1000
+G1 Z{{ -tool.offsets.Z }} F1000
 {% endcall %}
 
 
