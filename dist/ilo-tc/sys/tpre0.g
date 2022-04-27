@@ -4,6 +4,7 @@
 
 
 
+
 ; save the orig Z
 set global.toolchange_orig_z = move.axes[2].userPosition
 
@@ -19,7 +20,13 @@ M98 P"/macros/Coupler - Unlock"
 ;Move to location
 G53 G1 X-8 Y180 F50000
 
-M913 X60 Y60 ; Set the motor current to 60%
+
+
+; ---- drop_motor_current()
+M400 ; wait for any pending moves to complete
+M913 X60 Y60 ; set the ('X', 'Y') current to 0.6
+
+
 
 ; Approach at reducing speed
 G53 G1 F10000.0000 X-8.0000 Y180.0000
@@ -61,7 +68,13 @@ G90
 
 G1 A13.775 B13.775  ; Adjust brush heights
 
-M913 X100 Y100 ; Restore the motor current
+
+
+M400 ; wait for moves to complete
+M913 X100 Y100 ; restore the ('X', 'Y') current
+
+; ---- drop_motor_current() END
+
 
 ;Move Out
 ; ----- AVOID clashing with the TC walls

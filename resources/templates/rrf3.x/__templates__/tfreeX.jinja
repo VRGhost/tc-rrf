@@ -14,7 +14,7 @@
 ;Purge nozzle
 M98 P"/sys/usr/pre_dock.g"
 
-M913 X60 Y60 ; Set the motor current to 60%
+{% call move.drop_motor_current(0.6) -%}
 
 {% set move_start_y = 180 - tool.offsets.Y -%}
 ; Approach at reducing speed
@@ -23,7 +23,7 @@ G53 G1 {{ py.format_gcode_param_str(move_params) }}
 {%- endcall %}
 
 
-M913 X100 Y100 ; Restore the motor current
+{%- endcall %}
 
 ;Open Coupler
 M98 P"/macros/Coupler - Unlock"
@@ -35,7 +35,3 @@ M106 P{{ tool.fan }} S0
 
 ;Move Out
 G53 G1 X{{ tool.park.X }} Y180 F50000
-
-{% call move.rel_move() %}
-G1 Z{{ tool.offsets.Z }} F1000
-{% endcall %}

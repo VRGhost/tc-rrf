@@ -11,6 +11,27 @@ G90
 {%- endfilter %}
 {% endmacro %}
 
+{% macro drop_motor_current(percentage=0.6, motors=('X', 'Y'), indent=0) %}
+{% filter indent(width=indent) %}
+; ---- drop_motor_current()
+M400 ; wait for any pending moves to complete
+M913
+{%- for letter in motors -%}
+{{ ' {l}{p}'.format(l=letter, p=(percentage * 100) | round | int) }}
+{%- endfor %} ; set the {{ motors }} current to {{ percentage }}
+
+{{ caller() }}
+
+M400 ; wait for moves to complete
+M913
+{%- for letter in motors -%}
+{{ ' {l}{p}'.format(l=letter, p=100) }}
+{%- endfor %} ; restore the {{ motors }} current
+
+; ---- drop_motor_current() END
+{%- endfilter %}
+{% endmacro %}
+
 
 {% macro avoid_tc_clash(indent=0) -%}
 {% filter indent(width=indent) -%}

@@ -4,11 +4,11 @@
 {% import '__macros__/move.jinja' as move %}
 
 {% call move.rel_move() %}
-M913 C70					; XY MOTORS TO 60% CURRENT
+{% call move.drop_motor_current(0.7, motors=['C']) %}
 G1 H2 C-500 F5000
 G92 C-45                    ; Mark C as homed
 {% endcall %}
-M913 C100					; XY MOTORS TO 100% CURRENT
+{% endcall %}
 
 if state.currentTool >= 0
     ;Close Coupler (as there is a tool in it)
