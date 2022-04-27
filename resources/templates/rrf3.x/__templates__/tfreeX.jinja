@@ -16,7 +16,7 @@ M98 P"/sys/usr/pre_dock.g"
 
 {% call move.drop_motor_current(0.6) -%}
 
-{% set move_start_y = 180 - tool.offsets.Y -%}
+{% set move_start_y = 175 -%}
 ; Approach at reducing speed
 {% call(move_params) move.feedrate_changing_sequence(tool.park.X, move_start_y, 10000, tool.park.X, tool.park.Y, 5000) -%}
 G53 G1 {{ py.format_gcode_param_str(move_params) }}

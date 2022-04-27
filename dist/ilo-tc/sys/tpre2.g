@@ -5,9 +5,6 @@
 
 
 
-; save the orig Z
-set global.toolchange_orig_z = move.axes[2].userPosition
-
 ; Just in case - take care not to clash with the environment
 ; ----- AVOID clashing with the TC walls
 if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
@@ -18,7 +15,7 @@ if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere
 M98 P"/macros/Coupler - Unlock"
 
 ;Move to location
-G53 G1 X217.8 Y180 F50000
+G53 G1 X217.8 Y175 F50000
 
 
 
@@ -29,15 +26,15 @@ M913 X60 Y60 ; set the ('X', 'Y') current to 0.6
 
 
 ; Approach at reducing speed
-G53 G1 F10000.0000 X217.8000 Y180.0000
-G53 G1 F9444.4444 X217.8000 Y186.9333
-G53 G1 F8888.8889 X217.8000 Y193.8667
-G53 G1 F8333.3333 X217.8000 Y200.8000
-G53 G1 F7777.7778 X217.8000 Y207.7333
-G53 G1 F7222.2222 X217.8000 Y214.6667
-G53 G1 F6666.6667 X217.8000 Y221.6000
-G53 G1 F6111.1111 X217.8000 Y228.5333
-G53 G1 F5555.5556 X217.8000 Y235.4667
+G53 G1 F10000.0000 X217.8000 Y175.0000
+G53 G1 F9444.4444 X217.8000 Y182.4889
+G53 G1 F8888.8889 X217.8000 Y189.9778
+G53 G1 F8333.3333 X217.8000 Y197.4667
+G53 G1 F7777.7778 X217.8000 Y204.9556
+G53 G1 F7222.2222 X217.8000 Y212.4444
+G53 G1 F6666.6667 X217.8000 Y219.9333
+G53 G1 F6111.1111 X217.8000 Y227.4222
+G53 G1 F5555.5556 X217.8000 Y234.9111
 G53 G1 F5000.0000 X217.8000 Y242.4000
 
 
@@ -77,6 +74,7 @@ M913 X100 Y100 ; restore the ('X', 'Y') current
 
 
 ;Move Out
+G53 G1 Y175 F4000
 ; ----- AVOID clashing with the TC walls
 if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
     G1 Y200 F2500 ; slowly back out

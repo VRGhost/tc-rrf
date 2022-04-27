@@ -5,16 +5,13 @@
 {% import '__macros__/errors.jinja' as err %}
 
 
-; save the orig Z
-set global.toolchange_orig_z = move.axes[{{ py.g.axis.Z.index }}].userPosition
-
 ; Just in case - take care not to clash with the environment
 {{ move.avoid_tc_clash() }}
 
 ;Unlock Coupler
 M98 P"/macros/Coupler - Unlock"
 
-{% set move_start_y = 180 -%}
+{% set move_start_y = 175 -%}
 
 ;Move to location
 G53 G1 X{{ tool.park.X }} Y{{ move_start_y }} F50000
@@ -49,4 +46,5 @@ G1 A{{ -1 * tool.offsets.Z }} B{{ -1 * tool.offsets.Z }}  ; Adjust brush heights
 {% endcall %}
 
 ;Move Out
+G53 G1 Y{{ move_start_y }} F4000
 {{ move.avoid_tc_clash() }}
