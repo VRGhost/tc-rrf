@@ -10,6 +10,4 @@ M106 R2 ; restore print cooling fan speed
 ;prime nozzle
 M98 P"/sys/usr/prime.g"
 
-G1 Z{ global.toolchange_orig_z }; restore the tpre Z
-
 {{ activate_tool_babystep(tool.id) }}
