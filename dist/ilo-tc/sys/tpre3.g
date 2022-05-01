@@ -17,8 +17,8 @@ G90
 ; ---- rel_move() END
 
 ; ----- AVOID clashing with the TC walls
-if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
-    G1 Y200 F2500 ; slowly back out
+if move.axes[1].homed && move.axes[1].machinePosition > 140 ; if Y > ~184 (user position, somewhere in the TC docking area)
+    G53 G0 Y140 F99999 ; slowly back out
 
 
 ;Unlock Coupler
@@ -86,5 +86,5 @@ M913 X100 Y100 ; restore the ('X', 'Y') current
 ;Move Out
 G53 G1 Y175 F4000
 ; ----- AVOID clashing with the TC walls
-if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
-    G1 Y200 F2500 ; slowly back out
+if move.axes[1].homed && move.axes[1].machinePosition > 140 ; if Y > ~184 (user position, somewhere in the TC docking area)
+    G53 G0 Y140 F99999 ; slowly back out

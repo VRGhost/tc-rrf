@@ -10,8 +10,8 @@ if !move.axes[1].homed
 else
     ; Avoid accidentally clashing with the tools/Z column
     ; ----- AVOID clashing with the TC walls
-    if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
-        G1 Y200 F2500 ; slowly back out
+    if move.axes[1].homed && move.axes[1].machinePosition > 140 ; if Y > ~184 (user position, somewhere in the TC docking area)
+        G53 G0 Y140 F99999 ; slowly back out
 
     G1 H1 Y-400 F3000           ; move to the front 400mm (Y axis), stopping at the endstop
     G1 H1 Y2 F2000              ; move away from end

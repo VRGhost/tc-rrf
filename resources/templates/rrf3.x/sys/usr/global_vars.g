@@ -10,5 +10,3 @@
 {{ declare_global_prime_vars() }}
 
 {{ declare_global_babystep_vars() }}
-
-{{ xyz_stack.declare_globals() }}

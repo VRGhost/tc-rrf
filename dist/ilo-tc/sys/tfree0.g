@@ -16,12 +16,20 @@ set global.t0_babystep = move.axes[2].babystep ; only Z babystepping is supporte
 
 ; Just in case - take care not to clash with the environment
 ; ----- AVOID clashing with the TC walls
-if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
-    G1 Y200 F2500 ; slowly back out
+if move.axes[1].homed && move.axes[1].machinePosition > 140 ; if Y > ~184 (user position, somewhere in the TC docking area)
+    G53 G0 Y140 F99999 ; slowly back out
 
 
 ;Purge nozzle
 M98 P"/sys/usr/pre_dock.g"
+
+;Move to location
+M400
+G53 G1 X-8 F50000
+M400
+G53 G1 Y175 F50000
+M400
+
 
 
 
