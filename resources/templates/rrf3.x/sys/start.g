@@ -16,8 +16,6 @@ if var.do_home
     echo "Some axes not homed. Homing."
     G28
 
-M98 P"/sys/usr/lib/xyz_stack.g" S0
-
 
 {{ reset_global_prime_vars() }}
 {{ reset_global_babystep_vars() }}

@@ -7,8 +7,6 @@
 
 ; Save tool position & settings
 
-M98 P"/sys/usr/lib/xyz_stack.g" S1
-
 ; ---- save_tool_babystep(3)
 set global.t3_babystep = move.axes[2].babystep ; only Z babystepping is supported for now
 
