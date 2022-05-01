@@ -6,11 +6,33 @@
 
 ; Params:
 ;   S1 - push current values on the stack
+;   S0 - erase the stack state
 ;   S-1 - pop and apply current values
 
 M400
 
-if param.S = 1
+if param.S = 0
+    set global.xyz_stack_current_depth = -1
+    set global.xyz_stack_level_0_x = 0
+    set global.xyz_stack_level_0_y = 0
+    set global.xyz_stack_level_0_z = 99999
+
+    set global.xyz_stack_level_1_x = 0
+    set global.xyz_stack_level_1_y = 0
+    set global.xyz_stack_level_1_z = 99999
+
+    set global.xyz_stack_level_2_x = 0
+    set global.xyz_stack_level_2_y = 0
+    set global.xyz_stack_level_2_z = 99999
+
+    set global.xyz_stack_level_3_x = 0
+    set global.xyz_stack_level_3_y = 0
+    set global.xyz_stack_level_3_z = 99999
+
+    set global.xyz_stack_level_4_x = 0
+    set global.xyz_stack_level_4_y = 0
+    set global.xyz_stack_level_4_z = 99999
+elif param.S = 1
     ; Save current pos on the stack
     if ( move.axes[0].userPosition < 0 ) || ( move.axes[1].userPosition < 0 )
         ; X or Y are negative - do not save such coords on the stack

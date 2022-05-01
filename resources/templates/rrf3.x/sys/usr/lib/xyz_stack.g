@@ -12,18 +12,26 @@ global xyz_stack_current_depth = -1
 {% for idx in range(stack_depth) -%}
 global xyz_stack_level_{{idx}}_x = 0
 global xyz_stack_level_{{idx}}_y = 0
-global xyz_stack_level_{{idx}}_z = 0
+global xyz_stack_level_{{idx}}_z = 99999
 {% endfor %}
 
 {% endmacro %}
 
 ; Params:
 ;   S1 - push current values on the stack
+;   S0 - erase the stack state
 ;   S-1 - pop and apply current values
 
 M400
 
-if param.S = 1
+if param.S = 0
+    set global.xyz_stack_current_depth = -1
+{%- for idx in range(stack_depth) %}
+    set global.xyz_stack_level_{{idx}}_x = 0
+    set global.xyz_stack_level_{{idx}}_y = 0
+    set global.xyz_stack_level_{{idx}}_z = 99999
+{% endfor -%}
+elif param.S = 1
     ; Save current pos on the stack
     if ( move.axes[{{ py.g.axis.X.index }}].userPosition < 0 ) || ( move.axes[{{ py.g.axis.Y.index }}].userPosition < 0 )
         ; X or Y are negative - do not save such coords on the stack

@@ -30,18 +30,18 @@ global xyz_stack_current_depth = -1
 
 global xyz_stack_level_0_x = 0
 global xyz_stack_level_0_y = 0
-global xyz_stack_level_0_z = 0
+global xyz_stack_level_0_z = 99999
 global xyz_stack_level_1_x = 0
 global xyz_stack_level_1_y = 0
-global xyz_stack_level_1_z = 0
+global xyz_stack_level_1_z = 99999
 global xyz_stack_level_2_x = 0
 global xyz_stack_level_2_y = 0
-global xyz_stack_level_2_z = 0
+global xyz_stack_level_2_z = 99999
 global xyz_stack_level_3_x = 0
 global xyz_stack_level_3_y = 0
-global xyz_stack_level_3_z = 0
+global xyz_stack_level_3_z = 99999
 global xyz_stack_level_4_x = 0
 global xyz_stack_level_4_y = 0
-global xyz_stack_level_4_z = 0
+global xyz_stack_level_4_z = 99999
 
 
