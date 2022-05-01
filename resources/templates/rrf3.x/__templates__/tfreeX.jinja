@@ -5,6 +5,9 @@
 {% import '__macros__/errors.jinja' as err %}
 {% from '__macros__/babystep.jinja' import save_tool_babystep %}
 
+; Save tool position & settings
+
+M98 P"/sys/usr/lib/xyz_stack.g" S1
 
 {{ save_tool_babystep(tool.id) }}
 

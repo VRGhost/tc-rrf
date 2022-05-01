@@ -5,7 +5,8 @@
 
 
 if !move.axes[1].homed
-    abort "Please home Y first"
+    echo "Please home Y first"
+    M99
 else
     ; Avoid accidentally clashing with the tools/Z column
     ; ----- AVOID clashing with the TC walls
@@ -16,7 +17,8 @@ else
     G1 H1 Y2 F2000              ; move away from end
 
 if state.currentTool >= 0
-    abort "Refusing to home X with tool attached."
+    echo "Refusing to home X with tool attached."
+    M99
 
 
 

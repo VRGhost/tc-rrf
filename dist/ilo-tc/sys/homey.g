@@ -16,8 +16,11 @@ M913 X20 Y20 ; set the ('X', 'Y') current to 0.2
 
 
 G1 H2 Z3 F5000				; lift Z 3mm
+M400
 G1 H1 Y-400 F3000 			; move to the front 400mm, stopping at the endstop
+M400
 G1 H1 Y2 F2000 				; move away from end
+M400
 G1 H2 Z-3 F1200				; lower Z
 
 

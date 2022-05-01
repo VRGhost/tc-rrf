@@ -6,6 +6,9 @@
 
 
 ; Just in case - take care not to clash with the environment
+{% call move.rel_move() %}
+G1 H2 Z3 F5000                  ; Lower the bed
+{% endcall %}
 {{ move.avoid_tc_clash() }}
 
 ;Unlock Coupler

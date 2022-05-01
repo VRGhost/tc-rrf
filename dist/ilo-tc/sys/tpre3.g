@@ -6,6 +6,16 @@
 
 
 ; Just in case - take care not to clash with the environment
+
+
+; ---- rel_move()
+M400 ; wait for any pending moves to complete
+G91
+G1 H2 Z3 F5000                  ; Lower the bed
+M400 ; wait for relative moves to complete
+G90
+; ---- rel_move() END
+
 ; ----- AVOID clashing with the TC walls
 if move.axes[1].homed && move.axes[1].userPosition > 205 ; if Y > 205 (somewhere in the TC docking area)
     G1 Y200 F2500 ; slowly back out

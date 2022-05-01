@@ -5,7 +5,8 @@
 
 
 if !move.axes[{{ axis.Y.index }}].homed
-    abort "Please home Y first"
+    echo "Please home Y first"
+    M99
 else
     ; Avoid accidentally clashing with the tools/Z column
     {{ move.avoid_tc_clash(indent=4)}}
@@ -13,7 +14,8 @@ else
     G1 H1 Y2 F2000              ; move away from end
 
 if state.currentTool >= 0
-    abort "Refusing to home X with tool attached."
+    echo "Refusing to home X with tool attached."
+    M99
 
 {% call move.rel_move() %}
 {% call move.drop_motor_current(0.2) %}

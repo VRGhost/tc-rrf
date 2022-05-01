@@ -237,7 +237,7 @@ variables:
         nozzles:
           0.6:
             M221:
-              S: 67
+              S: 66
         extruders:
           direct:
             M207:  # Set retract lengthс

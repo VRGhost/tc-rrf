@@ -4,10 +4,12 @@
 {% import '__macros__/move.jinja' as move %}
 
 if !move.axes[0].homed || !move.axes[1].homed
-    abort "Please home X and Y first"
+    echo "Please home X and Y first"
+    M99
 
 if state.currentTool >= 0
-    abort "Refusing to home Z with tool attached."
+    echo "Refusing to home Z with tool attached."
+    M99
 
 M98 P"/macros/Coupler - Unlock"	; Open Coupler (just in case)
 

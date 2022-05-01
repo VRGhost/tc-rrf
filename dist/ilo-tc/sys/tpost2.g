@@ -10,6 +10,9 @@ M106 R2 ; restore print cooling fan speed
 ;prime nozzle
 M98 P"/sys/usr/prime.g"
 
+; restore tool position
 ; ---- activate_tool_babystep(2)
 M290 S{ global.t2_babystep } R0 ; R0 for "absolute mode"
 
+
+M98 P"/sys/usr/lib/xyz_stack.g" S-1

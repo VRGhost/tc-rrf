@@ -10,4 +10,6 @@ M106 R2 ; restore print cooling fan speed
 ;prime nozzle
 M98 P"/sys/usr/prime.g"
 
+; restore tool position
 {{ activate_tool_babystep(tool.id) }}
+M98 P"/sys/usr/lib/xyz_stack.g" S-1
