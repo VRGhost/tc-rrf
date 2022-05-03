@@ -8,8 +8,10 @@ import fnmatch
 import datetime
 import posixpath as pp
 
-import yaml
 import duetwebapi
+
+
+import tc_rrf_lib
 
 
 class Action:
@@ -291,7 +293,7 @@ def execute_ledger(printer, ledger):
 
 def main(args):
     with open(args["index"], "r") as fin:
-        index = yaml.load(fin, Loader=yaml.SafeLoader)
+        index = tc_rrf_lib.yaml.load(fin)
 
     global_output_root = os.path.abspath(args["output_root"])
     user_output_root = os.path.normpath(

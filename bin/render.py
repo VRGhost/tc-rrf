@@ -11,9 +11,10 @@ import logging
 import copy
 import types
 
-import yaml
 import jinja2
 from mergedeep import merge
+
+import tc_rrf_lib
 
 
 class PyFunctions:
@@ -224,7 +225,7 @@ def main(args):
     assert os.path.isdir(global_output_root), global_output_root
 
     with open(args["index"], "r") as fin:
-        index = yaml.load(fin, Loader=yaml.SafeLoader)
+        index = tc_rrf_lib.yaml.load(fin)
 
     user_templates_root = os.path.normpath(
         os.path.join(global_templates_root, index["templates_root"])
