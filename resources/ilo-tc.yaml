@@ -8,7 +8,7 @@ variables:
       Y: 900
       Z: 12
       C: 4
-      E: [120, 120, 100, 120] # e2 is bowden hemera
+      E: [120, 120, 50, 120] # e2 is bowden hemera
       A: 12
       B: 12
     M203:  # Set maximum speeds (mm/min)
@@ -19,7 +19,7 @@ variables:
       E:
         - !mm/sec 80
         - !mm/sec 80
-        - !mm/sec 50
+        - !mm/sec 40
         - !mm/sec 80
       A: 7000
       B: 7000
@@ -32,8 +32,8 @@ variables:
       A: 500
       B: 500
     M207: # Set retract length
-      S: 10 # positive length to retract, in mm
-      F: 2400 # retraction feedrate, in mm/min
+      S: 1 # positive length to retract, in mm
+      F: !mm/sec 40 # retraction feedrate
   z_probe:
     extra_settings:
       M558: # Set Z probe type to switch, the axes for which it is used and the dive height + speeds
@@ -211,6 +211,7 @@ variables:
               S: 0.5 # positive length to retract, in mm
               R: 0 # -0.01 # positive or negative additional length to un-retract, in mm, default zero
               Z: 0.6
+              F: !mm/sec 60
           bowden:
             M207:
               S: 2 # positive length to retract, in mm
@@ -231,6 +232,7 @@ variables:
               S: 0.35 # positive length to retract, in mm
               F: 2000 # retraction feedrate, in mm/min (45 mm / s)
               # R: -0.01
+              F: !mm/sec 60
               Z: 0.6
           bowden:
             M207:
@@ -247,7 +249,7 @@ variables:
           direct:
             M207:  # Set retract lengthс
               S: 0.35 # positive length to retract, in mm
-              F: 2000 # retraction feedrate, in mm/min (45 mm / s)
+              F: !mm/sec 45
               # R: -0.01
               Z: 0.6
           bowden: {}
