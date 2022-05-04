@@ -225,7 +225,7 @@ variables:
               S: 89
           0.6:
             M221:
-              S: 85
+              S: 80
         extruders:
           direct:
             M207:  # Set retract lengthс

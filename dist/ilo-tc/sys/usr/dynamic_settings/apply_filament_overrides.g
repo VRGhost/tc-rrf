@@ -97,14 +97,14 @@ if (param.T == 0) && (param.F == "PLA") && (param.N < 0.50000)
 
 if (param.T == 0) && (param.F == "PLA") && (param.N >= 0.50000)
     ; apply_tool_mode(tool=0, nozzle_d=0.6, filament=PLA)
-    ; extruder_m221(0, {'S': 85}) ( Set extrude factor override percentage )
+    ; extruder_m221(0, {'S': 80}) ( Set extrude factor override percentage )
 
     ; tools.foreach_extruder(0)
     ; util.foreach(tools[0].extruders)
 
     var foreach_idx_13 = 0
     while var.foreach_idx_13 < #tools[0].extruders
-        M221 D{ tools[0].extruders[var.foreach_idx_13] } S85
+        M221 D{ tools[0].extruders[var.foreach_idx_13] } S80
         set var.foreach_idx_13 = var.foreach_idx_13 + 1
 
     ; end util.foreach()
@@ -223,14 +223,14 @@ if (param.T == 1) && (param.F == "PLA") && (param.N < 0.50000)
 
 if (param.T == 1) && (param.F == "PLA") && (param.N >= 0.50000)
     ; apply_tool_mode(tool=1, nozzle_d=0.6, filament=PLA)
-    ; extruder_m221(1, {'S': 85}) ( Set extrude factor override percentage )
+    ; extruder_m221(1, {'S': 80}) ( Set extrude factor override percentage )
 
     ; tools.foreach_extruder(1)
     ; util.foreach(tools[1].extruders)
 
     var foreach_idx_19 = 0
     while var.foreach_idx_19 < #tools[1].extruders
-        M221 D{ tools[1].extruders[var.foreach_idx_19] } S85
+        M221 D{ tools[1].extruders[var.foreach_idx_19] } S80
         set var.foreach_idx_19 = var.foreach_idx_19 + 1
 
     ; end util.foreach()
@@ -349,14 +349,14 @@ if (param.T == 2) && (param.F == "PLA") && (param.N < 0.50000)
 
 if (param.T == 2) && (param.F == "PLA") && (param.N >= 0.50000)
     ; apply_tool_mode(tool=2, nozzle_d=0.6, filament=PLA)
-    ; extruder_m221(2, {'S': 85}) ( Set extrude factor override percentage )
+    ; extruder_m221(2, {'S': 80}) ( Set extrude factor override percentage )
 
     ; tools.foreach_extruder(2)
     ; util.foreach(tools[2].extruders)
 
     var foreach_idx_25 = 0
     while var.foreach_idx_25 < #tools[2].extruders
-        M221 D{ tools[2].extruders[var.foreach_idx_25] } S85
+        M221 D{ tools[2].extruders[var.foreach_idx_25] } S80
         set var.foreach_idx_25 = var.foreach_idx_25 + 1
 
     ; end util.foreach()
@@ -475,14 +475,14 @@ if (param.T == 3) && (param.F == "PLA") && (param.N < 0.50000)
 
 if (param.T == 3) && (param.F == "PLA") && (param.N >= 0.50000)
     ; apply_tool_mode(tool=3, nozzle_d=0.6, filament=PLA)
-    ; extruder_m221(3, {'S': 85}) ( Set extrude factor override percentage )
+    ; extruder_m221(3, {'S': 80}) ( Set extrude factor override percentage )
 
     ; tools.foreach_extruder(3)
     ; util.foreach(tools[3].extruders)
 
     var foreach_idx_31 = 0
     while var.foreach_idx_31 < #tools[3].extruders
-        M221 D{ tools[3].extruders[var.foreach_idx_31] } S85
+        M221 D{ tools[3].extruders[var.foreach_idx_31] } S80
         set var.foreach_idx_31 = var.foreach_idx_31 + 1
 
     ; end util.foreach()
