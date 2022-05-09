@@ -8,7 +8,7 @@ variables:
       Y: 900
       Z: 12
       C: 4
-      E: [120, 120, 50, 120] # e2 is bowden hemera
+      E: [120, 120, 60, 120] # e2 is bowden hemera
       A: 12
       B: 12
     M203:  # Set maximum speeds (mm/min)
@@ -19,7 +19,7 @@ variables:
       E:
         - !mm/sec 80
         - !mm/sec 80
-        - !mm/sec 40
+        - !mm/sec 100
         - !mm/sec 80
       A: 7000
       B: 7000
@@ -28,7 +28,7 @@ variables:
       Y: 6000
       Z: 400
       C: 500
-      E: [4000, 4000, 2500, 4000] # The E2 is a bowden hemera, it does not like high acceleration values.
+      E: [4000, 4000, 3000, 4000] # The E2 is a bowden hemera, it does not like high acceleration values.
       A: 500
       B: 500
     M207: # Set retract length
@@ -237,7 +237,7 @@ variables:
           bowden:
             M207:
               S: 1 # positive length to retract, in mm
-              F: !mm/sec 35 # retraction feedrate
+              F: !mm/sec 45 # retraction feedrate
               # R: -0.02
               Z: 0.6
       NYLON:

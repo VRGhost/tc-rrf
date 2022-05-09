@@ -342,7 +342,7 @@ if (param.T == 2) && (param.F == "PLA") && (param.N < 0.50000)
     ; end tools.foreach_extruder(2)
 
     ; extruder_m221() END
-    M207 P2 F2100 S1 Z0.6000
+    M207 P2 F2700 S1 Z0.6000
     set global.t2_babystep = global.t2_babystep + 0.0
     ; apply_tool_mode() END
 
@@ -363,7 +363,7 @@ if (param.T == 2) && (param.F == "PLA") && (param.N >= 0.50000)
     ; end tools.foreach_extruder(2)
 
     ; extruder_m221() END
-    M207 P2 F2100 S1 Z0.6000
+    M207 P2 F2700 S1 Z0.6000
     set global.t2_babystep = global.t2_babystep + 0.0
     ; apply_tool_mode() END
 
