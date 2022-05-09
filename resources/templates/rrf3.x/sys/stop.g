@@ -13,6 +13,8 @@ M568 P2 A0
 M568 P3 A0
 ; Turn off bed header
 M140 P0 S-273.15
+; Chamber heater off
+M141 P0 S-273.15
 
 if move.axes[{{ axis.Z.index }}].userPosition < 280
     ; Lower the bed

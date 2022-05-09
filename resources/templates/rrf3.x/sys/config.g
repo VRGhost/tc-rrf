@@ -105,7 +105,7 @@ M143 H4 S305 													; Set temperature limit for heater 4 to 300C
 ; Chamber Heater
 M308 S5 P"e4temp" Y"thermistor" A"Chamber" T100000 B4725 C7.06e-8       ; Set thermistor
 M950 H5 C"duex.e4heat" T5                                               ; create chamber heater output on e1heat and map it to sensor 5
-; M307 H5 B0 S1.00                                                      ; disable bang-bang mode for the chamber heater and set PWM limit
+M307 H5 B0 S1.00                                                      ; disable bang-bang mode for the chamber heater and set PWM limit
 M141 H5                                                                 ; map chamber to heater 2
 M143 H5 S100                                                            ; set temperature limit for heater 2 to 100C
 
