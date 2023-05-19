@@ -28,7 +28,7 @@ if (param.T == 0) && (param.F == "PET") && (param.N < 0.50000)
 
     ; extruder_m221() END
     M207 P0 F3600 R0 S0.5000 Z0.6000
-    set global.t0_babystep = global.t0_babystep + 0.04
+    set global.t0_babystep = global.t0_babystep + 0
     ; apply_tool_mode() END
 
 
@@ -49,7 +49,7 @@ if (param.T == 0) && (param.F == "PET") && (param.N >= 0.50000) && (param.N < 0.
 
     ; extruder_m221() END
     M207 P0 F3600 R0 S0.5000 Z0.6000
-    set global.t0_babystep = global.t0_babystep + 0.04
+    set global.t0_babystep = global.t0_babystep + 0
     ; apply_tool_mode() END
 
 
@@ -70,7 +70,7 @@ if (param.T == 0) && (param.F == "PET") && (param.N >= 0.70000)
 
     ; extruder_m221() END
     M207 P0 F3600 R0 S0.5000 Z0.6000
-    set global.t0_babystep = global.t0_babystep + 0.04
+    set global.t0_babystep = global.t0_babystep + 0
     ; apply_tool_mode() END
 
 
@@ -154,7 +154,7 @@ if (param.T == 1) && (param.F == "PET") && (param.N < 0.50000)
 
     ; extruder_m221() END
     M207 P1 F3600 R0 S0.5000 Z0.6000
-    set global.t1_babystep = global.t1_babystep + 0.04
+    set global.t1_babystep = global.t1_babystep + 0
     ; apply_tool_mode() END
 
 
@@ -175,7 +175,7 @@ if (param.T == 1) && (param.F == "PET") && (param.N >= 0.50000) && (param.N < 0.
 
     ; extruder_m221() END
     M207 P1 F3600 R0 S0.5000 Z0.6000
-    set global.t1_babystep = global.t1_babystep + 0.04
+    set global.t1_babystep = global.t1_babystep + 0
     ; apply_tool_mode() END
 
 
@@ -196,7 +196,7 @@ if (param.T == 1) && (param.F == "PET") && (param.N >= 0.70000)
 
     ; extruder_m221() END
     M207 P1 F3600 R0 S0.5000 Z0.6000
-    set global.t1_babystep = global.t1_babystep + 0.04
+    set global.t1_babystep = global.t1_babystep + 0
     ; apply_tool_mode() END
 
 
@@ -279,8 +279,8 @@ if (param.T == 2) && (param.F == "PET") && (param.N < 0.50000)
     ; end tools.foreach_extruder(2)
 
     ; extruder_m221() END
-    M207 P2 F2100 R-0.0100 S2 Z0.6000
-    set global.t2_babystep = global.t2_babystep + 0.04
+    M207 P2 F2700 R-0.0100 S2 Z0.6000
+    set global.t2_babystep = global.t2_babystep + 0
     ; apply_tool_mode() END
 
 
@@ -300,8 +300,8 @@ if (param.T == 2) && (param.F == "PET") && (param.N >= 0.50000) && (param.N < 0.
     ; end tools.foreach_extruder(2)
 
     ; extruder_m221() END
-    M207 P2 F2100 R-0.0100 S2 Z0.6000
-    set global.t2_babystep = global.t2_babystep + 0.04
+    M207 P2 F2700 R-0.0100 S2 Z0.6000
+    set global.t2_babystep = global.t2_babystep + 0
     ; apply_tool_mode() END
 
 
@@ -321,8 +321,8 @@ if (param.T == 2) && (param.F == "PET") && (param.N >= 0.70000)
     ; end tools.foreach_extruder(2)
 
     ; extruder_m221() END
-    M207 P2 F2100 R-0.0100 S2 Z0.6000
-    set global.t2_babystep = global.t2_babystep + 0.04
+    M207 P2 F2700 R-0.0100 S2 Z0.6000
+    set global.t2_babystep = global.t2_babystep + 0
     ; apply_tool_mode() END
 
 
@@ -406,7 +406,7 @@ if (param.T == 3) && (param.F == "PET") && (param.N < 0.50000)
 
     ; extruder_m221() END
     M207 P3 F3600 R0 S0.5000 Z0.6000
-    set global.t3_babystep = global.t3_babystep + 0.04
+    set global.t3_babystep = global.t3_babystep + 0
     ; apply_tool_mode() END
 
 
@@ -427,7 +427,7 @@ if (param.T == 3) && (param.F == "PET") && (param.N >= 0.50000) && (param.N < 0.
 
     ; extruder_m221() END
     M207 P3 F3600 R0 S0.5000 Z0.6000
-    set global.t3_babystep = global.t3_babystep + 0.04
+    set global.t3_babystep = global.t3_babystep + 0
     ; apply_tool_mode() END
 
 
@@ -448,7 +448,7 @@ if (param.T == 3) && (param.F == "PET") && (param.N >= 0.70000)
 
     ; extruder_m221() END
     M207 P3 F3600 R0 S0.5000 Z0.6000
-    set global.t3_babystep = global.t3_babystep + 0.04
+    set global.t3_babystep = global.t3_babystep + 0
     ; apply_tool_mode() END
 
 

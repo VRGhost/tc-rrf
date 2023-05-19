@@ -194,7 +194,7 @@ variables:
     filaments:
       PET:
         default:
-          babystep: 0.04
+          babystep: 0
         nozzles:
           0.4: # this must be float!
             M221: # Set extrude factor override percentage
@@ -215,7 +215,7 @@ variables:
           bowden:
             M207:
               S: 2 # positive length to retract, in mm
-              F: !mm/sec 35 # retraction feedrate
+              F: !mm/sec 45 # retraction feedrate
               R: -0.01
               Z: 0.6
       PLA:
@@ -241,6 +241,8 @@ variables:
               # R: -0.02
               Z: 0.6
       NYLON:
+        default:
+          babystep: 0.0
         nozzles:
           0.6:
             M221:
