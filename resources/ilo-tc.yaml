@@ -201,7 +201,7 @@ variables:
               S: 98 # Extrude factor override percentage
           0.6:
             M221:
-              S: 93
+              S: 98
           0.8:
             M221:
               S: 98
