@@ -1,20 +1,18 @@
-#!/usr/bin/env python3
-
 # Render templates to distributable (uploadable) scripts
 
-import argparse
-import os
+import copy
 import glob
-import shutil
 import itertools
 import logging
-import copy
+import os
+import pathlib
+import shutil
 import types
 
 import jinja2
 from mergedeep import merge
 
-import tc_rrf_lib
+import tc_rrf.lib
 
 
 class PyFunctions:
@@ -75,7 +73,8 @@ class PyFunctions:
     def floatWithinBoundsCond(
         self, var_name, prev_val=None, cur_val=None, next_val=None
     ):
-        """Return duet meta if condition that is true when the float in var_name is _approximatly_ cur_val (boundaries specified by prev & next vals).
+        """Return duet meta if condition that is true when the float in var_name is
+         _approximatly_ cur_val (boundaries specified by prev & next vals).
 
         An open boundary is assumed if the prev/next floats are not provided.
         """
@@ -203,7 +202,7 @@ def save_output(files, output_root):
     os.makedirs(output_root)
 
     tested_dirs = set()
-    for (fname, payload) in files.items():
+    for fname, payload in files.items():
         out_fname = os.path.join(output_root, fname)
         # Ensure out dir exists
         out_dir = os.path.dirname(out_fname)
@@ -217,19 +216,15 @@ def save_output(files, output_root):
             )  # Apologies to the unicode users, but this is safer.
 
 
-def main(args):
-    global_templates_root = os.path.abspath(args["templates_root"])
-    assert os.path.isdir(global_templates_root), global_templates_root
+def main(index: pathlib.Path, templates_root: pathlib.Path, output_root: pathlib.Path):
+    assert index.is_file(), index
+    assert templates_root.is_dir(), templates_root
+    assert output_root.is_dir(), output_root
 
-    global_output_root = os.path.abspath(args["output_root"])
-    assert os.path.isdir(global_output_root), global_output_root
+    with index.open() as fin:
+        index = tc_rrf.lib.yaml.load(fin)
 
-    with open(args["index"], "r") as fin:
-        index = tc_rrf_lib.yaml.load(fin)
-
-    user_templates_root = os.path.normpath(
-        os.path.join(global_templates_root, index["templates_root"])
-    )
+    user_templates_root = templates_root / index["templates_root"]
     assert os.path.isdir(user_templates_root), user_templates_root
     global_vars = index.get("variables") or {}
 
@@ -243,30 +238,7 @@ def main(args):
             )
         rendered.update(render_out)
 
-    user_output_root = os.path.normpath(
-        os.path.join(global_output_root, index["output_root"])
-    )
+    user_output_root = output_root / index["output_root"]
+
     save_output(rendered, user_output_root)
     print(f"Rendered {len(rendered)} files.")
-
-
-def get_arg_parser():
-    PROJ_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
-    TEMPLATES_ROOT = os.path.join(PROJ_DIR, "resources", "templates")
-    parser = argparse.ArgumentParser(
-        description="Renders templates into uploadable scripts"
-    )
-    parser.add_argument(
-        "--templates-root", help="Templates root", default=TEMPLATES_ROOT
-    )
-    parser.add_argument(
-        "--output-root", help="Output root", default=os.path.join(PROJ_DIR, "dist")
-    )
-    parser.add_argument("index", help="Input yaml file")
-    return parser
-
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
-    args = get_arg_parser().parse_args()
-    main(args.__dict__)

@@ -1,17 +1,15 @@
 #!/usr/bin/env python3
 
-import argparse
 import collections
-import os
-import sys
-import fnmatch
 import datetime
+import fnmatch
+import os
+import pathlib
 import posixpath as pp
 
 import duetwebapi
 
-
-import tc_rrf_lib
+import tc_rrf.lib
 
 
 class Action:
@@ -123,7 +121,7 @@ LocalFile = collections.namedtuple(
 def list_local_files(root, printer_root):
     """List all local files in the `root` dir that are available for sync"""
     out = []
-    for (dirpath, dirnames, files) in os.walk(os.path.abspath(root)):
+    for dirpath, dirnames, files in os.walk(os.path.abspath(root)):
         for name in dirnames:
             full_path = os.path.join(dirpath, name)
             relpath = os.path.relpath(full_path, root)
@@ -163,8 +161,8 @@ def create_update_ledger(api, remote_dir, local_files):
     out = ActionLedger()
 
     remote_list = get_printer_directory(api, remote_dir, recursive=True)
-    local_file_dict = dict((el.printer_path, el) for el in local_files)
-    remote_file_dict = dict((el.full_path, el) for el in remote_list)
+    local_file_dict = {el.printer_path: el for el in local_files}
+    remote_file_dict = {el.full_path: el for el in remote_list}
     all_paths = set(local_file_dict.keys()) | set(remote_file_dict.keys())
 
     for path in all_paths:
@@ -208,7 +206,7 @@ def filter_ledger(ledger, create=(), copy=(), delete=()):
     """Return a new ledger with all files mathing the provided patterns REMOVED."""
     filtered_data = {}
 
-    for (name, rm_filters) in [("create", create), ("copy", copy), ("delete", delete)]:
+    for name, rm_filters in [("create", create), ("copy", copy), ("delete", delete)]:
         raw_data = getattr(ledger, name)
         good_data = []
         for raw_el in raw_data:
@@ -219,7 +217,7 @@ def filter_ledger(ledger, create=(), copy=(), delete=()):
         filtered_data[name] = good_data
 
     out = ActionLedger()
-    for (name, val) in filtered_data.items():
+    for name, val in filtered_data.items():
         setattr(out, name, tuple(val))
     return out
 
@@ -291,20 +289,22 @@ def execute_ledger(printer, ledger):
         printer.upload_file(data, filename=fname, directory=dirname)
 
 
-def main(args):
-    with open(args["index"], "r") as fin:
-        index = tc_rrf_lib.yaml.load(fin)
+def main(
+    index: pathlib.Path,
+    output_root: pathlib.Path,
+    host: str,
+    password: str | None = None,
+):
+    with index.open() as fin:
+        index = tc_rrf.lib.yaml.load(fin)
 
-    global_output_root = os.path.abspath(args["output_root"])
-    user_output_root = os.path.normpath(
-        os.path.join(global_output_root, index["output_root"])
-    )
+    user_output_root = output_root / index["output_root"]
 
-    printer = duetwebapi.DuetWebAPI(args["host"])
-    printer.connect(args["password"])
+    printer = duetwebapi.DuetWebAPI(host)
+    printer.connect(password or "")
     ledger = ActionLedger()
     try:
-        for (dirname, handler) in [
+        for dirname, handler in [
             ("sys", sync_sys),
             ("macros", sync_macros),
         ]:
@@ -319,27 +319,3 @@ def main(args):
 
     finally:
         printer.disconnect()
-
-
-def get_arg_parser():
-    PROJ_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
-
-    parser = argparse.ArgumentParser(
-        description="Override DWC scripts with local copies"
-    )
-    parser.add_argument(
-        "--output-root", help="Output root", default=os.path.join(PROJ_DIR, "dist")
-    )
-    parser.add_argument(
-        "--host",
-        required=True,
-        help='Duet Web Console (DWC) url. E.g "http://192.168.242.45"',
-    )
-    parser.add_argument("--password", default="", help="DWC password")
-    parser.add_argument("index", help="Yaml file the files were generated from")
-    return parser
-
-
-if __name__ == "__main__":
-    args = get_arg_parser().parse_args()
-    main(args.__dict__)
