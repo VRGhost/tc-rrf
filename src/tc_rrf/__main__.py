@@ -27,7 +27,7 @@ def render(
 def upload(
     host: Annotated[
         typing.Optional[str],
-        typer.Argument(help='Duet Web Console (DWC) url. E.g "http://192.168.242.45"'),
+        typer.Argument(help='Duet Web Console (DWC) url. E.g "http://dwc.hoopoe"'),
     ],
     index: pathlib.Path = (PROJ_DIR / "resources" / "ilo-tc.yaml"),
     password: Annotated[
