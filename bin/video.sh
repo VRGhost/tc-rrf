@@ -3,7 +3,7 @@
 ## Opens the microscope with crosshair in mplayer
 
 
-
+SRC="0.0.0.0:1234"
 DEVICE=/dev/video0
 VIDEO_W=640
 VIDEO_H=480
@@ -18,8 +18,12 @@ RECTANGLES="
 "
 
 
-mplayer \
-    tv:// -tv "driver=v4l2:device=${DEVICE}:width=${VIDEO_W}:height=${VIDEO_H}:fps=10:outfmt=yuy2" \
+# mplayer \
+#     tv:// -tv "driver=v4l2:device=${DEVICE}:width=${VIDEO_W}:height=${VIDEO_H}:fps=10:outfmt=yuy2" \
+#     -vf "$(echo ${RECTANGLES} | sed "s/\s*//g")"
+
+smplayer  \
+    "udp://${SRC}" \
     -vf "$(echo ${RECTANGLES} | sed "s/\s*//g")"
 
 #rectangle=2:-1:$(expr "${VIDEO_H}" / 3):-1
