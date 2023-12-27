@@ -6,7 +6,7 @@ import async_timer
 import cv2
 import numpy as np
 
-from . import motion_tracker, object_tracker, typ, vcap_source
+from . import trackers, typ, vcap_source
 
 logger = logging.getLogger(__name__)
 
@@ -17,16 +17,16 @@ class XYConfigurator:
     width: int
     height: int
 
-    object_tracker: object_tracker.HoughTracker
-    motion_tracker: motion_tracker.Odometer
+    object_tracker: trackers.object_tracker.HoughTracker
+    motion_tracker: trackers.motion_tracker.Odometer
     frame_source: async_timer.Timer[object]
 
     def __init__(self, vcap, duet_api):
         cv2.namedWindow(self.window_title)
         cv2.setMouseCallback(self.window_title, self.mouse_cb)
         self.vcap = vcap_source.VCapSource(vcap)
-        self.object_tracker = object_tracker.HoughTracker()
-        self.motion_tracker = motion_tracker.Odometer()
+        self.object_tracker = trackers.object_tracker.HoughTracker()
+        self.motion_tracker = trackers.motion_tracker.Odometer()
         self.duet_api = duet_api
         self.width = int(vcap.get(cv2.CAP_PROP_FRAME_WIDTH))
         self.height = int(vcap.get(cv2.CAP_PROP_FRAME_HEIGHT))

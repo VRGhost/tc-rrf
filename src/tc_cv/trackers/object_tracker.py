@@ -3,7 +3,7 @@ import dataclasses
 import cv2
 import numpy as np
 
-from . import typ
+from .. import typ
 
 
 @dataclasses.dataclass(slots=True, frozen=True)
