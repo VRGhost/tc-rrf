@@ -101,16 +101,16 @@ class HoughTracker:
         gray_blurred = cv2.blur(gray_frame, (3, 3))
 
         min_r = 50
-        max_r = 250
+        max_r = 150
 
-        min_dist = max_r - min_r
+        min_dist = 150
         detected_circles = cv2.HoughCircles(
             gray_blurred,
             cv2.HOUGH_GRADIENT,
-            1,
-            int(min_dist),
-            param1=70,
-            param2=50,
+            dp=1,
+            minDist=int(min_dist),
+            param1=55,
+            param2=30,
             minRadius=int(min_r),
             maxRadius=int(max_r),
         )
@@ -120,6 +120,8 @@ class HoughTracker:
             detected_circles = np.int64(np.around(detected_circles))
             for pt in detected_circles[0, :]:
                 circles.append(typ.Circle(pt[0], pt[1], pt[2]))
+                if len(circles) > 10:
+                    break
             self.all_circles = tuple(circles)
             if self.target_circle:
                 self.target_circle = self.find_closest_circle(
