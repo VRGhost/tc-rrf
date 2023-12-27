@@ -6,7 +6,7 @@ import async_timer
 import cv2
 import numpy as np
 
-from . import object_tracker, typ, vcap_source
+from . import motion_tracker, object_tracker, typ, vcap_source
 
 logger = logging.getLogger(__name__)
 
@@ -17,15 +17,16 @@ class XYConfigurator:
     width: int
     height: int
 
-    tracker: object_tracker.HoughTracker
+    object_tracker: object_tracker.HoughTracker
+    motion_tracker: motion_tracker.Odometer
     frame_source: async_timer.Timer[object]
 
     def __init__(self, vcap, duet_api):
         cv2.namedWindow(self.window_title)
         cv2.setMouseCallback(self.window_title, self.mouse_cb)
         self.vcap = vcap_source.VCapSource(vcap)
-        # self.tracker = FeatureTracker(2, tracked_feature_count=30)
-        self.tracker = object_tracker.HoughTracker()
+        self.object_tracker = object_tracker.HoughTracker()
+        self.motion_tracker = motion_tracker.Odometer()
         self.duet_api = duet_api
         self.width = int(vcap.get(cv2.CAP_PROP_FRAME_WIDTH))
         self.height = int(vcap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -38,45 +39,19 @@ class XYConfigurator:
     def send_g_code(self, code: str):
         return self.duet_api.send_code(code)
 
-    def track(self, frame):
-        self.tracker.push(frame)
-
     def mouse_cb(self, event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONUP:
             logger.debug(f"mouse @ {x=} {y=}")
-            self.tracker.set_interesting_points(x, y)
+            self.object_tracker.set_interesting_points(x, y)
 
     async def get_frames(self):
         yellow_c = (255, 255, 0)
         async for (_ret, frame) in self.vcap.async_read():
-            self.track(frame)
+            self.object_tracker.push(frame)
+            self.motion_tracker.push(frame)
 
-            line_thickness = 2
-
-            if last := self.tracker.state():
-                # logger.debug(f"tracker state = {last}")
-                frame = cv2.drawKeypoints(
-                    frame,
-                    last.all_kp,
-                    0,
-                    (0, 0, 255),
-                    flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS,
-                )
-                frame = cv2.drawKeypoints(
-                    frame,
-                    last.interesting_kp,
-                    0,
-                    (0, 255, 255),
-                    flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS,
-                )
-                frame = cv2.drawKeypoints(
-                    frame,
-                    last.tracking_kp,
-                    0,
-                    (0, 255, 0),
-                    flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS,
-                )
-
+            # Draw crosshair
+            line_thickness = 1
             cv2.line(
                 frame,
                 (self.width // 2, 10),
@@ -91,6 +66,11 @@ class XYConfigurator:
                 color=yellow_c,
                 thickness=line_thickness,
             )
+
+            # Draw trackers' UIs
+            frame = self.motion_tracker.draw_ui_overlay(frame)
+            frame = self.object_tracker.draw_ui_overlay(frame)
+
             yield frame
 
     def abs_move(self, p: typ.Point):
@@ -112,7 +92,6 @@ class XYConfigurator:
     @contextlib.contextmanager
     def restore_pos(self):
         coords = self.duet_api.get_coords()
-        print(coords)
         yield
         self.send_g_code(f"G0 X{coords['X']} Y{coords['Y']} Z{coords['Z']}")
 
@@ -134,22 +113,14 @@ class XYConfigurator:
             )
 
     def is_tracking(self) -> bool:
-        return self.tracker.state().is_tracking()
+        return self.object_tracker.state().is_tracking()
 
     def is_stable(self) -> bool:
-        return self.tracker.state().pos_certain()
-
-    def is_unstable(self) -> bool:
-        return self.tracker.state().pos_uncertain()
+        return self.object_tracker.state().pos_certain()
 
     async def wait_for_tracking(self):
         while not self.is_tracking():
             await asyncio.sleep(0.5)
-
-    async def wait_for_move_to_start(self):
-        await self.wait_for_tracking()
-        while not self.is_unstable():
-            await asyncio.sleep(0.1)
 
     async def wait_for_move_to_stabilise(self):
         await self.wait_for_tracking()
@@ -157,17 +128,9 @@ class XYConfigurator:
             await asyncio.sleep(0.5)
 
     async def wait_move_to_happen(self):
+        await self.motion_tracker.wait_for_motion_to_start()
+        await self.motion_tracker.wait_for_motion_to_stop()
         await self.wait_for_move_to_stabilise()
-        start_pos = self.tracker.state().representative_point
-
-        await self.wait_for_move_to_start()
-        await self.wait_for_move_to_stabilise()
-        new_pos = self.tracker.state().representative_point
-        logger.debug(f"pos diff: {start_pos.sq_dist_to(new_pos)}")
-        while start_pos.sq_dist_to(new_pos) < 50:
-            await asyncio.sleep(1)
-            await self.wait_for_move_to_stabilise()
-            new_pos = self.tracker.state().representative_point
 
     async def wait_tool_change(self, tool: str | int):
         if isinstance(tool, int):
@@ -192,7 +155,7 @@ class XYConfigurator:
             """Return tuple of (screen coords, printer coords)"""
             return (
                 self.get_printer_coords(),
-                self.tracker.state().representative_point,
+                self.object_tracker.state().representative_point,
             )
 
         async def _measure_apparent_move_dist(dx=0, dy=0):

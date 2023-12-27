@@ -8,21 +8,14 @@ from . import typ
 
 @dataclasses.dataclass(slots=True, frozen=True)
 class TrackerState:
-    all_kp: list[cv2.KeyPoint]
-    interesting_kp: list[cv2.KeyPoint]
-    tracking_kp: list[cv2.KeyPoint]
-
     representative_point: typ.Point
     _avg_dsum: float = 0.0
 
     def is_tracking(self):
-        return bool(self.interesting_kp)
+        return self.representative_point is not None
 
     def pos_certain(self):
         return self.is_tracking() and self._avg_dsum < 2
-
-    def pos_uncertain(self):
-        return self.is_tracking() and self._avg_dsum > 3
 
 
 class DecayingAvgPoint:
@@ -63,20 +56,43 @@ class HoughTracker:
         self.avg_slow = DecayingAvgPoint(1 / 10.0)
 
     def state(self) -> TrackerState:
-        def _circle_to_kp(circ):
-            return cv2.KeyPoint(x=float(circ.x), y=float(circ.y), size=float(circ.r))
-
-        interesting_kp = []
-        tracking_kp = []
         avg_dsum = 0
         repr_point = None
         if self.target_circle:
-            interesting_kp.append(_circle_to_kp(self.target_circle))
-
             avg_dx = (self.avg_fast.x - self.avg_slow.x) ** 2
             avg_dy = (self.avg_fast.y - self.avg_slow.y) ** 2
             avg_dsum = avg_dx + avg_dy
-            tracking_kp.extend(
+            repr_point = self.avg_fast.point()
+
+        return TrackerState(
+            representative_point=repr_point,
+            _avg_dsum=avg_dsum,
+        )
+
+    def draw_ui_overlay(self, frame: typ.VideoFrame) -> typ.VideoFrame:
+        def _circle_to_kp(circ):
+            return cv2.KeyPoint(x=float(circ.x), y=float(circ.y), size=float(circ.r))
+
+        # All circles
+        frame = cv2.drawKeypoints(
+            frame,
+            [_circle_to_kp(circ) for circ in self.all_circles],
+            0,
+            (0, 0, 255),
+            flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS,
+        )
+        if self.target_circle:
+            frame = cv2.drawKeypoints(
+                frame,
+                # Target circle
+                [_circle_to_kp(self.target_circle)],
+                0,
+                (0, 255, 255),
+                flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS,
+            )
+            frame = cv2.drawKeypoints(
+                frame,
+                # Tracking points
                 [
                     cv2.KeyPoint(
                         x=float(self.avg_fast.x), y=float(self.avg_fast.y), size=1.0
@@ -84,17 +100,12 @@ class HoughTracker:
                     cv2.KeyPoint(
                         x=float(self.avg_slow.x), y=float(self.avg_slow.y), size=10.0
                     ),
-                ]
+                ],
+                0,
+                (0, 255, 0),
+                flags=cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS,
             )
-            repr_point = self.avg_fast.point()
-
-        return TrackerState(
-            all_kp=[_circle_to_kp(circ) for circ in self.all_circles],
-            interesting_kp=interesting_kp,
-            tracking_kp=tracking_kp,
-            representative_point=repr_point,
-            _avg_dsum=avg_dsum,
-        )
+        return frame
 
     def push(self, frame):
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)

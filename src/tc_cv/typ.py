@@ -1,4 +1,9 @@
 import dataclasses
+import typing
+
+import numpy as np
+
+VideoFrame: typing.TypeAlias = np.array
 
 
 @dataclasses.dataclass(frozen=True, slots=True)
