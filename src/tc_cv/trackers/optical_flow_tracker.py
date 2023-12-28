@@ -70,10 +70,16 @@ class OpticalFlowTracker:
                 user_p = self.user_point()
                 self._pick_tracked_features(gr_frame, user_p.x, user_p.y)
 
-            up_moved_by: typ.Vector = old_up - self.user_point()
-            if up_moved_by.len_sq() > 10**2:
-                logger.error("Tracked point moved too much. Forgetting it.")
+            new_up = self.user_point()
+            if new_up:
+                up_moved_by: typ.Vector = old_up - self.user_point()
+                if up_moved_by.len_sq() > 10**2:
+                    logger.error("Tracked point moved too much. Forgetting it.")
+                    self.forget_tracking()
+            else:
+                logger.error("Empty user point - did we loose track?")
                 self.forget_tracking()
+
         self.prev_gray_frame = gr_frame
 
     def user_point(self) -> typ.Point | None:
@@ -83,6 +89,10 @@ class OpticalFlowTracker:
             )
             avg_pos = np.average(user_point_poses, axis=(0, 1))
             assert avg_pos.shape == (2,)
+            if np.any(np.isnan(avg_pos)):
+                # NaN average
+                self.forget_tracking()
+                return None
             return typ.Point(x=avg_pos[0], y=avg_pos[1])
         return None
 
@@ -113,6 +123,9 @@ class OpticalFlowTracker:
             np.array([target_x, target_y]) - self.tracked_features
         )
         self.initial_tracked_feature_count = self._tracked_feature_count()
+        if self.initial_tracked_feature_count == 0:
+            logger.error("No tracking features detected - did we loose track?")
+            self.forget_tracking()
 
     def set_interesting_point(self, x, y):
         self._pick_tracked_features(self.prev_gray_frame, x, y)

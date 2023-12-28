@@ -211,7 +211,7 @@ class XYConfigurator:
         await self.wait_move_to_complete(3)
         async with self.restore_pos():
             try:
-                for tool_rec in tc_tools[:1]:
+                for tool_rec in tc_tools:
                     await self.wait_tool_change(tool_rec["name"])
                     self.abs_move(precise_no_tool_offset(screen_mid))
                     precise_tool_offset = await self.infer_coord_transform()
