@@ -90,7 +90,7 @@ class Odometer:
                         frame,
                         center=(int(x), int(y)),
                         radius=2,
-                        color=(255, 0, 100),
+                        color=(30, 0, 100),
                         thickness=2,
                     )
         return frame
@@ -103,9 +103,11 @@ class Odometer:
 
     async def wait_for_motion_to_stop(self):
         epsilon = 2  # Ignore any changes of below 2 px
-        start_val = self.np_odometer
-        new_val = start_val + 100 + 10 * epsilon
-        while (start_val - new_val) > epsilon:  # While there is too much movement
-            await asyncio.sleep(0.5)
+        sleep_t = 1
+        while True:
+            start_val = self.np_odometer
+            await asyncio.sleep(sleep_t)
             new_val = self.np_odometer
-            # logging.debug(f"wait_for_odometer_increase {new_val=} {start_val=}")
+            if (new_val - start_val) < epsilon:
+                # Not enough movement
+                break

@@ -17,7 +17,7 @@ class XYConfigurator:
     width: int
     height: int
 
-    object_tracker: trackers.object_tracker.HoughTracker
+    object_tracker: trackers.hough_object_tracker.HoughTracker
     motion_tracker: trackers.motion_tracker.Odometer
     frame_source: async_timer.Timer[object]
 
@@ -25,7 +25,7 @@ class XYConfigurator:
         cv2.namedWindow(self.window_title)
         cv2.setMouseCallback(self.window_title, self.mouse_cb)
         self.vcap = vcap_source.VCapSource(vcap)
-        self.object_tracker = trackers.object_tracker.HoughTracker()
+        self.object_tracker = trackers.optical_flow_tracker.OpticalFlowTracker()
         self.motion_tracker = trackers.motion_tracker.Odometer()
         self.duet_api = duet_api
         self.width = int(vcap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -42,7 +42,7 @@ class XYConfigurator:
     def mouse_cb(self, event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONUP:
             logger.debug(f"mouse @ {x=} {y=}")
-            self.object_tracker.set_interesting_points(x, y)
+            self.object_tracker.set_interesting_point(x, y)
 
     async def get_frames(self):
         yellow_c = (255, 255, 0)
@@ -73,13 +73,14 @@ class XYConfigurator:
 
             yield frame
 
-    def abs_move(self, p: typ.Point):
-        self.send_g_code(
-            f"""
-                G0 X{p.x} Y{p.y}
-                M400
-            """
-        )
+    def abs_move(self, p: typ.Point, feed: float = 45.0):
+        with self.tmp_settings():
+            self.send_g_code(
+                f"""
+                    G0 X{p.x} Y{p.y} F{feed}
+                    M400
+                """
+            )
 
     @contextlib.contextmanager
     def tmp_settings(self):
@@ -89,11 +90,12 @@ class XYConfigurator:
         finally:
             self.send_g_code("M121")
 
-    @contextlib.contextmanager
-    def restore_pos(self):
+    @contextlib.asynccontextmanager
+    async def restore_pos(self):
         coords = self.duet_api.get_coords()
         yield
         self.send_g_code(f"G0 X{coords['X']} Y{coords['Y']} Z{coords['Z']}")
+        await self.wait_move_to_complete(3)
 
     def rel_move(
         self,
@@ -127,8 +129,14 @@ class XYConfigurator:
         while not self.is_stable():
             await asyncio.sleep(0.5)
 
-    async def wait_move_to_happen(self):
-        await self.motion_tracker.wait_for_motion_to_start()
+    async def wait_move_to_complete(self, timeout=20):
+        try:
+            async with asyncio.timeout(timeout):
+                await self.motion_tracker.wait_for_motion_to_start()
+        except TimeoutError:
+            logger.warn(
+                "Waiting for move to complete timed out. Maybe a very small move was attempted?"
+            )
         await self.motion_tracker.wait_for_motion_to_stop()
         await self.wait_for_move_to_stabilise()
 
@@ -139,7 +147,8 @@ class XYConfigurator:
             tool_name = tool
         tools_info = self.duet_api.get_model(key="tools")
         expected_state = {el["name"]: (el["name"] == tool_name) for el in tools_info}
-        self.send_g_code(tool_name)
+        async with self.restore_pos():
+            self.send_g_code(tool_name)
         while True:
             tools_info = self.duet_api.get_model(key="tools")
             status = {el["name"]: (el["state"] == "active") for el in tools_info}
@@ -161,17 +170,17 @@ class XYConfigurator:
         async def _measure_apparent_move_dist(dx=0, dy=0):
             await self.wait_for_move_to_stabilise()
             self.rel_move(dx=dx, dy=dy)
-            await self.wait_move_to_happen()
+            await self.wait_move_to_complete()
 
             rv = capture_coords()
             self.rel_move(dx=-dx, dy=-dy)
-            await self.wait_for_move_to_stabilise()
+            await self.wait_move_to_complete()
 
             return rv
 
         await self.wait_for_move_to_stabilise()
         measured_points = [capture_coords()]
-        for world_move in [[1, 2], [2, 1], [1, 0]]:
+        for world_move in [[2, 0], [0, 2]]:
             coord_pair = await _measure_apparent_move_dist(
                 dx=world_move[0] * step, dy=world_move[1] * step
             )
@@ -196,19 +205,21 @@ class XYConfigurator:
         approx_offset = await self.infer_coord_transform(0.2)
         approx_mid = approx_offset(screen_mid)
         self.abs_move(approx_mid)
-        await self.wait_move_to_happen()
+        await self.wait_move_to_complete(3)
         precise_no_tool_offset = await self.infer_coord_transform()
         self.abs_move(precise_no_tool_offset(screen_mid))
-        await self.wait_move_to_happen()
-        # with self.restore_pos():
-        #     try:
-        #         for tool_rec in tc_tools[:1]:
-        #             await self.wait_tool_change(tool_rec["name"])
-        #             self.abs_move(precise_no_tool_offset(screen_mid))
-        #             await asyncio.sleep(20)
-        #     finally:
-        #         self.send_g_code("T-1")  # disarm
-        # logger.info("All done")
+        await self.wait_move_to_complete(3)
+        async with self.restore_pos():
+            try:
+                for tool_rec in tc_tools[:1]:
+                    await self.wait_tool_change(tool_rec["name"])
+                    self.abs_move(precise_no_tool_offset(screen_mid))
+                    precise_tool_offset = await self.infer_coord_transform()
+                    self.abs_move(precise_tool_offset(screen_mid))
+                    await self.wait_move_to_complete(3)
+            finally:
+                self.send_g_code("T-1")  # disarm
+        logger.info("All done")
 
     async def process_frames(self):
         async for frame in self.get_frames():
