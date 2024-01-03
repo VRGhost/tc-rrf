@@ -28,7 +28,8 @@ def xy_offset(
             "fflags": "+nobuffer",
             "framedrop": 1,
             "analyzeduration": 0,
-            "probesize": 1000000000000,
+            "probesize": 32,
+            "sync": "ext",
         }.items()
     )
     os.environ |= {"OPENCV_FFMPEG_DEBUG": "1", "OPENCV_LOG_LEVEL": "VERBOSE"}
