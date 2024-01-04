@@ -8,8 +8,7 @@ def gcode(mock_duet_api):
     return tc_cv.toolchanger.gcode.GCode(mock_duet_api)
 
 
-@pytest.mark.asyncio
-async def test_tmp_settings(mock_duet_api, gcode):
+def test_tmp_settings(mock_duet_api, gcode):
     with gcode.tmp_settings():
         gcode.send("TEST_COMMAND_1")
         gcode.send("TEST_COMMAND_2")

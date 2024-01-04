@@ -1,0 +1,13 @@
+{
+    "key": "state",
+    "flags": "d99fn",
+    "result": {
+        "currentTool": -1,
+        "gpOut": [],
+        "laserPwm": null,
+        "msUpTime": 198,
+        "status": "idle",
+        "time": "2024-01-04T22:09:37",
+        "upTime": 4634
+    }
+}
