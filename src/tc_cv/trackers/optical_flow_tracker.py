@@ -107,12 +107,13 @@ class OpticalFlowTracker:
         )
 
     def _pick_tracked_features(self, gr_frame: typ.VideoFrame, target_x, target_y):
+        (height, width, _channel) = gr_frame.shape
         local_area_size = 50  # px
         min_y = max(0, target_y - local_area_size // 2)
-        max_y = min_y + local_area_size
+        max_y = min(min_y + local_area_size, width)
         min_x = max(0, target_x - local_area_size // 2)
-        max_x = min_x + local_area_size
-        sub_frame = gr_frame[min_y:max_y, min_x:max_x]
+        max_x = min(min_x + local_area_size, height)
+        sub_frame = gr_frame[int(min_y) : int(max_y), int(min_x) : int(max_x)]
         local_tracked_features = cv2.goodFeaturesToTrack(
             sub_frame, mask=None, **self.feature_params
         )

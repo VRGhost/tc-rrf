@@ -1,17 +1,18 @@
 import asyncio
-import contextlib
 import logging
 
 import async_timer
 import cv2
 import numpy as np
 
-from . import trackers, typ, vcap_source
+from . import toolchanger, trackers, typ, vcap_source
 
 logger = logging.getLogger(__name__)
 
 
 class XYConfigurator:
+    tc: toolchanger.Toolchanger
+
     vcap: vcap_source.VCapSource
     window_title = "XY Config"
     width: int
@@ -27,17 +28,10 @@ class XYConfigurator:
         self.vcap = vcap_source.VCapSource(vcap)
         self.object_tracker = trackers.optical_flow_tracker.OpticalFlowTracker()
         self.motion_tracker = trackers.motion_tracker.Odometer()
-        self.duet_api = duet_api
+        self.tc = toolchanger.Toolchanger(duet_api)
         self.width = int(vcap.get(cv2.CAP_PROP_FRAME_WIDTH))
         self.height = int(vcap.get(cv2.CAP_PROP_FRAME_HEIGHT))
         self.fps = vcap.get(cv2.CAP_PROP_FPS)
-
-    def get_printer_coords(self) -> typ.Point:
-        api_coords = self.duet_api.get_coords()
-        return typ.Point(x=api_coords["X"], y=api_coords["Y"])
-
-    def send_g_code(self, code: str):
-        return self.duet_api.send_code(code)
 
     def mouse_cb(self, event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONUP:
@@ -72,47 +66,6 @@ class XYConfigurator:
             frame = self.object_tracker.draw_ui_overlay(frame)
 
             yield frame
-
-    def abs_move(self, p: typ.Point, feed: float = 45.0):
-        with self.tmp_settings():
-            self.send_g_code(
-                f"""
-                    G0 X{p.x} Y{p.y} F{feed}
-                    M400
-                """
-            )
-
-    @contextlib.contextmanager
-    def tmp_settings(self):
-        self.send_g_code("M120")  # save settings
-        try:
-            yield
-        finally:
-            self.send_g_code("M121")
-
-    @contextlib.asynccontextmanager
-    async def restore_pos(self):
-        coords = self.duet_api.get_coords()
-        yield
-        self.send_g_code(f"G0 X{coords['X']} Y{coords['Y']} Z{coords['Z']}")
-        await self.wait_move_to_complete(3)
-
-    def rel_move(
-        self,
-        dx: float = 0.0,
-        dy: float = 0.0,
-        dz: float = 0.0,
-        feed: float = 45.0,
-    ):
-        with self.tmp_settings():
-            self.send_g_code(
-                f"""
-                    M400 ; wait for any pending moves to complete
-                    G91
-                    G1 X{dx} Y{dy} Z{dz} F{feed}
-                    M400 ; wait for any pending moves to complete
-                """
-            )
 
     def is_tracking(self) -> bool:
         return self.object_tracker.state().is_tracking()

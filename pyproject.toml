@@ -23,6 +23,10 @@ requests = "^2.31.0"
 [tool.poetry.group.dev.dependencies]
 black = "^23.7.0"
 ruff = "^0.0.280"
+pytest = "^7.4.4"
+pytest-asyncio = "^0.23.3"
+pytest-mock = "^3.12.0"
+pytest-cov = "^4.1.0"
 
 
 [tool.poetry.group.video.dependencies]
@@ -32,6 +36,12 @@ async-timer = "^1.0.3"
 [tool.poetry.scripts]
 tc-rrf = 'tc_rrf.__main__:cli_app'
 tc-cv = 'tc_cv.__main__:cli_app'
+
+[tool.pytest.ini_options]
+addopts = "-ra -q -vv --cov=tc_cv --cov=tc_rrf --no-cov-on-fail"
+testpaths = [
+    "test",
+]
 
 
 [tool.ruff]
