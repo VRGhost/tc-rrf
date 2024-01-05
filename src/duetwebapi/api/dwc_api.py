@@ -1,9 +1,13 @@
+import logging
+import time
 from io import BytesIO, StringIO, TextIOWrapper
 from typing import Dict, List, Union
 
 import requests
 
 from .base import DuetAPI
+
+logger = logging.getLogger(__name__)
 
 
 class DWCAPI(DuetAPI):
@@ -15,6 +19,7 @@ class DWCAPI(DuetAPI):
     """
 
     api_name = "DWC_REST"
+    retry_count: int = 5
 
     def connect(self, password=""):
         """Start connection to Duet"""
@@ -32,6 +37,11 @@ class DWCAPI(DuetAPI):
             raise ValueError
         return r.json()
 
+    def _retry_gen(self):
+        for retry_idx in range(self.retry_count):
+            time.sleep(retry_idx)
+            yield
+
     def get_model(
         self,
         key: str = None,
@@ -47,9 +57,16 @@ class DWCAPI(DuetAPI):
         flags += "n" if null is True else ""
         flags += "f" if frequent is True else ""
         flags += "o" if obsolete is True else ""
-        r = requests.get(url, {"flags": flags, "key": key})
+        for _try in self._retry_gen():
+            r = requests.get(url, {"flags": flags, "key": key})
+            if r.status_code >= 500 and r.status_code < 600:
+                # Server-side error => retry
+                continue
+            else:
+                break
         if not r.ok:
-            raise ValueError
+            logger.error(f"Model error response: {r.text!r}")
+            raise ValueError(r.text)
         j = r.json()
         return j["result"]
 
@@ -62,11 +79,31 @@ class DWCAPI(DuetAPI):
 
     def send_code(self, code: str) -> Dict:
         url = f"{self.base_url}/rr_gcode"
-        r = requests.get(url, {"gcode": code})
-        if not r.ok:
-            raise ValueError
-        reply = self._get_reply()
-        return {"response": reply}
+        if len(code) > 160:  # Max line lenght per dwc
+            lines = [line.strip() for line in code.splitlines() if line.strip()]
+        else:
+            lines = [code]
+        response_lines = []
+        buf_available = 9999
+        for line in lines:
+            assert len(line) < 160
+            while len(line) > buf_available:
+                time.sleep(0.5)
+                resp = requests.get(url, {"gcode": ""})
+                assert resp.ok
+                data = resp.json()
+                assert data.get("err", 0) == 0
+                buf_available = data["buff"]
+            resp = requests.get(url, {"gcode": line})
+            if not resp.ok:
+                raise ValueError(line)
+            data = resp.json()
+            if data.get("err", 0) != 0:
+                raise ValueError(line)
+
+            buf_available = data["buff"]
+            response_lines.append(self._get_reply())
+        return {"response": "\n".join(response_lines)}
 
     def get_file(
         self, filename: str, directory: str = "gcodes", binary: bool = False

@@ -24,7 +24,7 @@ class State(pydantic.BaseModel):
 
 
 class Toolchanger:
-    gcode: gcode.GCode
+    gcode: "gcode.GCode"
 
     def __init__(self, duet_api):
         self.duet_api = duet_api

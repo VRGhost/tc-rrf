@@ -1,4 +1,5 @@
 import asyncio
+import contextlib
 import logging
 
 import async_timer
@@ -70,68 +71,111 @@ class XYConfigurator:
     def is_tracking(self) -> bool:
         return self.object_tracker.state().is_tracking()
 
-    def is_stable(self) -> bool:
-        return self.object_tracker.state().pos_certain()
-
     async def wait_for_tracking(self):
         while not self.is_tracking():
-            await asyncio.sleep(0.5)
+            logger.info("Waiting for the tracking point to be set...")
+            await asyncio.sleep(3)
 
-    async def wait_for_move_to_stabilise(self):
-        await self.wait_for_tracking()
-        while not self.is_stable():
-            await asyncio.sleep(0.5)
+    async def wait_move_to_complete(
+        self, timeout: int | float = 20, target_pos: typ.Point = None
+    ):
+        wait_for_motion_to_start = True
+        if target_pos is not None:
+            # Check if the desired move is too small
+            curent_pos = self.tc.get_coords()
+            if (curent_pos - target_pos).len() < 0.05:  # mm in printer units
+                logger.info("The desired move is too small.")
+                wait_for_motion_to_start = False
 
-    async def wait_move_to_complete(self, timeout=20):
-        try:
-            async with asyncio.timeout(timeout):
-                await self.motion_tracker.wait_for_motion_to_start()
-        except TimeoutError:
-            logger.warn(
-                "Waiting for move to complete timed out. Maybe a very small move was attempted?"
-            )
+        if wait_for_motion_to_start:
+            try:
+                async with asyncio.timeout(timeout):
+                    await self.motion_tracker.wait_for_motion_to_start()
+            except TimeoutError:
+                logger.warn(
+                    "Waiting for move to complete timed out. Maybe a very small move was attempted?"
+                )
+        else:
+            await asyncio.sleep(0.5)
         await self.motion_tracker.wait_for_motion_to_stop()
-        await self.wait_for_move_to_stabilise()
 
     async def wait_tool_change(self, tool: str | int):
         if isinstance(tool, int):
             tool_name = f"T{tool}"
         else:
             tool_name = tool
-        tools_info = self.duet_api.get_model(key="tools")
-        expected_state = {el["name"]: (el["name"] == tool_name) for el in tools_info}
+        tools_info = self.tc.get_tools()
+
+        expected_state = {el.name: (el.name == tool_name) for el in tools_info}
+        assert tool in expected_state, f"Tool {tool} must be known to the printer"
         async with self.restore_pos():
-            self.send_g_code(tool_name)
-        while True:
-            tools_info = self.duet_api.get_model(key="tools")
-            status = {el["name"]: (el["state"] == "active") for el in tools_info}
-            if status == expected_state:
-                break
-            else:
-                await asyncio.sleep(0.5)
+            self.tc.gcode.send(tool_name)
+
+            while True:
+                tools_info = self.tc.get_tools()
+                status = {el.name: el.active for el in tools_info}
+                if status == expected_state:
+                    break
+                else:
+                    await asyncio.sleep(0.5)
 
         return tool_name
+
+    @contextlib.asynccontextmanager
+    async def restore_pos(self):
+        with self.tc.gcode.restore_pos() as final_p:
+            yield
+        await self.wait_move_to_complete(3, final_p)
+
+    async def abs_move(self, point: typ.Point):
+        self.tc.gcode.abs_move(point)
+        await self.wait_move_to_complete(10, point)
+
+    async def jiggle(self):
+        """Jiggle the printer head a bit"""
+        async with self.restore_pos() as restore_p:
+            with self.tc.gcode.tmp_settings():
+                self.tc.gcode.send(
+                    "\n".join(
+                        [
+                            "G91",
+                        ]
+                        + (
+                            [
+                                "G0 X20 F9999",
+                                "G0 Y20",
+                                "G0 X-20 Y-20",
+                                "G0 X-30 Y-30",
+                                "G0 X30 Y30",
+                            ]
+                            * 5
+                        )
+                        + ["M400"]
+                    )
+                )
+        await self.wait_move_to_complete(15, restore_p)
 
     async def infer_coord_transform(self, step: float = 1.0):
         def capture_coords() -> tuple[typ.Point, typ.Point]:
             """Return tuple of (screen coords, printer coords)"""
+            if not self.is_tracking():
+                raise RuntimeError("Tracking point is lost.")
             return (
-                self.get_printer_coords(),
+                self.tc.get_coords(),
                 self.object_tracker.state().representative_point,
             )
 
         async def _measure_apparent_move_dist(dx=0, dy=0):
-            await self.wait_for_move_to_stabilise()
-            self.rel_move(dx=dx, dy=dy)
+            self.tc.gcode.rel_move(dx=dx, dy=dy)
             await self.wait_move_to_complete()
 
             rv = capture_coords()
-            self.rel_move(dx=-dx, dy=-dy)
+            self.tc.gcode.rel_move(dx=-dx, dy=-dy)
             await self.wait_move_to_complete()
 
             return rv
 
-        await self.wait_for_move_to_stabilise()
+        await self.wait_for_tracking()
         measured_points = [capture_coords()]
         for world_move in [[2, 0], [0, 2]]:
             coord_pair = await _measure_apparent_move_dist(
@@ -154,24 +198,22 @@ class XYConfigurator:
 
     async def update_tool_offsets(self):
         screen_mid = typ.Point(x=self.width / 2, y=self.height / 2)
-        tc_tools = self.duet_api.get_model(key="tools[]")
+        tc_tools = self.tc.get_tools()
         approx_offset = await self.infer_coord_transform(0.2)
         approx_mid = approx_offset(screen_mid)
-        self.abs_move(approx_mid)
-        await self.wait_move_to_complete(3)
+        await self.abs_move(approx_mid)
         precise_no_tool_offset = await self.infer_coord_transform()
-        self.abs_move(precise_no_tool_offset(screen_mid))
-        await self.wait_move_to_complete(3)
+        await self.abs_move(precise_no_tool_offset(screen_mid))
         async with self.restore_pos():
             try:
-                for tool_rec in tc_tools:
-                    await self.wait_tool_change(tool_rec["name"])
-                    self.abs_move(precise_no_tool_offset(screen_mid))
+                for tool in tc_tools:
+                    await self.wait_tool_change(tool.name)
+                    await self.abs_move(precise_no_tool_offset(screen_mid))
+                    await self.jiggle()
                     precise_tool_offset = await self.infer_coord_transform()
-                    self.abs_move(precise_tool_offset(screen_mid))
-                    await self.wait_move_to_complete(3)
+                    await self.abs_move(precise_tool_offset(screen_mid))
             finally:
-                self.send_g_code("T-1")  # disarm
+                self.tc.gcode.send("T-1")  # disarm
         logger.info("All done")
 
     async def process_frames(self):

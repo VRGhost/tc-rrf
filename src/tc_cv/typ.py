@@ -1,4 +1,5 @@
 import dataclasses
+import math
 import typing
 
 import numpy as np
@@ -11,9 +12,12 @@ class Vector:
     dx: float
     dy: float
 
-    def len_sq(self):
+    def len_sq(self) -> float:
         """Return square of the length"""
         return self.dx**2 + self.dy**2
+
+    def len(self) -> float:
+        return math.sqrt(self.len_sq())
 
 
 @dataclasses.dataclass(frozen=True, slots=True)

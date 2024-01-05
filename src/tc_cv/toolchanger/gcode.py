@@ -29,19 +29,20 @@ class GCode:
         finally:
             self.send("M121")
 
-    @contextlib.asynccontextmanager
-    async def restore_pos(self):
+    @contextlib.contextmanager
+    def restore_pos(self) -> typ.Point:
         coords = self.duet_api.get_coords()
-        yield
-        self.send(f"G0 X{coords['X']} Y{coords['Y']} Z{coords['Z']}")
-        await self.wait_move_to_complete(3)
+        try:
+            yield typ.Point(x=coords["X"], y=coords["Y"])
+        finally:
+            self.send(f"G0 X{coords['X']} Y{coords['Y']} Z{coords['Z']}")
 
     def rel_move(
         self,
         dx: float = 0.0,
         dy: float = 0.0,
         dz: float = 0.0,
-        feed: float = 45.0,
+        feed: float = 55.0,
     ):
         with self.tmp_settings():
             self.send(

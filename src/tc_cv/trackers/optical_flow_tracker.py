@@ -107,7 +107,10 @@ class OpticalFlowTracker:
         )
 
     def _pick_tracked_features(self, gr_frame: typ.VideoFrame, target_x, target_y):
-        (height, width, _channel) = gr_frame.shape
+        (
+            height,
+            width,
+        ) = gr_frame.shape
         local_area_size = 50  # px
         min_y = max(0, target_y - local_area_size // 2)
         max_y = min(min_y + local_area_size, width)
