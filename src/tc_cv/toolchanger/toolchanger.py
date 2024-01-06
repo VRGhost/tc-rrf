@@ -9,6 +9,7 @@ from . import gcode
 class Tool(pydantic.BaseModel):
     name: str
     state: str
+    offsets: list[float]
 
     @property
     def active(self) -> bool:
@@ -25,6 +26,7 @@ class State(pydantic.BaseModel):
 
 class MoveAxis(pydantic.BaseModel):
     letter: str
+    index: int
     homed: bool
     min: float
     max: float
@@ -47,6 +49,6 @@ class Toolchanger:
     def get_state(self) -> State:
         return State(**self.duet_api.get_model(key="state"))
 
-    def get_axes_info(self):
-        axes = [MoveAxis(**el) for el in self.duet_api.get_model(key="move.axes")]
-        return {ax.letter: ax for ax in axes}
+    def get_axes_info(self) -> list[MoveAxis]:
+        raw_axes = self.duet_api.get_model(key="move.axes")
+        return [MoveAxis(**el, index=idx) for idx, el in enumerate(raw_axes)]

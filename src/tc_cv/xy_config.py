@@ -76,13 +76,21 @@ class XYConfigurator:
 
             yield frame
 
+    def screen_mid(self) -> typ.Point:
+        return typ.Point(x=self.width / 2, y=self.height / 2)
+
     def is_tracking(self) -> bool:
         return self.object_tracker.state().is_tracking()
+
+    def cur_feed_rate(self) -> float | None:
+        if self.is_tracking():
+            return 50.0
+        return None
 
     async def wait_for_tracking(self):
         while not self.is_tracking():
             logger.info("Waiting for the tracking point to be set...")
-            await asyncio.sleep(3)
+            await asyncio.sleep(0.5)
 
     async def wait_move_to_complete(
         self, timeout: int | float = 20, target_pos: typ.Point = None
@@ -131,7 +139,7 @@ class XYConfigurator:
 
     @contextlib.asynccontextmanager
     async def restore_pos(self):
-        with self.tc.gcode.restore_pos() as final_p:
+        with self.tc.gcode.restore_pos(self.cur_feed_rate) as final_p:
             yield
         await self.wait_move_to_complete(3, final_p)
 
@@ -218,9 +226,29 @@ class XYConfigurator:
 
         return _get_printer_coords
 
+    async def infer_tool_correction(
+        self,
+        current_tool: toolchanger.toolchanger.Tool,
+        axes: list[toolchanger.toolchanger.MoveAxis],
+        screen_to_tc_coords: typing.Callable[[typ.Point], typ.Point],
+    ):
+        await self.wait_for_tracking()
+        tc_tool_pos = self.tc.get_coords()
+        screen_mid = self.screen_mid()
+        dist_to_centre = (screen_to_tc_coords(screen_mid) - tc_tool_pos).len()
+        assert (
+            dist_to_centre < 1
+        ), f"The tool should be expected to be in the centre: {dist_to_centre}"
+        tool_screen_pos = self.object_tracker.state().representative_point
+        screen_pos_delta = screen_mid - tool_screen_pos
+        corrected_screen_pos = screen_mid + screen_pos_delta
+        corrected_tc_pos = screen_to_tc_coords(corrected_screen_pos)
+        self.abs_move(corrected_tc_pos)
+
     async def update_tool_offsets(self):
-        screen_mid = typ.Point(x=self.width / 2, y=self.height / 2)
+        screen_mid = self.screen_mid()
         tc_tools = self.tc.get_tools()
+        axes_info = self.tc.get_axes_info()
         approx_offset = await self.infer_coord_transform(0.2)
         approx_mid = approx_offset(screen_mid)
         await self.abs_move(approx_mid)
@@ -231,8 +259,12 @@ class XYConfigurator:
                 await self.wait_tool_change(tool.name)
                 await self.abs_move(precise_no_tool_offset(screen_mid))
                 await self.jiggle()
-                precise_tool_offset = await self.infer_coord_transform()
-                await self.abs_move(precise_tool_offset(screen_mid))
+                await self.infer_tool_correction(
+                    tool, axes_info, precise_no_tool_offset
+                )
+                break
+                # precise_tool_offset = await self.infer_coord_transform()
+                # await self.abs_move(precise_tool_offset(screen_mid))
         logger.info("All done")
 
     async def process_frames(self):

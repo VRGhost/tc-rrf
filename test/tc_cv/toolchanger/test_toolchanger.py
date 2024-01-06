@@ -32,4 +32,4 @@ def test_get_state(toolchanger):
 
 def test_get_axes_info(toolchanger):
     info = toolchanger.get_axes_info()
-    assert info.keys() == {"A", "B", "C", "X", "Y", "Z"}
+    assert [el.letter for el in info] == ["X", "Y", "Z", "A", "B", "C"]

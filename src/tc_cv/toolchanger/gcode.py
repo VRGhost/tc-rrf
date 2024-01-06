@@ -20,8 +20,12 @@ class GCode:
                 f"""
                     G0 X{p.x} Y{p.y} F{feed}
                     M400
+                    G0 F99999
                 """
             )
+
+    def max_speed(self):
+        self.send("G0 F99999999")
 
     @contextlib.contextmanager
     def tmp_settings(self):
@@ -32,12 +36,20 @@ class GCode:
             self.send("M121")
 
     @contextlib.contextmanager
-    def restore_pos(self) -> typ.Point:
+    def restore_pos(self, feed: float | None = None) -> typ.Point:
         coords = self.duet_api.get_coords()
+        if feed:
+            str_feed = f"F{feed}"
+        else:
+            str_feed = ""
         try:
             yield typ.Point(x=coords["X"], y=coords["Y"])
         finally:
-            self.send(f"G0 X{coords['X']} Y{coords['Y']} Z{coords['Z']}")
+            self.send(
+                f"G0 X{coords['X']} Y{coords['Y']} Z{coords['Z']} {str_feed}".strip()
+            )
+            if str_feed:
+                self.max_speed()
 
     def rel_move(
         self,
@@ -54,3 +66,4 @@ class GCode:
                 M400
             """
         )
+        self.max_speed()

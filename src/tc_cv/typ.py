@@ -36,6 +36,9 @@ class Point:
         else:
             raise NotImplementedError
 
+    def __add__(self, other: Vector) -> "Point":
+        return Point(self.x + other.dx, self.y + other.dy)
+
 
 @dataclasses.dataclass(frozen=True, slots=True)
 class Circle(Point):
