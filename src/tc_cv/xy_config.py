@@ -1,6 +1,8 @@
 import asyncio
 import contextlib
+import dataclasses
 import logging
+import typing
 
 import async_timer
 import cv2
@@ -9,6 +11,12 @@ import numpy as np
 from . import toolchanger, trackers, typ, vcap_source
 
 logger = logging.getLogger(__name__)
+
+
+@dataclasses.dataclass(frozen=True, kw_only=True)
+class ScreenCoordCapture:
+    printerCoords: typ.Point
+    screenCoords: typ.Point
 
 
 class XYConfigurator:
@@ -127,6 +135,17 @@ class XYConfigurator:
             yield
         await self.wait_move_to_complete(3, final_p)
 
+    @contextlib.asynccontextmanager
+    async def restore_tool(self):
+        old_tool = self.tc.get_state().currentTool
+        try:
+            yield old_tool
+        finally:
+            end_tool = self.tc.get_state().currentTool
+            if old_tool != end_tool:
+                self.tc.gcode.send(f"T{old_tool}")
+                await self.wait_move_to_complete(3)
+
     async def abs_move(self, point: typ.Point):
         self.tc.gcode.abs_move(point)
         await self.wait_move_to_complete(10, point)
@@ -148,46 +167,49 @@ class XYConfigurator:
                                 "G0 X-30 Y-30",
                                 "G0 X30 Y30",
                             ]
-                            * 5
+                            * 2
                         )
                         + ["M400"]
                     )
                 )
         await self.wait_move_to_complete(15, restore_p)
 
-    async def infer_coord_transform(self, step: float = 1.0):
-        def capture_coords() -> tuple[typ.Point, typ.Point]:
+    async def infer_coord_transform(
+        self, step: float = 1.0
+    ) -> typing.Callable[[typ.Point], typ.Point]:
+        def capture_coords() -> ScreenCoordCapture:
             """Return tuple of (screen coords, printer coords)"""
             if not self.is_tracking():
                 raise RuntimeError("Tracking point is lost.")
-            return (
-                self.tc.get_coords(),
-                self.object_tracker.state().representative_point,
+            return ScreenCoordCapture(
+                printerCoords=self.tc.get_coords(),
+                screenCoords=self.object_tracker.state().representative_point,
             )
 
-        async def _measure_apparent_move_dist(dx=0, dy=0):
-            self.tc.gcode.rel_move(dx=dx, dy=dy)
-            await self.wait_move_to_complete()
+        async def _measure_apparent_move_dist(dx=0, dy=0) -> ScreenCoordCapture:
+            async with self.restore_pos():
+                self.tc.gcode.rel_move(dx=dx, dy=dy)
+                await self.wait_move_to_complete()
 
-            rv = capture_coords()
-            self.tc.gcode.rel_move(dx=-dx, dy=-dy)
-            await self.wait_move_to_complete()
-
-            return rv
+                return capture_coords()
 
         await self.wait_for_tracking()
-        measured_points = [capture_coords()]
+        measured_points: list[ScreenCoordCapture] = [capture_coords()]
         for world_move in [[2, 0], [0, 2]]:
             coord_pair = await _measure_apparent_move_dist(
                 dx=world_move[0] * step, dy=world_move[1] * step
             )
             measured_points.append(coord_pair)
 
-        np_screen_coords = np.array([[p[0].x, p[0].y] for p in measured_points])
-        np_printer_coords = np.array([[p[1].x, p[1].y] for p in measured_points])
+        np_screen_coords = np.array(
+            [[p.screenCoords.x, p.screenCoords.y] for p in measured_points]
+        )
+        np_printer_coords = np.array(
+            [[p.printerCoords.x, p.printerCoords.y] for p in measured_points]
+        )
 
-        A = np.vstack([np_printer_coords.T, np.ones(np_printer_coords.shape[0])]).T
-        (solution, res, rank, s) = np.linalg.lstsq(A, np_screen_coords, rcond=None)
+        A = np.vstack([np_screen_coords.T, np.ones(np_screen_coords.shape[0])]).T
+        (solution, res, rank, s) = np.linalg.lstsq(A, np_printer_coords, rcond=None)
 
         def _get_printer_coords(screen_p: typ.Point):
             rv = np.dot(np.array([[screen_p.x, screen_p.y, 1.0]]), solution)
@@ -204,16 +226,13 @@ class XYConfigurator:
         await self.abs_move(approx_mid)
         precise_no_tool_offset = await self.infer_coord_transform()
         await self.abs_move(precise_no_tool_offset(screen_mid))
-        async with self.restore_pos():
-            try:
-                for tool in tc_tools:
-                    await self.wait_tool_change(tool.name)
-                    await self.abs_move(precise_no_tool_offset(screen_mid))
-                    await self.jiggle()
-                    precise_tool_offset = await self.infer_coord_transform()
-                    await self.abs_move(precise_tool_offset(screen_mid))
-            finally:
-                self.tc.gcode.send("T-1")  # disarm
+        async with self.restore_pos(), self.restore_tool():
+            for tool in tc_tools:
+                await self.wait_tool_change(tool.name)
+                await self.abs_move(precise_no_tool_offset(screen_mid))
+                await self.jiggle()
+                precise_tool_offset = await self.infer_coord_transform()
+                await self.abs_move(precise_tool_offset(screen_mid))
         logger.info("All done")
 
     async def process_frames(self):

@@ -13,6 +13,8 @@ class GCode:
         return self.duet_api.send_code(code)
 
     def abs_move(self, p: typ.Point, feed: float = 45.0):
+        assert p.x >= 0 and p.x <= 300
+        assert p.y >= 0 and p.y <= 200
         with self.tmp_settings():
             self.send(
                 f"""
@@ -44,12 +46,11 @@ class GCode:
         dz: float = 0.0,
         feed: float = 55.0,
     ):
-        with self.tmp_settings():
-            self.send(
-                f"""
-                    M400 ; wait for any pending moves to complete
-                    G91
-                    G1 X{dx} Y{dy} Z{dz} F{feed}
-                    M400 ; wait for any pending moves to complete
-                """
-            )
+        self.send(
+            f"""
+                G91
+                G1 X{dx} Y{dy} Z{dz} F{feed}
+                G90
+                M400
+            """
+        )
