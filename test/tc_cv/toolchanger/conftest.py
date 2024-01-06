@@ -12,14 +12,16 @@ def resources_dir():
 @pytest.fixture
 def mock_duet_api(mock_duet_api, resources_dir):
     def _mock_get_model(key: str):
-        if key == "tools":
-            with (resources_dir / "tools.json").open() as fin:
-                return json.load(fin)["result"]
-        elif key == "state":
-            with (resources_dir / "state.json").open() as fin:
-                return json.load(fin)["result"]
-        else:
+        fname = {
+            "tools": "tools.json",
+            "state": "state.json",
+            "move.axes": "move_axes.json",
+        }.get(key, None)
+        if fname is None:
             raise NotImplementedError(key)
+        else:
+            with (resources_dir / fname).open() as fin:
+                return json.load(fin)["result"]
 
     with (resources_dir / "coords.json").open() as fin:
         mock_duet_api.get_coords.return_value = json.load(fin)

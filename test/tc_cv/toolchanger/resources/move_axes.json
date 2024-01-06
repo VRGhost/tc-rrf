@@ -1,0 +1,223 @@
+{
+    "key": "move.axes",
+    "flags": "d99n",
+    "result": [
+        {
+            "acceleration": 3500.0,
+            "babystep": 0,
+            "current": 1800,
+            "drivers": [
+                "0"
+            ],
+            "homed": true,
+            "jerk": 300.0,
+            "letter": "X",
+            "machinePosition": 137.069,
+            "max": 333.90,
+            "maxProbed": false,
+            "microstepping": {
+                "interpolated": true,
+                "value": 16
+            },
+            "min": -29.60,
+            "minProbed": false,
+            "percentCurrent": 100,
+            "speed": 35000.0,
+            "stepsPerMm": 100.00,
+            "userPosition": 137.069,
+            "visible": true,
+            "workplaceOffsets": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        {
+            "acceleration": 3500.0,
+            "babystep": 0,
+            "current": 1800,
+            "drivers": [
+                "1"
+            ],
+            "homed": true,
+            "jerk": 300.0,
+            "letter": "Y",
+            "machinePosition": 106.893,
+            "max": 245.20,
+            "maxProbed": false,
+            "microstepping": {
+                "interpolated": true,
+                "value": 16
+            },
+            "min": -46.80,
+            "minProbed": false,
+            "percentCurrent": 100,
+            "speed": 35000.0,
+            "stepsPerMm": 100.00,
+            "userPosition": 106.893,
+            "visible": true,
+            "workplaceOffsets": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        {
+            "acceleration": 400.0,
+            "babystep": 0,
+            "current": 1330,
+            "drivers": [
+                "2"
+            ],
+            "homed": true,
+            "jerk": 12.0,
+            "letter": "Z",
+            "machinePosition": 195.000,
+            "max": 290.00,
+            "maxProbed": false,
+            "microstepping": {
+                "interpolated": true,
+                "value": 16
+            },
+            "min": 0,
+            "minProbed": false,
+            "percentCurrent": 100,
+            "speed": 1200.0,
+            "stepsPerMm": 800.00,
+            "userPosition": 195.000,
+            "visible": true,
+            "workplaceOffsets": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        {
+            "acceleration": 500.0,
+            "babystep": 0,
+            "current": 1330,
+            "drivers": [
+                "8"
+            ],
+            "homed": true,
+            "jerk": 12.0,
+            "letter": "A",
+            "machinePosition": 14.070,
+            "max": 28.90,
+            "maxProbed": false,
+            "microstepping": {
+                "interpolated": true,
+                "value": 16
+            },
+            "min": -1.10,
+            "minProbed": false,
+            "percentCurrent": 100,
+            "speed": 7000.0,
+            "stepsPerMm": 400.00,
+            "userPosition": 14.070,
+            "visible": true,
+            "workplaceOffsets": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        {
+            "acceleration": 500.0,
+            "babystep": 0,
+            "current": 1330,
+            "drivers": [
+                "9"
+            ],
+            "homed": true,
+            "jerk": 12.0,
+            "letter": "B",
+            "machinePosition": 14.070,
+            "max": 33.80,
+            "maxProbed": false,
+            "microstepping": {
+                "interpolated": true,
+                "value": 16
+            },
+            "min": 3.80,
+            "minProbed": false,
+            "percentCurrent": 100,
+            "speed": 7000.0,
+            "stepsPerMm": 400.00,
+            "userPosition": 14.070,
+            "visible": true,
+            "workplaceOffsets": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        {
+            "acceleration": 500.0,
+            "babystep": 0,
+            "current": 500,
+            "drivers": [
+                "7"
+            ],
+            "homed": true,
+            "jerk": 6.0,
+            "letter": "C",
+            "machinePosition": 241.000,
+            "max": 360.00,
+            "maxProbed": false,
+            "microstepping": {
+                "interpolated": true,
+                "value": 16
+            },
+            "min": -45.00,
+            "minProbed": false,
+            "percentCurrent": 100,
+            "speed": 5000.0,
+            "stepsPerMm": 91.02,
+            "userPosition": 241.000,
+            "visible": true,
+            "workplaceOffsets": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+            ]
+        }
+    ],
+    "next": 0
+}

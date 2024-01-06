@@ -23,6 +23,13 @@ class State(pydantic.BaseModel):
     upTime: int
 
 
+class MoveAxis(pydantic.BaseModel):
+    letter: str
+    homed: bool
+    min: float
+    max: float
+
+
 class Toolchanger:
     gcode: "gcode.GCode"
 
@@ -39,3 +46,7 @@ class Toolchanger:
 
     def get_state(self) -> State:
         return State(**self.duet_api.get_model(key="state"))
+
+    def get_axes_info(self):
+        axes = [MoveAxis(**el) for el in self.duet_api.get_model(key="move.axes")]
+        return {ax.letter: ax for ax in axes}
