@@ -68,7 +68,8 @@ class OpticalFlowTracker:
                 or tracked_cnt < 3
             ):
                 user_p = self.user_point()
-                self._pick_tracked_features(gr_frame, user_p.x, user_p.y)
+                if user_p:
+                    self._pick_tracked_features(gr_frame, user_p.x, user_p.y)
 
             new_up = self.user_point()
             if new_up:

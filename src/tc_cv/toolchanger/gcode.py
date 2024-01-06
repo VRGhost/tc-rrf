@@ -37,6 +37,7 @@ class GCode:
 
     @contextlib.contextmanager
     def restore_pos(self, feed: float | None = None) -> typ.Point:
+        assert isinstance(feed, float|None)
         coords = self.duet_api.get_coords()
         if feed:
             str_feed = f"F{feed}"

@@ -139,7 +139,7 @@ class XYConfigurator:
 
     @contextlib.asynccontextmanager
     async def restore_pos(self):
-        with self.tc.gcode.restore_pos(self.cur_feed_rate) as final_p:
+        with self.tc.gcode.restore_pos(self.cur_feed_rate()) as final_p:
             yield
         await self.wait_move_to_complete(3, final_p)
 
@@ -180,7 +180,6 @@ class XYConfigurator:
                         + ["M400"]
                     )
                 )
-        await self.wait_move_to_complete(15, restore_p)
 
     async def infer_coord_transform(
         self, step: float = 1.0
@@ -235,7 +234,8 @@ class XYConfigurator:
         await self.wait_for_tracking()
         tc_tool_pos = self.tc.get_coords()
         screen_mid = self.screen_mid()
-        dist_to_centre = (screen_to_tc_coords(screen_mid) - tc_tool_pos).len()
+        screen_mid_printer_pos = screen_to_tc_coords(screen_mid)
+        dist_to_centre = (screen_mid_printer_pos - tc_tool_pos).len()
         assert (
             dist_to_centre < 1
         ), f"The tool should be expected to be in the centre: {dist_to_centre}"
@@ -243,7 +243,18 @@ class XYConfigurator:
         screen_pos_delta = screen_mid - tool_screen_pos
         corrected_screen_pos = screen_mid + screen_pos_delta
         corrected_tc_pos = screen_to_tc_coords(corrected_screen_pos)
-        self.abs_move(corrected_tc_pos)
+        tool_xy_correction = corrected_tc_pos - screen_mid_printer_pos
+        self.tc.gcode.rel_move(dx=tool_xy_correction.dx, dy=tool_xy_correction.dy)
+
+        x_axis_idx = [el for el in axes if el.letter == 'X'][0].index
+        y_axis_idx = [el for el in axes if el.letter == 'Y'][0].index
+        cur_tool_x_offset = current_tool.offsets[x_axis_idx]
+        cur_tool_y_offset = current_tool.offsets[y_axis_idx]
+        new_tool_x_offset = cur_tool_x_offset + tool_xy_correction.dx
+        new_tool_y_offset = cur_tool_y_offset + tool_xy_correction.dy
+
+        logger.info(f"Please change offset of {current_tool.name} to X={new_tool_x_offset} & Y={new_tool_y_offset}")
+        await asyncio.sleep(5)
 
     async def update_tool_offsets(self):
         screen_mid = self.screen_mid()
