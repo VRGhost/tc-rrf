@@ -121,6 +121,10 @@ class OpticalFlowTracker:
         local_tracked_features = cv2.goodFeaturesToTrack(
             sub_frame, mask=None, **self.feature_params
         )
+        if local_tracked_features is None:
+            logger.error("No tracking features detected - did we loose track?")
+            self.forget_tracking()
+            return
         self.tracked_features = (
             local_tracked_features + np.array([min_x, min_y])
         ).astype(np.float32)

@@ -12,3 +12,8 @@ def test_math():
     p2 = typ.Point(-10, -10)
     delta = p1 - p2
     assert (p1 + delta) == typ.Point(10, 10)
+
+
+def test_mul():
+    v1 = typ.Vector(dx=2, dy=1)
+    assert v1 * 0.01 == typ.Vector(dx=0.02, dy=0.01)

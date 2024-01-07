@@ -19,6 +19,13 @@ class Vector:
     def len(self) -> float:
         return math.sqrt(self.len_sq())
 
+    def zero(self) -> bool:
+        epsilon = 10e-5
+        return abs(self.dx) < epsilon and abs(self.dy) < epsilon
+
+    def __mul__(self, other: float | int) -> "Vector":
+        return Vector(dx=self.dx * other, dy=self.dy * other)
+
 
 @dataclasses.dataclass(frozen=True, slots=True)
 class Point:
@@ -34,7 +41,7 @@ class Point:
         elif isinstance(other, Vector):
             return Point(x=self.x + other.dx, y=self.y + other.dy)
         else:
-            raise NotImplementedError
+            raise NotImplementedError(type(other))
 
     def __add__(self, other: Vector) -> "Point":
         return Point(self.x + other.dx, self.y + other.dy)
