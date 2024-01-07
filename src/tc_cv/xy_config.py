@@ -215,7 +215,6 @@ class XYConfigurator:
         axes: list[toolchanger.toolchanger.MoveAxis],
         screen_to_tc_coords: typing.Callable[[typ.Point], typ.Point],
     ) -> str:
-        visible_tool_pos = (await self.wait_for_tracking()).representative_point
         tc_tool_pos = self.tc.get_coords()
         screen_mid = self.screen_mid()
         screen_mid_printer_pos = screen_to_tc_coords(screen_mid)
@@ -229,6 +228,10 @@ class XYConfigurator:
             x=current_tool.offsets[x_axis_idx], y=current_tool.offsets[y_axis_idx]
         )
 
+        if orig_tool_offset.x == 0 and orig_tool_offset.y == 0:
+            logger.error(f"{current_tool=} {axes=}")
+            raise RuntimeError("Something weird is hapenning")
+
         def tool_update_cmd(desired):
             return f"G10 L1 P{current_tool.number} X{desired.x} Y{desired.y}"
 
@@ -237,6 +240,7 @@ class XYConfigurator:
             if not self.is_tracking():
                 raise RuntimeError("Tracking point is lost.")
             new_offset_p = orig_tool_offset + rel_move
+            logging.debug(f"{orig_tool_offset=} {rel_move=} {new_offset_p=}")
             change_cmd = tool_update_cmd(new_offset_p)
             restore_cmd = tool_update_cmd(orig_tool_offset)
 
@@ -252,9 +256,10 @@ class XYConfigurator:
             finally:
                 self.tc.gcode.send(restore_cmd)
 
+        await self.wait_for_tracking()
         offset_fn = await coord_inference.InferCoordTransform().infer(
             capture_coords=_capture_coords,
-            mul=2,
+            mul=1,
         )
         desired_offset = offset_fn(screen_mid)
         gcode_cmd = tool_update_cmd(desired_offset)
@@ -282,8 +287,9 @@ class XYConfigurator:
                 await self.wait_tool_change(tool.name)
                 await self.abs_move(precise_no_tool_offset(screen_mid))
                 await self.jiggle()
+                updated_tool_info = self.tc.get_tools()[tool.index]
                 msg = await self.infer_tool_correction(
-                    tool, axes_info, precise_no_tool_offset
+                    updated_tool_info, axes_info, precise_no_tool_offset
                 )
                 messages.append(msg)
         logger.info("All done")

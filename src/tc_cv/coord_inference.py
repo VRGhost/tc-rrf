@@ -25,9 +25,8 @@ class InferCoordTransform:
         measured_points: list[ScreenCoordCapture] = [
             await capture_coords(typ.Vector(0, 0))
         ]
-        for world_move in [[1, 0], [0, 1]]:
-            vec = typ.Vector(dx=world_move[0] * mul, dy=world_move[1] * mul)
-            measured_points.append(await capture_coords(vec))
+        for world_move in (typ.Vector(1, 0), typ.Vector(0, 1)):
+            measured_points.append(await capture_coords(world_move * mul))
 
         np_screen_coords = np.array(
             [[p.screenCoords.x, p.screenCoords.y] for p in measured_points]

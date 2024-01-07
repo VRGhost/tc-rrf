@@ -8,6 +8,7 @@ from . import gcode
 
 class Tool(pydantic.BaseModel):
     name: str
+    index: int
     number: int
     state: str
     offsets: list[float]
@@ -45,7 +46,10 @@ class Toolchanger:
         return typ.Point(x=api_coords["X"], y=api_coords["Y"])
 
     def get_tools(self) -> list[Tool]:
-        return [Tool(**el) for el in self.duet_api.get_model(key="tools")]
+        return [
+            Tool(**el, index=idx)
+            for (idx, el) in enumerate(self.duet_api.get_model(key="tools"))
+        ]
 
     def get_state(self) -> State:
         return State(**self.duet_api.get_model(key="state"))
