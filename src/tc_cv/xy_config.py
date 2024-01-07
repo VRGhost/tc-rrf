@@ -1,16 +1,13 @@
 import asyncio
 import contextlib
-import dataclasses
 import enum
 import logging
 import typing
 
 import async_timer
 import cv2
-import numpy as np
 
-from . import math as tc_math
-from . import toolchanger, trackers, typ, vcap_source
+from . import coord_inference, toolchanger, trackers, typ, vcap_source
 
 logger = logging.getLogger(__name__)
 
@@ -18,12 +15,6 @@ logger = logging.getLogger(__name__)
 class FeedRates(int, enum.Enum):
     TRACKING = 40
     MAX_SPEED = 99_999
-
-
-@dataclasses.dataclass(frozen=True, kw_only=True)
-class ScreenCoordCapture:
-    printerCoords: typ.Point
-    screenCoords: typ.Point
 
 
 class XYConfigurator:
@@ -189,60 +180,34 @@ class XYConfigurator:
                     )
                 )
 
-    async def infer_coord_transform(
-        self, step: float = 1.0
-    ) -> typing.Callable[[typ.Point], typ.Point]:
-        def capture_coords() -> ScreenCoordCapture:
+    async def infer_tool_coord_transform(self):
+        """Two-step process (if required)"""
+
+        async def _capture_coords(rel_move: typ.Vector):
             """Return tuple of (screen coords, printer coords)"""
             if not self.is_tracking():
                 raise RuntimeError("Tracking point is lost.")
-            return ScreenCoordCapture(
-                printerCoords=self.tc.get_coords(),
-                screenCoords=self.object_tracker.state().representative_point,
-            )
-
-        async def _measure_apparent_move_dist(dx=0, dy=0) -> ScreenCoordCapture:
             async with self.restore_pos():
-                self.tc.gcode.rel_move(dx=dx, dy=dy)
-                await self.wait_move_to_complete()
+                self.tc.gcode.rel_move(dx=rel_move.dx, dy=rel_move.dy)
+                await self.wait_move_to_complete(timeout=3)
+                return coord_inference.ScreenCoordCapture(
+                    printerCoords=self.tc.get_coords(),
+                    screenCoords=self.object_tracker.state().representative_point,
+                )
 
-                return capture_coords()
-
-        await self.wait_for_tracking()
-        measured_points: list[ScreenCoordCapture] = [capture_coords()]
-        for world_move in [[2, 0], [0, 2]]:
-            coord_pair = await _measure_apparent_move_dist(
-                dx=world_move[0] * step, dy=world_move[1] * step
-            )
-            measured_points.append(coord_pair)
-
-        np_screen_coords = np.array(
-            [[p.screenCoords.x, p.screenCoords.y] for p in measured_points]
-        )
-        np_printer_coords = np.array(
-            [[p.printerCoords.x, p.printerCoords.y] for p in measured_points]
-        )
-
-        A = np.vstack([np_screen_coords.T, np.ones(np_screen_coords.shape[0])]).T
-        (solution, res, rank, s) = np.linalg.lstsq(A, np_printer_coords, rcond=None)
-
-        def _get_printer_coords(screen_p: typ.Point):
-            rv = np.dot(np.array([[screen_p.x, screen_p.y, 1.0]]), solution)
-            assert rv.shape == (1, 2)
-            return typ.Point(x=rv[0][0], y=rv[0][1])
-
-        return _get_printer_coords
-
-    async def infer_tool_coord_transform(self):
-        """Two-step process (if required)"""
         tracker = await self.wait_for_tracking()
         screen_mid = self.screen_mid()
         dist_to_mid = (screen_mid - tracker.representative_point).len()
         if dist_to_mid > 40:
-            approx_offset = await self.infer_coord_transform(0.2)
+            approx_offset = await coord_inference.InferCoordTransform().infer(
+                capture_coords=_capture_coords,
+                mul=0.4,
+            )
             approx_mid = approx_offset(screen_mid)
             await self.abs_move(approx_mid)
-        return await self.infer_coord_transform()
+        return await coord_inference.InferCoordTransform().infer(
+            capture_coords=_capture_coords, mul=2
+        )
 
     async def infer_tool_correction(
         self,
@@ -260,29 +225,46 @@ class XYConfigurator:
         ), f"The tool should be expected to be in the centre: {dist_to_centre}"
         x_axis_idx = [el for el in axes if el.letter == "X"][0].index
         y_axis_idx = [el for el in axes if el.letter == "Y"][0].index
-        new_tool_offset = typ.Point(
+        orig_tool_offset = typ.Point(
             x=current_tool.offsets[x_axis_idx], y=current_tool.offsets[y_axis_idx]
         )
-        while (visible_tool_pos - screen_mid).len() > 3:
-            visible_tool_error: typ.Vector = screen_mid - visible_tool_pos
-            adjusted_virtual_tool_pos = visible_tool_pos + visible_tool_error
-            adjusted_tc_screen_mid = screen_to_tc_coords(adjusted_virtual_tool_pos)
-            tc_move_delta: typ.Vector = tc_tool_pos - adjusted_tc_screen_mid
-            rounded_tc_move_delta = tc_math.round_vector(tc_move_delta, 2)
-            if rounded_tc_move_delta.zero():
-                print("Zero")
-                rounded_tc_move_delta = tc_math.sign_vector(tc_move_delta) * 0.01
-            logger.debug(f"{rounded_tc_move_delta=}")
-            new_tool_offset += rounded_tc_move_delta
-            gcode_cmd = f"G10 L1 P{current_tool.number} X{new_tool_offset.x} Y{new_tool_offset.y}"
-            self.tc.gcode.send(gcode_cmd)
+
+        def tool_update_cmd(desired):
+            return f"G10 L1 P{current_tool.number} X{desired.x} Y{desired.y}"
+
+        async def _capture_coords(rel_move: typ.Vector):
+            """Return tuple of (screen coords, printer coords)"""
+            if not self.is_tracking():
+                raise RuntimeError("Tracking point is lost.")
+            new_offset_p = orig_tool_offset + rel_move
+            change_cmd = tool_update_cmd(new_offset_p)
+            restore_cmd = tool_update_cmd(orig_tool_offset)
+
+            self.tc.gcode.send(change_cmd)
             await asyncio.sleep(0.1)
-            await self.abs_move(screen_to_tc_coords(screen_mid))
-            # The tool is not at the centre
-            visible_tool_pos = self.object_tracker.state().representative_point
+            await self.abs_move(screen_mid_printer_pos)
+            await self.wait_move_to_complete(timeout=3)
+            try:
+                return coord_inference.ScreenCoordCapture(
+                    printerCoords=new_offset_p,
+                    screenCoords=self.object_tracker.state().representative_point,
+                )
+            finally:
+                self.tc.gcode.send(restore_cmd)
+
+        offset_fn = await coord_inference.InferCoordTransform().infer(
+            capture_coords=_capture_coords,
+            mul=0.4,
+        )
+        desired_offset = offset_fn(screen_mid)
+        gcode_cmd = tool_update_cmd(desired_offset)
+        self.tc.gcode.send(gcode_cmd)
+        await asyncio.sleep(0.1)
+        await self.abs_move(screen_mid_printer_pos)
+        await asyncio.sleep(10)
 
         message = f"""
-            Please change offset of {current_tool.name} to X = {new_tool_offset.x} & Y = {new_tool_offset.y}
+            Please change offset of {current_tool.name} to X = {desired_offset.x} & Y = {desired_offset.y}
             Used gcode command: {gcode_cmd}
         """
         logger.info(f">>> {message}")
