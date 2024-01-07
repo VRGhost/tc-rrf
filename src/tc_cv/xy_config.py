@@ -254,7 +254,7 @@ class XYConfigurator:
 
         offset_fn = await coord_inference.InferCoordTransform().infer(
             capture_coords=_capture_coords,
-            mul=0.4,
+            mul=2,
         )
         desired_offset = offset_fn(screen_mid)
         gcode_cmd = tool_update_cmd(desired_offset)
@@ -278,7 +278,7 @@ class XYConfigurator:
         await self.abs_move(precise_no_tool_offset(screen_mid))
         messages = []
         async with self.restore_pos(FeedRates.MAX_SPEED.value), self.restore_tool():
-            for tool in tc_tools[2:]:
+            for tool in tc_tools:
                 await self.wait_tool_change(tool.name)
                 await self.abs_move(precise_no_tool_offset(screen_mid))
                 await self.jiggle()
@@ -286,7 +286,6 @@ class XYConfigurator:
                     tool, axes_info, precise_no_tool_offset
                 )
                 messages.append(msg)
-                break
         logger.info("All done")
         print("=" * 150)
         print("\n".join(messages))
