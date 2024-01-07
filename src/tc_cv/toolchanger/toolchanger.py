@@ -8,6 +8,7 @@ from . import gcode
 
 class Tool(pydantic.BaseModel):
     name: str
+    number: int
     state: str
     offsets: list[float]
 

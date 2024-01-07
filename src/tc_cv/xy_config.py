@@ -1,6 +1,7 @@
 import asyncio
 import contextlib
 import dataclasses
+import enum
 import logging
 import typing
 
@@ -11,6 +12,11 @@ import numpy as np
 from . import toolchanger, trackers, typ, vcap_source
 
 logger = logging.getLogger(__name__)
+
+
+class FeedRates(int, enum.Enum):
+    TRACKING = 40
+    MAX_SPEED = 99_999
 
 
 @dataclasses.dataclass(frozen=True, kw_only=True)
@@ -84,13 +90,14 @@ class XYConfigurator:
 
     def cur_feed_rate(self) -> float | None:
         if self.is_tracking():
-            return 50.0
+            return FeedRates.TRACKING.value
         return None
 
-    async def wait_for_tracking(self):
+    async def wait_for_tracking(self) -> trackers.hough_object_tracker.TrackerState:
         while not self.is_tracking():
             logger.info("Waiting for the tracking point to be set...")
             await asyncio.sleep(0.5)
+        return self.object_tracker.state()
 
     async def wait_move_to_complete(
         self, timeout: int | float = 20, target_pos: typ.Point = None
@@ -138,8 +145,8 @@ class XYConfigurator:
         return tool_name
 
     @contextlib.asynccontextmanager
-    async def restore_pos(self):
-        with self.tc.gcode.restore_pos(self.cur_feed_rate()) as final_p:
+    async def restore_pos(self, feed_rate: float | None = None):
+        with self.tc.gcode.restore_pos(feed_rate or self.cur_feed_rate()) as final_p:
             yield
         await self.wait_move_to_complete(3, final_p)
 
@@ -224,13 +231,26 @@ class XYConfigurator:
             return typ.Point(x=rv[0][0], y=rv[0][1])
 
         return _get_printer_coords
+    
+    async def infer_tool_coord_transform(self):
+        """Two-step process (if required)"""
+        tracker = await self.wait_for_tracking()
+        screen_mid = self.screen_mid()
+        dist_to_mid = (screen_mid - tracker.representative_point).len()
+        if dist_to_mid > 40:
+            approx_offset = await self.infer_coord_transform(0.2)
+            approx_mid = approx_offset(screen_mid)
+            await self.abs_move(approx_mid)
+        return await self.infer_coord_transform()
+
+        
 
     async def infer_tool_correction(
         self,
         current_tool: toolchanger.toolchanger.Tool,
         axes: list[toolchanger.toolchanger.MoveAxis],
         screen_to_tc_coords: typing.Callable[[typ.Point], typ.Point],
-    ):
+    ) -> str:
         await self.wait_for_tracking()
         tc_tool_pos = self.tc.get_coords()
         screen_mid = self.screen_mid()
@@ -239,44 +259,56 @@ class XYConfigurator:
         assert (
             dist_to_centre < 1
         ), f"The tool should be expected to be in the centre: {dist_to_centre}"
-        tool_screen_pos = self.object_tracker.state().representative_point
-        screen_pos_delta = screen_mid - tool_screen_pos
-        corrected_screen_pos = screen_mid + screen_pos_delta
-        corrected_tc_pos = screen_to_tc_coords(corrected_screen_pos)
-        tool_xy_correction = corrected_tc_pos - screen_mid_printer_pos
-        self.tc.gcode.rel_move(dx=tool_xy_correction.dx, dy=tool_xy_correction.dy)
+        tool_coord_transform = await self.infer_tool_coord_transform()
+        actual_tool_tc_mid = tool_coord_transform(screen_mid)
+        tool_xy_correction = screen_mid_printer_pos - actual_tool_tc_mid
+        logger.debug(f"{tool_xy_correction=}")
 
-        x_axis_idx = [el for el in axes if el.letter == 'X'][0].index
-        y_axis_idx = [el for el in axes if el.letter == 'Y'][0].index
+        x_axis_idx = [el for el in axes if el.letter == "X"][0].index
+        y_axis_idx = [el for el in axes if el.letter == "Y"][0].index
         cur_tool_x_offset = current_tool.offsets[x_axis_idx]
         cur_tool_y_offset = current_tool.offsets[y_axis_idx]
-        new_tool_x_offset = cur_tool_x_offset + tool_xy_correction.dx
-        new_tool_y_offset = cur_tool_y_offset + tool_xy_correction.dy
+        old_gcode_command = F"G10 L1 P{current_tool.number} X{cur_tool_x_offset} Y{cur_tool_y_offset}"
+        new_tool_x_offset = cur_tool_x_offset - tool_xy_correction.dx
+        new_tool_y_offset = cur_tool_y_offset - tool_xy_correction.dy
 
-        logger.info(f"Please change offset of {current_tool.name} to X={new_tool_x_offset} & Y={new_tool_y_offset}")
-        await asyncio.sleep(5)
+        gcode_cmd = f"G10 L1 P{current_tool.number} X{new_tool_x_offset} Y{new_tool_y_offset}"
+        self.tc.gcode.send(gcode_cmd)
+        await self.abs_move(screen_mid_printer_pos)
+        await asyncio.sleep(10)
 
+        message = f"""
+            Please change offset of {current_tool.name} to X = {new_tool_x_offset} & Y = {new_tool_y_offset}
+            Used gcode command: {gcode_cmd}
+            (old command: {old_gcode_command})
+        """
+        logger.info(
+            f">>> {message}"
+        )
+        return message
+    
     async def update_tool_offsets(self):
         screen_mid = self.screen_mid()
         tc_tools = self.tc.get_tools()
         axes_info = self.tc.get_axes_info()
-        approx_offset = await self.infer_coord_transform(0.2)
-        approx_mid = approx_offset(screen_mid)
-        await self.abs_move(approx_mid)
-        precise_no_tool_offset = await self.infer_coord_transform()
+        precise_no_tool_offset = await self.infer_tool_coord_transform()
         await self.abs_move(precise_no_tool_offset(screen_mid))
-        async with self.restore_pos(), self.restore_tool():
+        messages = []
+        async with self.restore_pos(FeedRates.MAX_SPEED.value), self.restore_tool():
             for tool in tc_tools:
                 await self.wait_tool_change(tool.name)
                 await self.abs_move(precise_no_tool_offset(screen_mid))
                 await self.jiggle()
-                await self.infer_tool_correction(
+                msg = await self.infer_tool_correction(
                     tool, axes_info, precise_no_tool_offset
                 )
+                messages.append(msg)
                 break
                 # precise_tool_offset = await self.infer_coord_transform()
                 # await self.abs_move(precise_tool_offset(screen_mid))
         logger.info("All done")
+        print("=" * 150)
+        print("\n".join(messages))
 
     async def process_frames(self):
         async for frame in self.get_frames():

@@ -32,7 +32,7 @@
         {%- endfor -%}
     {% endif %}
 
-G10 {{ py.format_gcode_param_str(py_tool_conf.offsets, P=py_tool_conf.id) }}
+G10 L1 {{ py.format_gcode_param_str(py_tool_conf.offsets, P=py_tool_conf.id) }}
 
     {% call(drive_id) tools_mod.foreach_extruder(py_tool_conf.id) -%}
         {% if py_tool_conf.extruder_settings -%}

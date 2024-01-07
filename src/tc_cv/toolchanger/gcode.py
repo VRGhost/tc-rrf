@@ -15,14 +15,13 @@ class GCode:
     def abs_move(self, p: typ.Point, feed: float = 45.0):
         assert p.x >= 0 and p.x <= 300
         assert p.y >= 0 and p.y <= 200
-        with self.tmp_settings():
-            self.send(
-                f"""
-                    G0 X{p.x} Y{p.y} F{feed}
-                    M400
-                    G0 F99999
-                """
-            )
+        self.send(
+            f"""
+                G0 X{p.x} Y{p.y} F{feed}
+                M400
+                G0 F99999
+            """
+        )
 
     def max_speed(self):
         self.send("G0 F99999999")
@@ -36,8 +35,8 @@ class GCode:
             self.send("M121")
 
     @contextlib.contextmanager
-    def restore_pos(self, feed: float | None = None) -> typ.Point:
-        assert isinstance(feed, float|None)
+    def restore_pos(self, feed: float | int | None = None) -> typ.Point:
+        assert isinstance(feed, float | int | None), type(feed)
         coords = self.duet_api.get_coords()
         if feed:
             str_feed = f"F{feed}"

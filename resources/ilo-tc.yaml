@@ -105,8 +105,8 @@ variables:
       fan: 2 # Fan number
       is_direct: true
       offsets:
-        X: 20.040131295525967
-        Y: 44.03300647889474
+        X: 20.701942797414297
+        Y: 44.07174937442231
         Z: -15.325
       park:
         # X/Y location of the tools' parking position
