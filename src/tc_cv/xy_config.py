@@ -269,8 +269,8 @@ class XYConfigurator:
         cur_tool_x_offset = current_tool.offsets[x_axis_idx]
         cur_tool_y_offset = current_tool.offsets[y_axis_idx]
         old_gcode_command = F"G10 L1 P{current_tool.number} X{cur_tool_x_offset} Y{cur_tool_y_offset}"
-        new_tool_x_offset = cur_tool_x_offset - tool_xy_correction.dx
-        new_tool_y_offset = cur_tool_y_offset - tool_xy_correction.dy
+        new_tool_x_offset = cur_tool_x_offset + tool_xy_correction.dx
+        new_tool_y_offset = cur_tool_y_offset + tool_xy_correction.dy
 
         gcode_cmd = f"G10 L1 P{current_tool.number} X{new_tool_x_offset} Y{new_tool_y_offset}"
         self.tc.gcode.send(gcode_cmd)
@@ -303,9 +303,6 @@ class XYConfigurator:
                     tool, axes_info, precise_no_tool_offset
                 )
                 messages.append(msg)
-                break
-                # precise_tool_offset = await self.infer_coord_transform()
-                # await self.abs_move(precise_tool_offset(screen_mid))
         logger.info("All done")
         print("=" * 150)
         print("\n".join(messages))
