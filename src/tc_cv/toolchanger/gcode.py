@@ -13,8 +13,9 @@ class GCode:
         return self.duet_api.send_code(code)
 
     def abs_move(self, p: typ.Point, feed: float = 45.0):
-        assert p.x >= 0 and p.x <= 300
-        assert p.y >= 0 and p.y <= 200
+        assert p.x >= 0 and p.x <= 300, p
+        assert p.y >= 0 and p.y <= 200, p
+        assert p.z >= 0 and p.z <= 200, p
         self.send(
             f"""
                 G0 X{p.x} Y{p.y} Z{p.z} F{feed}

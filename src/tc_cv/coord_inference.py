@@ -64,8 +64,11 @@ class InferCoordTransform:
         np_printer_coords = np.array(
             [self._to_numpy_arr_row(p.printerCoords) for p in measured_points]
         )
-        
-        ignored_coord_values = [getattr(p.printerCoords, self.ignored_printer_coord) for p in measured_points]
+
+        ignored_coord_values = [
+            getattr(p.printerCoords, self.ignored_printer_coord)
+            for p in measured_points
+        ]
 
         A = np.vstack([np_screen_coords.T, np.ones(np_screen_coords.shape[0])]).T
         (solution, res, rank, s) = np.linalg.lstsq(A, np_printer_coords, rcond=None)

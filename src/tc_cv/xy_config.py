@@ -112,6 +112,8 @@ class XYConfigurator:
                 )
         else:
             await asyncio.sleep(0.5)
+        while not self.tc.get_state().status.is_idle():
+            await asyncio.sleep(0.5)
         await self.motion_tracker.wait_for_motion_to_stop()
 
     async def wait_tool_change(self, tool: str | int):
@@ -125,6 +127,9 @@ class XYConfigurator:
         assert tool in expected_state, f"Tool {tool} must be known to the printer"
         async with self.restore_pos():
             self.tc.gcode.send(tool_name)
+
+            while not self.tc.get_state().status.is_idle():
+                await asyncio.sleep(0.5)
 
             while True:
                 tools_info = self.tc.get_tools()
@@ -188,7 +193,7 @@ class XYConfigurator:
             if not self.is_tracking():
                 raise RuntimeError("Tracking point is lost.")
             async with self.restore_pos():
-                self.tc.gcode.rel_move(dx=rel_move.dx, dy=rel_move.dy)
+                self.tc.gcode.rel_move(dx=rel_move.dx, dy=rel_move.dy, dz=rel_move.dz)
                 await self.wait_move_to_complete(timeout=3)
                 return coord_inference.ScreenCoordCapture(
                     printerCoords=self.tc.get_coords(),
@@ -199,20 +204,20 @@ class XYConfigurator:
         screen_mid = self.screen_mid()
         dist_to_mid = (screen_mid - tracker.representative_point).len()
         if dist_to_mid > 40:
-            approx_offset = await coord_inference.InferCoordTransform().infer(
+            approx_offset = await coord_inference.InferCoordTransform.xy().infer(
                 capture_coords=_capture_coords,
                 mul=0.4,
             )
             approx_mid = approx_offset(screen_mid)
             await self.abs_move(approx_mid)
-        return await coord_inference.InferCoordTransform().infer(
+        return await coord_inference.InferCoordTransform.xy().infer(
             capture_coords=_capture_coords, mul=2
         )
 
     async def infer_tool_correction(
         self,
         current_tool: toolchanger.toolchanger.Tool,
-        axes: list[toolchanger.toolchanger.MoveAxis],
+        axes: toolchanger.toolchanger.AxisInfo,
         screen_to_tc_coords: typing.Callable[[typ.Point], typ.Point],
     ) -> str:
         tc_tool_pos = self.tc.get_coords()
@@ -222,10 +227,10 @@ class XYConfigurator:
         assert (
             dist_to_centre < 1
         ), f"The tool should be expected to be in the centre: {dist_to_centre}"
-        x_axis_idx = [el for el in axes if el.letter == "X"][0].index
-        y_axis_idx = [el for el in axes if el.letter == "Y"][0].index
         orig_tool_offset = typ.Point(
-            x=current_tool.offsets[x_axis_idx], y=current_tool.offsets[y_axis_idx]
+            x=current_tool.offsets[axes.x.index],
+            y=current_tool.offsets[axes.y.index],
+            z=current_tool.offsets[axes.z.index],
         )
 
         if orig_tool_offset.x == 0 and orig_tool_offset.y == 0:
@@ -257,7 +262,7 @@ class XYConfigurator:
                 self.tc.gcode.send(restore_cmd)
 
         await self.wait_for_tracking()
-        offset_fn = await coord_inference.InferCoordTransform().infer(
+        offset_fn = await coord_inference.InferCoordTransform.xy().infer(
             capture_coords=_capture_coords,
             mul=1,
         )

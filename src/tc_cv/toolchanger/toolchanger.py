@@ -1,4 +1,5 @@
 import datetime
+import enum
 
 import pydantic
 
@@ -18,10 +19,20 @@ class Tool(pydantic.BaseModel):
         return self.state == "active"
 
 
+@enum.unique
+class PrinterStatus(str, enum.Enum):
+    idle = "idle"
+    busy = "busy"
+    changing_tool = "changingTool"
+
+    def is_idle(self) -> bool:
+        return self == PrinterStatus.idle
+
+
 class State(pydantic.BaseModel):
     currentTool: int
     msUpTime: int
-    status: str
+    status: PrinterStatus
     time: datetime.datetime
     upTime: int
 
