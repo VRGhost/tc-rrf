@@ -94,7 +94,7 @@ class OpticalFlowTracker:
                 # NaN average
                 self.forget_tracking()
                 return None
-            return typ.Point(x=avg_pos[0], y=avg_pos[1])
+            return typ.Point(x=avg_pos[0], y=avg_pos[1], z=float("nan"))
         return None
 
     def forget_tracking(self):

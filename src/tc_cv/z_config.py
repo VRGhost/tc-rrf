@@ -75,7 +75,7 @@ class ZConfigurator:
             yield frame
 
     def screen_mid(self) -> typ.Point:
-        return typ.Point(x=self.width / 2, y=self.height / 2)
+        return typ.Point(x=self.width / 2, y=self.height / 2, z=0)
 
     def is_tracking(self) -> bool:
         return self.object_tracker.state().is_tracking()
@@ -157,29 +157,6 @@ class ZConfigurator:
         self.tc.gcode.abs_move(point)
         await self.wait_move_to_complete(10, point)
 
-    async def jiggle(self):
-        """Jiggle the printer head a bit"""
-        async with self.restore_pos() as restore_p:
-            with self.tc.gcode.tmp_settings():
-                self.tc.gcode.send(
-                    "\n".join(
-                        [
-                            "G91",
-                        ]
-                        + (
-                            [
-                                "G0 X20 F9999",
-                                "G0 Y20",
-                                "G0 X-20 Y-20",
-                                "G0 X-30 Y-30",
-                                "G0 X30 Y30",
-                            ]
-                            * 2
-                        )
-                        + ["M400"]
-                    )
-                )
-
     async def infer_tool_coord_transform(self):
         """Two-step process (if required)"""
 
@@ -188,7 +165,7 @@ class ZConfigurator:
             if not self.is_tracking():
                 raise RuntimeError("Tracking point is lost.")
             async with self.restore_pos():
-                self.tc.gcode.rel_move(dx=rel_move.dx, dy=rel_move.dy)
+                self.tc.gcode.rel_move(dx=rel_move.dx, dy=rel_move.dy, dz=rel_move.dz)
                 await self.wait_move_to_complete(timeout=3)
                 return coord_inference.ScreenCoordCapture(
                     printerCoords=self.tc.get_coords(),
@@ -199,13 +176,13 @@ class ZConfigurator:
         screen_mid = self.screen_mid()
         dist_to_mid = (screen_mid - tracker.representative_point).len()
         if dist_to_mid > 40:
-            approx_offset = await coord_inference.InferCoordTransform().infer(
+            approx_offset = await coord_inference.InferCoordTransform.xz().infer(
                 capture_coords=_capture_coords,
-                mul=0.4,
+                mul=0.1,
             )
             approx_mid = approx_offset(screen_mid)
             await self.abs_move(approx_mid)
-        return await coord_inference.InferCoordTransform().infer(
+        return await coord_inference.InferCoordTransform.xz().infer(
             capture_coords=_capture_coords, mul=2
         )
 
@@ -286,7 +263,6 @@ class ZConfigurator:
         #     for tool in tc_tools:
         #         await self.wait_tool_change(tool.name)
         #         await self.abs_move(precise_no_tool_offset(screen_mid))
-        #         await self.jiggle()
         #         updated_tool_info = self.tc.get_tools()[tool.index]
         #         msg = await self.infer_tool_correction(
         #             updated_tool_info, axes_info, precise_no_tool_offset

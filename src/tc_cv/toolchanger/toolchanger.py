@@ -34,6 +34,12 @@ class MoveAxis(pydantic.BaseModel):
     max: float
 
 
+class AxisInfo(pydantic.BaseModel):
+    x: MoveAxis
+    y: MoveAxis
+    z: MoveAxis
+
+
 class Toolchanger:
     gcode: "gcode.GCode"
 
@@ -56,4 +62,9 @@ class Toolchanger:
 
     def get_axes_info(self) -> list[MoveAxis]:
         raw_axes = self.duet_api.get_model(key="move.axes")
-        return [MoveAxis(**el, index=idx) for idx, el in enumerate(raw_axes)]
+        return AxisInfo(
+            **{
+                el["letter"].lower(): el | {"index": idx}
+                for idx, el in enumerate(raw_axes)
+            }
+        )
