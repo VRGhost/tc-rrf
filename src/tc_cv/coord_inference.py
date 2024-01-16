@@ -64,6 +64,8 @@ class InferCoordTransform:
         np_printer_coords = np.array(
             [self._to_numpy_arr_row(p.printerCoords) for p in measured_points]
         )
+        
+        ignored_coord_values = [getattr(p.printerCoords, self.ignored_printer_coord) for p in measured_points]
 
         A = np.vstack([np_screen_coords.T, np.ones(np_screen_coords.shape[0])]).T
         (solution, res, rank, s) = np.linalg.lstsq(A, np_printer_coords, rcond=None)
@@ -72,7 +74,7 @@ class InferCoordTransform:
             assert screen_p.z == 0, "No Z axis on the screen"
             rv = np.dot(np.array([[screen_p.x, screen_p.y, 1.0]]), solution)
             assert rv.shape == (1, 2)
-            data = {self.ignored_printer_coord: 0}
+            data = {self.ignored_printer_coord: float(np.average(ignored_coord_values))}
             for axis, value in zip(self.active_printer_coords, rv[0]):
                 data[axis] = value
             return typ.Point(**data)

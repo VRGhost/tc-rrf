@@ -75,7 +75,7 @@ class XYConfigurator:
             yield frame
 
     def screen_mid(self) -> typ.Point:
-        return typ.Point(x=self.width / 2, y=self.height / 2)
+        return typ.Point(x=self.width / 2, y=self.height / 2, z=0)
 
     def is_tracking(self) -> bool:
         return self.object_tracker.state().is_tracking()

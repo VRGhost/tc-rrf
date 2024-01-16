@@ -178,7 +178,7 @@ class ZConfigurator:
         if dist_to_mid > 40:
             approx_offset = await coord_inference.InferCoordTransform.xz().infer(
                 capture_coords=_capture_coords,
-                mul=0.1,
+                mul=1,
             )
             approx_mid = approx_offset(screen_mid)
             await self.abs_move(approx_mid)
@@ -189,65 +189,20 @@ class ZConfigurator:
     async def infer_tool_correction(
         self,
         current_tool: toolchanger.toolchanger.Tool,
-        axes: list[toolchanger.toolchanger.MoveAxis],
-        screen_to_tc_coords: typing.Callable[[typ.Point], typ.Point],
+        baseline_coord_transform: typing.Callable[[typ.Point], typ.Point],
     ) -> str:
-        tc_tool_pos = self.tc.get_coords()
         screen_mid = self.screen_mid()
-        screen_mid_printer_pos = screen_to_tc_coords(screen_mid)
-        dist_to_centre = (screen_mid_printer_pos - tc_tool_pos).len()
-        assert (
-            dist_to_centre < 1
-        ), f"The tool should be expected to be in the centre: {dist_to_centre}"
-        x_axis_idx = [el for el in axes if el.letter == "X"][0].index
-        y_axis_idx = [el for el in axes if el.letter == "Y"][0].index
-        orig_tool_offset = typ.Point(
-            x=current_tool.offsets[x_axis_idx], y=current_tool.offsets[y_axis_idx]
-        )
+        tool_coord_transform = await self.infer_tool_coord_transform()
 
-        if orig_tool_offset.x == 0 and orig_tool_offset.y == 0:
-            logger.error(f"{current_tool=} {axes=}")
-            raise RuntimeError("Something weird is hapenning")
+        baseline_tool_centre = baseline_coord_transform(screen_mid)
+        this_tool_cetre = tool_coord_transform(screen_mid)
 
-        def tool_update_cmd(desired):
-            return f"G10 L1 P{current_tool.number} X{desired.x} Y{desired.y}"
+        await self.abs_move(this_tool_cetre)
 
-        async def _capture_coords(rel_move: typ.Vector):
-            """Return tuple of (screen coords, printer coords)"""
-            if not self.is_tracking():
-                raise RuntimeError("Tracking point is lost.")
-            new_offset_p = orig_tool_offset + rel_move
-            logging.debug(f"{orig_tool_offset=} {rel_move=} {new_offset_p=}")
-            change_cmd = tool_update_cmd(new_offset_p)
-            restore_cmd = tool_update_cmd(orig_tool_offset)
-
-            self.tc.gcode.send(change_cmd)
-            await asyncio.sleep(0.1)
-            await self.abs_move(screen_mid_printer_pos)
-            await self.wait_move_to_complete(timeout=3)
-            try:
-                return coord_inference.ScreenCoordCapture(
-                    printerCoords=new_offset_p,
-                    screenCoords=self.object_tracker.state().representative_point,
-                )
-            finally:
-                self.tc.gcode.send(restore_cmd)
-
-        await self.wait_for_tracking()
-        offset_fn = await coord_inference.InferCoordTransform().infer(
-            capture_coords=_capture_coords,
-            mul=1,
-        )
-        desired_offset = offset_fn(screen_mid)
-        gcode_cmd = tool_update_cmd(desired_offset)
-        self.tc.gcode.send(gcode_cmd)
-        await asyncio.sleep(0.1)
-        await self.abs_move(screen_mid_printer_pos)
-        await asyncio.sleep(10)
+        tool_delta = baseline_tool_centre - this_tool_cetre
 
         message = f"""
-            Please change offset of {current_tool.name} to X = {desired_offset.x} & Y = {desired_offset.y}
-            Used gcode command: {gcode_cmd}
+            Please change offset of {current_tool.name} by deltaZ={tool_delta.dz}
         """
         logger.info(f">>> {message}")
         return message
@@ -255,19 +210,27 @@ class ZConfigurator:
     async def update_tool_offsets(self):
         screen_mid = self.screen_mid()
         tc_tools = self.tc.get_tools()
-        axes_info = self.tc.get_axes_info()
-        precise_no_tool_offset = await self.infer_tool_coord_transform()
-        await self.abs_move(precise_no_tool_offset(screen_mid))
-        # messages = []
-        # async with self.restore_pos(FeedRates.MAX_SPEED.value), self.restore_tool():
-        #     for tool in tc_tools:
-        #         await self.wait_tool_change(tool.name)
-        #         await self.abs_move(precise_no_tool_offset(screen_mid))
-        #         updated_tool_info = self.tc.get_tools()[tool.index]
-        #         msg = await self.infer_tool_correction(
-        #             updated_tool_info, axes_info, precise_no_tool_offset
-        #         )
-        #         messages.append(msg)
+        # axes_info = self.tc.get_axes_info()
+        # Pick a tool that will serve as Z offset baseline
+        baseline_tool = [tool for tool in tc_tools if tool.active]
+        if baseline_tool:
+            assert len(baseline_tool) == 1
+            baseline_tool = baseline_tool[0]
+        else:
+            # Activate a tool
+            await self.wait_tool_change(tc_tools[0].name)
+            baseline_tool = tc_tools[0]
+        precise_baseline_tool_offset = await self.infer_tool_coord_transform()
+        await self.abs_move(precise_baseline_tool_offset(screen_mid))
+        messages = []
+        async with self.restore_pos(FeedRates.MAX_SPEED.value), self.restore_tool():
+            for tool in tc_tools:
+                await self.wait_tool_change(tool.name)
+                updated_tool_info = self.tc.get_tools()[tool.index]
+                msg = await self.infer_tool_correction(
+                    updated_tool_info, precise_baseline_tool_offset
+                )
+                messages.append(msg)
         logger.info("All done")
         print("=" * 150)
         print("\n".join(messages))

@@ -17,7 +17,7 @@ class GCode:
         assert p.y >= 0 and p.y <= 200
         self.send(
             f"""
-                G0 X{p.x} Y{p.y} F{feed}
+                G0 X{p.x} Y{p.y} Z{p.z} F{feed}
                 M400
                 G0 F99999
             """
