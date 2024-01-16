@@ -32,4 +32,5 @@ def test_get_state(toolchanger):
 
 def test_get_axes_info(toolchanger):
     info = toolchanger.get_axes_info()
-    assert [el.letter for el in info] == ["X", "Y", "Z", "A", "B", "C"]
+    assert info.x.min == -29.6
+    assert dict(info).keys() == {"x", "y", "z"}
