@@ -16,9 +16,29 @@ cli_app = typer.Typer()
 def xy_offset(
     video_source: str = "udp://ppi.hoopoe:1234", dwt: str = "http://dwc.hoopoe"
 ):
-    logger.info("hello world")
     printer = duetwebapi.DuetWebAPI(dwt)
     printer.connect(password="")
+    vcap = cv2.VideoCapture(f"{video_source}", cv2.CAP_FFMPEG)
+    vcap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+    configurator = tc_cv.xy_config.XYConfigurator(vcap, printer)
+    asyncio.run(configurator.run())
+
+
+@cli_app.command()
+def z_offset(
+    video_source: str = "udp://ppi.hoopoe:1234", dwt: str = "http://dwc.hoopoe"
+):
+    printer = duetwebapi.DuetWebAPI(dwt)
+    printer.connect(password="")
+    vcap = cv2.VideoCapture(f"{video_source}", cv2.CAP_FFMPEG)
+    vcap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+    configurator = tc_cv.z_config.ZConfigurator(vcap, printer)
+    asyncio.run(configurator.run())
+
+
+@cli_app.callback()
+def start_app():
+    logging.basicConfig(level=logging.DEBUG)
     os.environ["OPENCV_FFMPEG_CAPTURE_OPTIONS"] = "|".join(
         f"{key};{value}"
         for (key, value) in {
@@ -33,15 +53,6 @@ def xy_offset(
         }.items()
     )
     os.environ |= {"OPENCV_FFMPEG_DEBUG": "1", "OPENCV_LOG_LEVEL": "VERBOSE"}
-    vcap = cv2.VideoCapture(f"{video_source}", cv2.CAP_FFMPEG)
-    vcap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
-    configurator = tc_cv.xy_config.XYConfigurator(vcap, printer)
-    asyncio.run(configurator.run())
-
-
-@cli_app.callback()
-def start_app():
-    logging.basicConfig(level=logging.DEBUG)
 
 
 if __name__ == "__main__":

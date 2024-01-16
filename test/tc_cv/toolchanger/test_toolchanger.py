@@ -11,7 +11,7 @@ def toolchanger(resources_dir, mock_duet_api):
 
 
 def test_get_printer_coords(toolchanger):
-    assert toolchanger.get_coords() == tc_cv.typ.Point(x=149.781, y=96.551)
+    assert toolchanger.get_coords() == tc_cv.typ.Point(x=149.781, y=96.551, z=195.0)
 
 
 def test_get_tools(toolchanger):

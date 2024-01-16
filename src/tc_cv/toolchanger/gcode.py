@@ -43,7 +43,7 @@ class GCode:
         else:
             str_feed = ""
         try:
-            yield typ.Point(x=coords["X"], y=coords["Y"])
+            yield typ.Point(x=coords["X"], y=coords["Y"], z=coords["Z"])
         finally:
             self.send(
                 f"G0 X{coords['X']} Y{coords['Y']} Z{coords['Z']} {str_feed}".strip()

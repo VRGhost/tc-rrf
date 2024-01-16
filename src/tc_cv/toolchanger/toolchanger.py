@@ -43,7 +43,7 @@ class Toolchanger:
 
     def get_coords(self) -> typ.Point:
         api_coords = self.duet_api.get_coords()
-        return typ.Point(x=api_coords["X"], y=api_coords["Y"])
+        return typ.Point(x=api_coords["X"], y=api_coords["Y"], z=api_coords["Z"])
 
     def get_tools(self) -> list[Tool]:
         return [
