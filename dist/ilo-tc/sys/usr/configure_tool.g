@@ -111,7 +111,7 @@ if (param.T == 2)
     M566 P2 X550 Y550
     M201 P2 X3700 Y3700
 
-    G10 L1 P2 X-8.0662 Y39.2382 Z-13.3500
+    G10 L1 P2 X-8.0662 Y39.2382 Z-13.4000
 
         
     ; tools.foreach_extruder(2)
