@@ -114,8 +114,8 @@ variables:
         Y: 226.3
       extra_settings: &hemera_direct_extra_settings
         M566: # maximum instantaneous speed changes (mm/min)
-          X: 450
-          Y: 450
+          X: 350
+          Y: 350
         M201: #  Set accelerations (mm/s^2)
           X: 3500
           Y: 3500
@@ -142,7 +142,7 @@ variables:
       offsets:
         X: -8.066224359734036
         Y: 39.23819742043221
-        Z: -13.25
+        Z: -13.35
       park:
         X: 217.8
         Y: 242.6
