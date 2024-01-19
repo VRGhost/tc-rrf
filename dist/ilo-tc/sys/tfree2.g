@@ -63,4 +63,10 @@ M98 P"/macros/Coupler - Unlock"
 M106 P6 S0
 
 ;Move Out
-G53 G1 X217.8 Y180 F50000
+G1 F2000
+;; Jiggle on the way out - to release the lock
+G53 G1 X216.8 Y242.1
+G53 G1 X218.8 Y241.6
+G53 G1 X217.8 Y241.6
+G1 F50000
+G53 G1 X217.8 Y180

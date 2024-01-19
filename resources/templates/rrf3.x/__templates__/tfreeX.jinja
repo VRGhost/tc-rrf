@@ -44,4 +44,10 @@ M98 P"/macros/Coupler - Unlock"
 M106 P{{ tool.fan }} S0
 
 ;Move Out
-G53 G1 X{{ tool.park.X }} Y180 F50000
+G1 F2000
+;; Jiggle on the way out - to release the lock
+G53 G1 X{{ tool.park.X - 1 }} Y{{ tool.park.Y - 0.5 }}
+G53 G1 X{{ tool.park.X + 1 }} Y{{ tool.park.Y - 1 }}
+G53 G1 X{{ tool.park.X }} Y{{ tool.park.Y - 1 }}
+G1 F50000
+G53 G1 X{{ tool.park.X }} Y180
