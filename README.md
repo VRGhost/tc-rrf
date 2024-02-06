@@ -1,20 +1,9 @@
-# RepRapFirmware SD
-The default configuration files for the Motion System &amp; ToolChanger.
+#  My Toolchanger configuration repo
 
-Copy onto the Micro SD Card and insert into the Duet2 before power on.
+This repo contains my toolchanger config (dynamically rendered with Jinja using settings from a YAML config) as well as some of my utility tools
 
-**Edit the config.g file to match your configuratuion.**
+# Utilities
 
-Study the firmware | https://duet3d.dozuki.com/c/RepRapFirmware
+I do have a semi-automated XY & Z configuration scripts here (using webcam & opencv to infer machine coordinates)
 
-Understand the G-Code | https://duet3d.dozuki.com/Wiki/Gcode
-
-Update to the latest release | https://github.com/dc42/RepRapFirmware/releases
-
-**If you are using the RRF2 please use the files contained in the rrf2.x directory.**
-
-**If you are using the RRF3 please use the files contained in the rrf3.x directory.**
-
-**If you are not using the correct configuration files the machine will not operate correctly.**
-
-**If you do not know which version you have, type M115 into the console.**
+![XY config](https://github.com/VRGhost/my-gifs/blob/main/tc-rrf-xy-config-demo.gif)
