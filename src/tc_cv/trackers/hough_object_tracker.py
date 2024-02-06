@@ -49,6 +49,7 @@ class HoughTracker:
     target_circle: typ.Circle = None
     avg_fast: DecayingAvgPoint
     avg_slow: DecayingAvgPoint
+    is_active: bool = False
 
     def __init__(self):
         self.all_circles = []
@@ -129,8 +130,8 @@ class HoughTracker:
             # Convert the circle parameters a, b and r to integers.
             circles = []
             detected_circles = np.int64(np.around(detected_circles))
-            for pt in detected_circles[0, :]:
-                circles.append(typ.Circle(pt[0], pt[1], pt[2]))
+            for pt in detected_circles[0, :3]:
+                circles.append(typ.Circle(pt[0], pt[1], 0, pt[2]))
                 if len(circles) > 10:
                     break
             self.all_circles = tuple(circles)

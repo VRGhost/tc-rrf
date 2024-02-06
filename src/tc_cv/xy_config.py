@@ -27,6 +27,7 @@ class XYConfigurator:
 
     object_tracker: trackers.hough_object_tracker.HoughTracker
     motion_tracker: trackers.motion_tracker.Odometer
+    hough_tracker: trackers.hough_object_tracker.HoughTracker
     frame_source: async_timer.Timer[object]
 
     def __init__(self, vcap, duet_api):
@@ -35,6 +36,7 @@ class XYConfigurator:
         self.vcap = vcap_source.VCapSource(vcap)
         self.object_tracker = trackers.optical_flow_tracker.OpticalFlowTracker()
         self.motion_tracker = trackers.motion_tracker.Odometer()
+        self.hough_tracker = trackers.hough_object_tracker.HoughTracker()
         self.tc = toolchanger.Toolchanger(duet_api)
         self.width = int(vcap.get(cv2.CAP_PROP_FRAME_WIDTH))
         self.height = int(vcap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -50,6 +52,7 @@ class XYConfigurator:
         async for (_ret, frame) in self.vcap.async_read():
             self.object_tracker.push(frame)
             self.motion_tracker.push(frame)
+            # self.hough_tracker.push(frame)
 
             # Draw crosshair
             line_thickness = 1
@@ -71,6 +74,7 @@ class XYConfigurator:
             # Draw trackers' UIs
             frame = self.motion_tracker.draw_ui_overlay(frame)
             frame = self.object_tracker.draw_ui_overlay(frame)
+            # frame = self.hough_tracker.draw_ui_overlay(frame)
 
             yield frame
 
