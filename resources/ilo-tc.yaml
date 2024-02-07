@@ -2,6 +2,10 @@
 templates_root: ./rrf3.x/
 variables:
   # 'render-global vars'
+  extra_config_g_settings:
+    M556: # Axis skew compensation
+      S: 100
+      X: -0.316
   extra_settings:
     M566:  # Set maximum instantaneous speed changes (mm/min)
       X: 900
@@ -50,9 +54,9 @@ variables:
         Z: 0
   motors:
     X:
-      steps: 100 # steps/mm
+      steps: 100.22 # steps/mm
     Y:
-      steps: 100
+      steps: 100.29
     Z:
       steps: 800
     C:

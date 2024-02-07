@@ -154,6 +154,16 @@ M575 P1 S1 B57600				; Enable LCD
 G29 S2							    ; disable mesh
 T-1								      ; deselect tools
 
+{% if extra_config_g_settings -%}
+; extra_config_g_settings start
+{% for (cmd, params) in extra_config_g_settings.items() -%}
+
+{{ cmd }} {{ py.format_gcode_param_str(params) }}
+
+{% endfor -%}
+; extra_config_g_settings end
+{% endif -%}
+
 M501                    ; load config-override.g
 
 M98 P"/sys/usr/global_vars.g"

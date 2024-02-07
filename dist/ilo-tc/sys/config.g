@@ -39,7 +39,7 @@ M208 X-29.6:333.9 Y-46.8:245.2 Z0:290
 M208 C-45:360 A-1.1:28.9 B3.8:33.8
 
 ; Set steps per mm assuming x16 microstepping
-M92 X100 Y100 Z800 C91.022
+M92 X100.22 Y100.29 Z800 C91.022
 M92 E399.4:399.4:404:399.4
 M92 A400 B400
 
@@ -156,6 +156,10 @@ M575 P1 S1 B57600				; Enable LCD
 G29 S2							    ; disable mesh
 T-1								      ; deselect tools
 
+; extra_config_g_settings start
+M556 S100 X-0.3160
+
+; extra_config_g_settings end
 M501                    ; load config-override.g
 
 M98 P"/sys/usr/global_vars.g"
