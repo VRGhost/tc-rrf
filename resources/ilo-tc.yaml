@@ -133,7 +133,7 @@ variables:
       offsets:
         X: 17.59276210544372
         Y: 44.63653854933935
-        Z: -13.74
+        Z: -13.78
       park:
         X: 82
         Y: 226.9
@@ -146,7 +146,7 @@ variables:
       offsets:
         X: -7.978015812557182
         Y: 39.15706819147437
-        Z: -13.4
+        Z: -13.42
       park:
         X: 217.8
         Y: 242.6
@@ -167,7 +167,7 @@ variables:
       offsets:
         X: 21.02600143255248
         Y: 43.95818513530696
-        Z: -13.6
+        Z: -13.69
       park:
         X: 306.2
         Y: 226.9
@@ -185,7 +185,7 @@ variables:
       max: 200
   brushes:
     right: &right_brush
-      x_max: 328.5
+      x_max: 326
       width: 6
       y_min: 128
       depth: 33

@@ -37,9 +37,10 @@ async-timer = "^1.0.3"
 [tool.poetry.scripts]
 tc-rrf = 'tc_rrf.__main__:cli_app'
 tc-cv = 'tc_cv.__main__:cli_app'
+tc-gcode = 'tc_gcode.__main__:cli_app'
 
 [tool.pytest.ini_options]
-addopts = "-ra -q -vv --cov=tc_cv --cov=tc_rrf --no-cov-on-fail"
+addopts = "-ra -q -vv --cov=tc_cv --cov=tc_rrf --cov=tc_gcode --no-cov-on-fail"
 testpaths = [
     "test",
 ]
