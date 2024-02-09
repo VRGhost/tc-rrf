@@ -79,7 +79,7 @@ def emit_off_commands(
     tools: typing.Iterable[int],
 ) -> typing.Generator[str, None, None]:
     for tool_id in sorted(tools):
-        yield f"M568 P{tool_id} A0 ; tc_gcode:: Switch tool {tool_id} to OFF"
+        yield f"M568 P{tool_id} R0 S0 A0 ; tc_gcode:: Switch tool {tool_id} to OFF"
 
 
 def emit_preheat_commands(
@@ -96,7 +96,7 @@ def convert(
     preheat_time: float,
 ) -> typing.Iterable[str]:
     """Convert the original gcode to a pre-processed one"""
-    seen_first_tool = False
+    print_active = False # Skips preamble gibberish
     all_tools = frozenset(el.new_tool for el in tc if el.new_tool >= 0)
     fully_disengaged_tools = set()
     preheating_tools = set()
@@ -104,11 +104,10 @@ def convert(
         input(), iter_tool_states(tc, duration_model, preheat_time)
     ):
         assert tool_state.lineno == lineno
-        if tool_state.cur_tool is not None:
-            assert tool_state.cur_tool is not None
-            seen_first_tool = True
+        if tool_state.cur_tool is not None or line.startswith('M116 '):
+            print_active = True
 
-        if seen_first_tool:
+        if print_active:
             new_preheat_tools = (
                 tool_state.preheat_tools - preheating_tools - {tool_state.cur_tool}
             )

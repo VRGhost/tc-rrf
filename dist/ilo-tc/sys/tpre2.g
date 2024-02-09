@@ -66,14 +66,14 @@ M98 P"/sys/usr/configure_tool.g" T2
 ; ---- rel_move()
 M400 ; wait for any pending moves to complete
 G91
-G1 Z26.6 F1000
+G1 Z26.72 F1000
 M400 ; wait for relative moves to complete
 G90
 ; ---- rel_move() END
 
 
 
-G1 A13.3 B13.3  ; Adjust brush heights
+G1 A13.36 B13.36  ; Adjust brush heights
 
 
 
