@@ -77,7 +77,7 @@ if (param.T == 1)
     M566 P1 X350 Y350
     M201 P1 X3500 Y3500
 
-    G10 L1 P1 X17.5928 Y44.6365 Z-13.9500
+    G10 L1 P1 X17.5928 Y44.6365 Z-13.8400
 
         
     ; tools.foreach_extruder(1)
@@ -145,7 +145,7 @@ if (param.T == 3)
     M566 P3 X350 Y350
     M201 P3 X3500 Y3500
 
-    G10 L1 P3 X21.0260 Y43.9582 Z-14.0500
+    G10 L1 P3 X21.0260 Y43.9582 Z-14.0200
 
         
     ; tools.foreach_extruder(3)

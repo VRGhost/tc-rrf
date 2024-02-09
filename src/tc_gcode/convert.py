@@ -79,7 +79,7 @@ def emit_off_commands(
     tools: typing.Iterable[int],
 ) -> typing.Generator[str, None, None]:
     for tool_id in sorted(tools):
-        yield f"M568 P{tool_id} R0 S0 A0 ; tc_gcode:: Switch tool {tool_id} to OFF"
+        yield f"M568 P{tool_id} A0 ; tc_gcode:: Switch tool {tool_id} to OFF"
 
 
 def emit_preheat_commands(
