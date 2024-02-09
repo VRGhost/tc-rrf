@@ -76,7 +76,7 @@ line-length = 120
 
 [tool.ruff.isort]
 order-by-type = true
-known-first-party = ["tc_rrf", "tc_cv"]
+known-first-party = ["tc_rrf", "tc_cv", "tc_gcode"]
 forced-separate = ["tests"]
 
 [build-system]
