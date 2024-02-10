@@ -58,7 +58,7 @@ def iter_tool_states(
         should_be_preheating = frozenset(
             tool_id
             for (tool_id, tool_time) in next_tc_times.items()
-            if (tool_time - cur_time) <= preheat_time
+            if ((tool_time - cur_time) <= preheat_time) and (tool_id != cur_tool)
         )
 
         future_tools = frozenset(
@@ -96,7 +96,7 @@ def convert(
     preheat_time: float,
 ) -> typing.Iterable[str]:
     """Convert the original gcode to a pre-processed one"""
-    print_active = False # Skips preamble gibberish
+    print_active = False  # Skips preamble gibberish
     all_tools = frozenset(el.new_tool for el in tc if el.new_tool >= 0)
     fully_disengaged_tools = set()
     preheating_tools = set()
@@ -104,7 +104,7 @@ def convert(
         input(), iter_tool_states(tc, duration_model, preheat_time)
     ):
         assert tool_state.lineno == lineno
-        if tool_state.cur_tool is not None or line.startswith('M116 '):
+        if tool_state.cur_tool is not None or line.startswith("M116 "):
             print_active = True
 
         if print_active:
@@ -124,6 +124,9 @@ def convert(
             yield from emit_preheat_commands(new_preheat_tools)
 
         yield line.strip()
+
+        if new_preheat_tools:
+            yield from emit_preheat_commands(new_preheat_tools)
 
         if new_disengaged_tools:
             yield from emit_off_commands(new_disengaged_tools)

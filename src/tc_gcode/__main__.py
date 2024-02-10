@@ -24,7 +24,7 @@ def process(
     start_preheating_at: typing.Annotated[
         float,
         typer.Argument(help="How many minutes in advance to start tool preheating"),
-    ] = 3.0,
+    ] = 0.6,
 ):
     reader = mk_reader(input)
     duration_model = tc_gcode.duration.get_model(reader)
