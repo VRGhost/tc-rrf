@@ -60,7 +60,7 @@ M98 P"/sys/usr/configure_tool.g" T-1
 M574 X1 S1 P"xstop"   ; X min active high endstop switch
 M574 Y1 S1 P"ystop"   ; Y min active high endstop switch
 M574 C0 Z0  						; No C Z endstop
-;M574 A1 B1  S3       ; Brushes use stall detection
+M574 A1 B1 S2      ; Brushes use stall detection
 
 ; Z probe
 ; ----- apply_z_probe_settings()
@@ -79,7 +79,8 @@ M557 X10:290 Y20:180 P12:7            ; Define mesh grid
 
 ;Stall Detection
 ;M915 X Y S3 F0 H400 R2				; X / Y Axes
-;M915 A B S3 F0 H100 R0
+M915 A B S26 F0 H100 R0
+
 
 ; Tool Heaters
 M308 S0 P"bedtemp" Y"thermistor" A"Bed" T100000 B4138 C0 		; Set thermistor 

@@ -36,10 +36,6 @@ M98 P"/macros/Coupler - Lock"
 
 M98 P"/sys/usr/configure_tool.g" T{{ tool.id }}
 
-{% call move.rel_move() %}
-G1 Z{{ -2 * tool.offsets.Z }} F1000
-{% endcall %}
-
 
 G1 A{{ -1 * tool.offsets.Z }} B{{ -1 * tool.offsets.Z }} Z{ var.orig_z_pos - {{ tool.offsets.Z }} + 1 }  ; Adjust brush heights
 

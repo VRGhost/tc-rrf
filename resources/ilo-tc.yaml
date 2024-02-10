@@ -13,8 +13,8 @@ variables:
       Z: 12
       C: 4
       E: [120, 120, 60, 120] # e2 is bowden hemera
-      A: 12
-      B: 12
+      A: 30
+      B: 30
     M203:  # Set maximum speeds (mm/min)
       X: 35000
       Y: 35000
@@ -23,18 +23,18 @@ variables:
       E:
         - !mm/sec 80
         - !mm/sec 80
-        - !mm/sec 100
         - !mm/sec 80
-      A: 7000
-      B: 7000
+        - !mm/sec 80
+      A: !mm/sec 40
+      B: !mm/sec 40
     M201: #  Set accelerations (mm/s^2)
       X: 6000
       Y: 6000
       Z: 400
       C: 500
       E: [4000, 4000, 3000, 4000] # The E2 is a bowden hemera, it does not like high acceleration values.
-      A: 500
-      B: 500
+      A: 150
+      B: 150
     M207: # Set retract length
       S: 1 # positive length to retract, in mm
       F: !mm/sec 40 # retraction feedrate
@@ -136,7 +136,7 @@ variables:
         Z: -13.84
       park:
         X: 82
-        Y: 226.9
+        Y: 226.4
       extra_settings: *hemera_direct_extra_settings
       extruder_settings: *hemera_direct_extruder_settings
     T2: &tool2
@@ -149,7 +149,7 @@ variables:
         Z: -13.36
       park:
         X: 217.4
-        Y: 242.0
+        Y: 242.4
       extra_settings: &hemera_bowden_extra_settings
         M566: # maximum instantaneous speed changes (mm/min)
           X: 550
@@ -169,8 +169,8 @@ variables:
         Y: 43.95818513530696
         Z: -14.02
       park:
-        X: 306.2
-        Y: 226.9
+        X: 307.2
+        Y: 226.2
       extra_settings: *hemera_direct_extra_settings
       extruder_settings: *hemera_direct_extruder_settings
   bed:

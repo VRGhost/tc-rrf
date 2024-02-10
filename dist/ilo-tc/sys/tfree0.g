@@ -6,6 +6,7 @@
 
 
 ; Save tool position & settings
+var orig_z_pos = move.axes[2].userPosition
 
 ; ---- save_tool_babystep(0)
 set global.t0_babystep = move.axes[2].babystep ; only Z babystepping is supported for now
@@ -65,7 +66,11 @@ M106 P2 S0
 ;Move Out
 G1 F2000
 
-
+;; Jiggle on the way out - to release the lock
+G53 G1 X-9 Y225.8
+G53 G1 X-7 Y225.3
+G53 G1 X-8 Y223.3
+G53 G1 Y225.3
 
 G1 F50000
-G53 G1 X-8 Y175
+G53 G1 X-8 Y175 Z{ var.orig_z_pos }
