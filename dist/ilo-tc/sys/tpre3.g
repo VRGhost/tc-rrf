@@ -4,17 +4,7 @@
 
 
 
-
-; Just in case - take care not to clash with the environment
-
-
-; ---- rel_move()
-M400 ; wait for any pending moves to complete
-G91
-G1 H2 Z3 F5000                  ; Lower the bed
-M400 ; wait for relative moves to complete
-G90
-; ---- rel_move() END
+var orig_z_pos = move.axes[2].userPosition
 
 ; ----- AVOID clashing with the TC walls
 if move.axes[1].homed && move.axes[1].machinePosition > 140 ; if Y > ~184 (user position, somewhere in the TC docking area)
@@ -25,7 +15,11 @@ if move.axes[1].homed && move.axes[1].machinePosition > 140 ; if Y > ~184 (user 
 M98 P"/macros/Coupler - Unlock"
 
 ;Move to location
-G53 G1 X306.2 Y175 F50000
+M400
+G53 G1 X306.2 F50000
+M400
+G53 G1 Y175 F50000
+M400
 
 
 
@@ -57,10 +51,6 @@ M98 P"/macros/Coupler - Lock"
 
 M98 P"/sys/usr/configure_tool.g" T3
 
-;WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!
-;if you are using non-standard length hotends ensure the bed is lowered enough BEFORE undocking the tool!
-
-
 
 
 ; ---- rel_move()
@@ -73,7 +63,7 @@ G90
 
 
 
-G1 A14.02 B14.02  ; Adjust brush heights
+G1 A14.02 B14.02 Z{ var.orig_z_pos - -14.02 + 1 }  ; Adjust brush heights
 
 
 

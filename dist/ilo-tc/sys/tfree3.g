@@ -64,9 +64,8 @@ M106 P8 S0
 
 ;Move Out
 G1 F2000
-;; Jiggle on the way out - to release the lock
-G53 G1 X305.2 Y226.4
-G53 G1 X307.2 Y225.9
-G53 G1 X306.2 Y225.9
+
+
+
 G1 F50000
-G53 G1 X306.2 Y180
+G53 G1 X306.2 Y175

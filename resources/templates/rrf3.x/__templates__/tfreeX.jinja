@@ -45,9 +45,15 @@ M106 P{{ tool.fan }} S0
 
 ;Move Out
 G1 F2000
+
+{% if tool.id == 2 %}
+;; BOWDEN extruder - bit tempermental to disconnect
 ;; Jiggle on the way out - to release the lock
 G53 G1 X{{ tool.park.X - 1 }} Y{{ tool.park.Y - 0.5 }}
 G53 G1 X{{ tool.park.X + 1 }} Y{{ tool.park.Y - 1 }}
-G53 G1 X{{ tool.park.X }} Y{{ tool.park.Y - 1 }}
+G53 G1 X{{ tool.park.X }} Y{{ tool.park.Y - 3 }}
+G53 G1 Y{{ tool.park.Y - 1}}
+{% endif %}
+
 G1 F50000
-G53 G1 X{{ tool.park.X }} Y180
+G53 G1 X{{ tool.park.X }} Y{{ move_start_y }}

@@ -4,11 +4,8 @@
 {% import '__macros__/move.jinja' as move %}
 {% import '__macros__/errors.jinja' as err %}
 
+var orig_z_pos = move.axes[{{ py.g.axis.Z.index }}].userPosition
 
-; Just in case - take care not to clash with the environment
-{% call move.rel_move() %}
-G1 H2 Z3 F5000                  ; Lower the bed
-{% endcall %}
 {{ move.avoid_tc_clash() }}
 
 ;Unlock Coupler
@@ -17,7 +14,11 @@ M98 P"/macros/Coupler - Unlock"
 {% set move_start_y = 175 -%}
 
 ;Move to location
-G53 G1 X{{ tool.park.X }} Y{{ move_start_y }} F50000
+M400
+G53 G1 X{{ tool.park.X }} F50000
+M400
+G53 G1 Y{{ move_start_y }} F50000
+M400
 
 {% call move.drop_motor_current(0.6) %}
 
@@ -35,16 +36,12 @@ M98 P"/macros/Coupler - Lock"
 
 M98 P"/sys/usr/configure_tool.g" T{{ tool.id }}
 
-;WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING! WARNING!
-;if you are using non-standard length hotends ensure the bed is lowered enough BEFORE undocking the tool!
-
-
 {% call move.rel_move() %}
 G1 Z{{ -2 * tool.offsets.Z }} F1000
 {% endcall %}
 
 
-G1 A{{ -1 * tool.offsets.Z }} B{{ -1 * tool.offsets.Z }}  ; Adjust brush heights
+G1 A{{ -1 * tool.offsets.Z }} B{{ -1 * tool.offsets.Z }} Z{ var.orig_z_pos - {{ tool.offsets.Z }} + 1 }  ; Adjust brush heights
 
 {% endcall %}
 
