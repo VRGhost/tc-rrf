@@ -72,7 +72,7 @@ variables:
     E3: *direct_hemera_extrude_motor
     # Brushes
     A: &brush_motor
-      steps: 400
+      steps: 25  # no x16 microstepping
       reversed: false
     B: *brush_motor
   axis:
@@ -169,8 +169,8 @@ variables:
         Y: 43.95818513530696
         Z: -14.02
       park:
-        X: 307.2
-        Y: 226.2
+        X: 306.098
+        Y: 226.198
       extra_settings: *hemera_direct_extra_settings
       extruder_settings: *hemera_direct_extruder_settings
   bed:
