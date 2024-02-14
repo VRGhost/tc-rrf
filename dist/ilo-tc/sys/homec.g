@@ -29,9 +29,5 @@ G90
 ; ---- rel_move() END
 
 
-if state.currentTool >= 0
-    ;Close Coupler (as there is a tool in it)
-    M98 P"/macros/Coupler - Lock"
-else
-    ;Open Coupler
-    M98 P"/macros/Coupler - Unlock"
+;Open Coupler
+M98 P"/macros/Coupler - Unlock"

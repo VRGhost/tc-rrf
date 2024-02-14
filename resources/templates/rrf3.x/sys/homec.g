@@ -10,9 +10,5 @@ G92 C-45                    ; Mark C as homed
 {% endcall %}
 {% endcall %}
 
-if state.currentTool >= 0
-    ;Close Coupler (as there is a tool in it)
-    M98 P"/macros/Coupler - Lock"
-else
-    ;Open Coupler
-    M98 P"/macros/Coupler - Unlock"
+;Open Coupler
+M98 P"/macros/Coupler - Unlock"
