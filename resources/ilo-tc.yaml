@@ -202,13 +202,13 @@ variables:
         nozzles:
           0.4: # this must be float!
             M221: # Set extrude factor override percentage
-              S: 100 # Extrude factor override percentage
+              S: 96 # Extrude factor override percentage
           0.6:
             M221:
-              S: 100
+              S: 96
           0.8:
             M221:
-              S: 100
+              S: 96
         extruders:
           direct:
             M207: # Set retract length
