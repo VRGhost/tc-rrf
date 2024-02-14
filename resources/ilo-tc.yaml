@@ -13,8 +13,8 @@ variables:
       Z: 12
       C: 4
       E: [120, 120, 60, 120] # e2 is bowden hemera
-      A: 30
-      B: 30
+      A: 100
+      B: 100
     M203:  # Set maximum speeds (mm/min)
       X: 35000
       Y: 35000
@@ -25,16 +25,16 @@ variables:
         - !mm/sec 80
         - !mm/sec 80
         - !mm/sec 80
-      A: !mm/sec 40
-      B: !mm/sec 40
+      A: !mm/sec 100
+      B: !mm/sec 100
     M201: #  Set accelerations (mm/s^2)
       X: 6000
       Y: 6000
       Z: 400
       C: 500
       E: [4000, 4000, 3000, 4000] # The E2 is a bowden hemera, it does not like high acceleration values.
-      A: 150
-      B: 150
+      A: 4000
+      B: 4000
     M207: # Set retract length
       S: 1 # positive length to retract, in mm
       F: !mm/sec 40 # retraction feedrate
@@ -72,7 +72,7 @@ variables:
     E3: *direct_hemera_extrude_motor
     # Brushes
     A: &brush_motor
-      steps: 25  # no x16 microstepping
+      steps: 800  # no x16 microstepping
       reversed: false
     B: *brush_motor
   axis:
@@ -96,12 +96,12 @@ variables:
     # Brushes
     A: &brush_axis_a
       index: 3
-      min: -1.1
-      width: 30
+      min: 2
+      width: 40
     B: &brush_axis_b
       index: 4
-      min: 3.8
-      width: 30
+      min: 5
+      width: 40
   tools:
     # Tool infos
     T0: &tool0

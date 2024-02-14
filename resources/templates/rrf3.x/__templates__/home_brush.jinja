@@ -3,7 +3,7 @@
 {% import '__macros__/move.jinja' as move %}
 
 {% call move.rel_move() %}
-{% call move.drop_motor_current(0.5, motors=[letter]) %}
+{% call move.drop_motor_current(1, motors=[letter]) %}
 
 G1 H1 {{letter}}{{ -1 * (axis.width + 10) }} F50000
 G1 H1 {{letter}}1                                           ; Back out a little bit

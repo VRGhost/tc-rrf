@@ -11,13 +11,13 @@ G91
 
 ; ---- drop_motor_current()
 M400 ; wait for any pending moves to complete
-M913 B50 ; set the ['B'] current to 0.5
+M913 B100 ; set the ['B'] current to 1
 
 
 
-G1 H1 B-40 F50000
+G1 H1 B-50 F50000
 G1 H1 B1                                           ; Back out a little bit
-G92 B3.8                                ; Mark B as homed
+G92 B5                                ; Mark B as homed
 
 
 

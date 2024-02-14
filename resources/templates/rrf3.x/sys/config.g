@@ -34,6 +34,17 @@ M569 P9 {{ 'S0' if motors.B.reversed else 'S1' }} 						; Brush "B"
 M584 X0 Y1 Z2 C7 E3:4:5:6 A8 B9                             ; Apply custom drive mapping
 ; Apply drive mapping
 
+
+
+; Configure microstepping
+M350 E16:16:16:16 I1 									; with interpolation
+M350 C16 I10											; without interpolation
+M350 X16 Y16 Z16 I1										; with interpolation
+M350 A16 B16 I1
+
+M906 X1800 Y1800 Z1330 A1400 B1400 I30                          ; Idle motion motors to 30%
+M906 E1000:1000:1000:1000 C500 I10                          ; Idle extruder motors to 10%
+
 ; Set axis maxima & minima
 M208 X{{ axis.X.min }}:{{ axis.X.min + axis.X.width }} Y{{ axis.Y.min }}:{{ axis.Y.min + axis.Y.width }} Z{{ axis.Z.min }}:{{ axis.Z.min + axis.Z.width }}
 M208 C{{ axis.C.min }}:{{ axis.C.min + axis.C.width }} A{{ axis.A.min }}:{{ axis.A.min + axis.A.width }} B{{ axis.B.min }}:{{ axis.B.min + axis.B.width }}
@@ -43,16 +54,6 @@ M92 X{{ motors.X.steps }} Y{{ motors.Y.steps }} Z{{ motors.Z.steps }} C{{ motors
 M92 E{{ motors.E0.steps }}:{{ motors.E1.steps }}:{{ motors.E2.steps }}:{{ motors.E3.steps }}
 M92 A{{ motors.B.steps }} B{{ motors.B.steps }}
 
-; Configure microstepping
-M350 E16:16:16:16 I1 									; with interpolation
-M350 C16 I10											; without interpolation
-M350 X16 Y16 Z16 I1										; with interpolation
-M350 I0
-
-M906 X1800 Y1800 Z1330 A30 B30 I30                          ; Idle motion motors to 30%
-M906 E1000:1000:1000:1000 C500 I10                          ; Idle extruder motors to 10%
-
-
 M98 P"/sys/usr/configure_tool.g" T-1
 
 
@@ -60,7 +61,7 @@ M98 P"/sys/usr/configure_tool.g" T-1
 M574 X1 S1 P"xstop"   ; X min active high endstop switch
 M574 Y1 S1 P"ystop"   ; Y min active high endstop switch
 M574 C0 Z0  						; No C Z endstop
-M574 A1 B1 S2      ; Brushes use stall detection
+M574 A1 B1 S3      ; Brushes use stall detection
 
 ; Z probe
 ; ----- apply_z_probe_settings()
@@ -76,8 +77,7 @@ M574 A1 B1 S2      ; Brushes use stall detection
 {{ define_g29_mesh(bed) }}
 
 ;Stall Detection
-;M915 X Y S3 F0 H400 R2				; X / Y Axes
-M915 A B S26 F0 H100 R0
+M915 A B S180 F0 H1 R0
 
 
 ; Tool Heaters
