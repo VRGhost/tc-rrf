@@ -167,7 +167,7 @@ variables:
       offsets:
         X: 21.02600143255248
         Y: 43.95818513530696
-        Z: -14.02
+        Z: -13.95
       park:
         X: 306.098
         Y: 225.309
@@ -212,8 +212,8 @@ variables:
         extruders:
           direct:
             M207: # Set retract length
-              S: 0.5 # positive length to retract, in mm
-              R: 0 # -0.01 # positive or negative additional length to un-retract, in mm, default zero
+              S: 0.7 # positive length to retract, in mm
+              R: -0.05 # positive or negative additional length to un-retract, in mm, default zero
               Z: 0.6
               F: !mm/sec 60
           bowden:

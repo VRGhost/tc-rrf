@@ -52,7 +52,7 @@ M98 P"/macros/Coupler - Lock"
 M98 P"/sys/usr/configure_tool.g" T3
 
 
-G1 A14.02 B14.02 Z{ var.orig_z_pos - -14.02 + 1 }  ; Adjust brush heights
+G1 A13.95 B13.95 Z{ var.orig_z_pos - -13.95 + 1 }  ; Adjust brush heights
 
 
 
