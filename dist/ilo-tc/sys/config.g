@@ -47,7 +47,7 @@ M906 E1000:1000:1000:1000 C500 I10                          ; Idle extruder moto
 
 ; Set axis maxima & minima
 M208 X-29.6:333.9 Y-46.8:245.2 Z0:290
-M208 C-45:360 A2:42 B5:45
+M208 C-45:360 A5:45 B5:45
 
 ; Set steps per mm assuming x16 microstepping
 M92 X100.22 Y100.29 Z800 C91.022
