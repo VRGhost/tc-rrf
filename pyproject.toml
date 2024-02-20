@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [
     {include = "tc_rrf", from="src"},
     {include = "tc_cv", from="src"},
-    {include = "gcode_parser", from="src"},
+    {include = "rrf_gcode_parser", from="src"},
     {include = "duetwebapi", from="src"},
 ]
 
