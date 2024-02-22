@@ -28,4 +28,4 @@ def test_temp_block(parse):
     assert isinstance(commands[0], rrf_gcode_parser.gcode.EmptyLine)
     assert commands[1].command == "G999"
     assert commands[2].command == "M998"
-    assert commands[3].args == ['X{param.S}']
+    assert commands[3].args == ["X{PARAM.S}"]
