@@ -21,9 +21,11 @@ def test_temp_block(parse):
         R"""
             G999 X1 ; comment
             m998 Y1 ; comment 2
+            G1 X{param.S}
         """
     )
-    assert len(commands) == 3
+    assert len(commands) == 4
     assert isinstance(commands[0], rrf_gcode_parser.gcode.EmptyLine)
     assert commands[1].command == "G999"
     assert commands[2].command == "M998"
+    assert commands[3].args == ['X{param.S}']
