@@ -1,3 +1,3 @@
 """RepRap firmware gcode parser."""
 
-from . import gcode, parser, tokeniser
+from . import gcode, gcode_commands, parser, tokeniser

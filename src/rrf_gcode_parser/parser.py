@@ -3,7 +3,10 @@ import enum
 import typing
 
 import rrf_gcode_parser
-import rrf_gcode_parser.gcode as gcode
+
+COMMAND = typing.Union[
+    "rrf_gcode_parser.gcode.COMMAND", "rrf_gcode_parser.gcode_commands.COMMAND"
+]
 
 
 class ParseMode(enum.Enum):
@@ -18,18 +21,23 @@ class ParseState:
     command: str = dataclasses.field(default="")  # uppercased gcode command
 
 
-def mk_command(state: ParseState) -> gcode.COMMAND:
+def mk_command(
+    state: ParseState,
+) -> COMMAND:
     # print(f"{state=!r}")
     if state.mode == ParseMode.start:
-        out = gcode.EmptyLine(state.tokens)
+        out = rrf_gcode_parser.gcode.EmptyLine(state.tokens)
     else:
-        out = gcode.GenericCommand(state.tokens)
+        cls = {
+            "M116": rrf_gcode_parser.gcode_commands.M116,
+        }.get(state.command, rrf_gcode_parser.gcode.GenericCommand)
+        out = cls(state.tokens)
     return out
 
 
 def parse(
     input: typing.IO[str],
-) -> typing.Generator["gcode.COMMAND", None, None]:
+) -> typing.Generator[COMMAND, None, None]:
     state = ParseState()
     for token in rrf_gcode_parser.tokeniser.tokenise(input):
         state.tokens.append(token)
@@ -40,7 +48,7 @@ def parse(
         elif token.isspace():
             # Just append to the accumulated
             continue
-        elif gcode.GCODE_COMMAND.match(token):
+        elif rrf_gcode_parser.gcode.GCODE_COMMAND.match(token):
             if state.mode == ParseMode.start:
                 state.mode = ParseMode.gcode_command_seen
                 state.command = token.strip().upper()
@@ -51,3 +59,5 @@ def parse(
             pass
         else:
             raise NotImplementedError(f"{token=!r} {state}")
+    if state.tokens:
+        yield mk_command(state)

@@ -1,5 +1,6 @@
 """Gcode commands"""
 
+import dataclasses
 import re
 import typing
 
@@ -11,7 +12,6 @@ class _G:
 
     empty_prefix: list[str]  # any empty lines preceeding the actual content
     raw_tokens: list[str]
-    normalised_tokens: list[str]  # uppercase, spaces removed
     comment: tuple[str]
     eol: str = ""  # will be set to /n if the command includes that
 
@@ -32,31 +32,58 @@ class _G:
         while tokens and tokens[0].isspace():
             self.empty_prefix.append(tokens.pop(0))
         self.raw_tokens = tokens
-        self.normalised_tokens = [
-            el.strip().upper() for el in self.raw_tokens if el.strip()
-        ]
+
+    def to_gcode(self) -> str:
+        return "".join(self.empty_prefix + self.raw_tokens + self.comment) + self.eol
 
     def __repr__(self) -> str:
-        return (
-            f"<{self.__class__.__name__} {self.normalised_tokens=!r} {self.comment=!r}>"
-        )
+        return f"<{self.__class__.__name__} {self.raw_tokens=!r} {self.comment=!r}>"
 
 
 class EmptyLine(_G):
     """"""
 
 
+@dataclasses.dataclass(slots=True)
+class Arg:
+    idx: int
+    name: str
+    orig_val: str
+    new_val: str
+
+
 class GenericCommand(_G):
     """An unknown gcode command"""
 
     command: str  # gcode
-    args: list[str]
+    args: dict[str, Arg]
 
     def __init__(self, tokens: list[str]):
         super().__init__(tokens)
-        assert GCODE_COMMAND.match(self.normalised_tokens[0])
-        self.command = self.normalised_tokens[0]
-        self.args = self.normalised_tokens[1:]
+        normalised_tokens = [
+            (idx, el.strip().upper())
+            for idx, el in enumerate(self.raw_tokens)
+            if el.strip()
+        ]
+        assert GCODE_COMMAND.match(normalised_tokens[0][1])
+        self.command = normalised_tokens[0][1]
+        self.args = {}
+        for idx, el in normalised_tokens[1:]:
+            arg = Arg(idx=idx, name=el[0], orig_val=el[1:], new_val=el[1:])
+            self.args[arg.name] = arg
+
+    def to_gcode(self) -> str:
+        parts = [*self.empty_prefix, self.command, " "]
+        for arg in self.args.values():
+            if arg.new_val is not None:
+                parts.append(f"{arg.name}{arg.new_val}")
+                parts.append(" ")
+        if self.comment:
+            parts.extend(self.comment)
+        else:
+            parts.pop(-1)  # remove last space
+
+        return "".join(parts) + self.eol
 
     def __repr__(self) -> str:
         return (
