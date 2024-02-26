@@ -1,3 +1,4 @@
+import dataclasses
 import re
 import typing
 
@@ -34,10 +35,17 @@ def _find_next_token_end(text: str) -> re.Match | None:
     return TOKEN_END_RE.search(text, pos=not_token.end())
 
 
-def tokenise(input: typing.IO[str]) -> typing.Generator[str, None, None]:
+@dataclasses.dataclass(frozen=True, slots=True)
+class Token:
+    val: str
+    lineno: int
+
+
+def tokenise(input: typing.IO[str]) -> typing.Generator[Token, None, None]:
     """Split input file to tokens"""
     input_text = ""
     input_open = True
+    lineno = 0
     while input_open or input_text:
         if len(input_text) < 512:
             new_text = input.read(READ_BLOCK_SIZE)
@@ -48,12 +56,14 @@ def tokenise(input: typing.IO[str]) -> typing.Generator[str, None, None]:
             st = m.start()
             end = m.end()
             if st > 0:
-                yield input_text[:st]
+                yield Token(input_text[:st], lineno)
             if st != end:
-                yield input_text[st:end]
+                tmp_lineno = lineno + input_text[:st].count("\n")
+                yield Token(input_text[st:end], tmp_lineno)
+            lineno += input_text[:end].count("\n")
             input_text = input_text[end:]
         else:
             # not found -> yield as single token
             if input_text:
-                yield input_text
+                yield Token(input_text, lineno)
             input_text = ""

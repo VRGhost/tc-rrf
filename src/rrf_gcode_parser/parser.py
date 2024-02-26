@@ -16,6 +16,7 @@ class ParseMode(enum.Enum):
 
 @dataclasses.dataclass(kw_only=True, frozen=False)
 class ParseState:
+    lineno: int = 0
     mode: ParseMode = dataclasses.field(default=ParseMode.start)
     tokens: list[str] = dataclasses.field(default_factory=list)
     command: str = dataclasses.field(default="")  # uppercased gcode command
@@ -40,18 +41,20 @@ def parse(
 ) -> typing.Generator[COMMAND, None, None]:
     state = ParseState()
     for token in rrf_gcode_parser.tokeniser.tokenise(input):
-        state.tokens.append(token)
+        state.lineno = token.lineno
+        token_val = token.val
+        state.tokens.append(token_val)
         # print(accumulated)
-        if token == "\n":
+        if token_val == "\n":
             yield mk_command(state)
             state = ParseState()  # new parse state
-        elif token.isspace():
+        elif token_val.isspace():
             # Just append to the accumulated
             continue
-        elif rrf_gcode_parser.gcode.GCODE_COMMAND.match(token):
+        elif rrf_gcode_parser.gcode.GCODE_COMMAND.match(token_val):
             if state.mode == ParseMode.start:
                 state.mode = ParseMode.gcode_command_seen
-                state.command = token.strip().upper()
+                state.command = token_val.strip().upper()
             else:
                 2 / 0
         elif state.mode in (ParseMode.gcode_command_seen,):
