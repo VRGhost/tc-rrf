@@ -112,7 +112,7 @@ def convert(
         input(), iter_tool_states(tc, duration_model, preheat_time)
     ):
         assert tool_state.lineno == lineno
-        is_m116 = line.startswith("M116 ") or (line == 'M116')
+        is_m116 = line.startswith("M116 ") or (line == "M116")
         if tool_state.cur_tool is not None or is_m116:
             print_active = True
 
@@ -133,12 +133,12 @@ def convert(
             yield from emit_preheat_commands(new_preheat_tools)
 
         if SKIP_GCODE.match(line):
-            yield f';; {line.strip()} ; gc-gcode - line removed'
+            yield f";; {line.strip()} ; gc-gcode - line removed"
         elif is_m116:
             if tool_state.cur_tool is None:
-                yield f';; {line.strip()} ; gc-gcode :: m116 removed'
+                yield f";; {line.strip()} ; gc-gcode :: m116 removed"
             else:
-                yield f'M116 P{tool_state.cur_tool} C0 ; gc-gcode :: m116 override'
+                yield f"M116 P{tool_state.cur_tool} C0 ; gc-gcode :: m116 override"
         else:
             yield line.strip()
 
