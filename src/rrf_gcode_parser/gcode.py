@@ -6,18 +6,20 @@ import typing
 
 T = typing.TypeVar("T")
 GCODE_ARG_TYPE = typing.Union[str, int, float]
-GCODE_COMMAND = re.compile(r"^[GTM]\d+$", re.I)
+GCODE_COMMAND = re.compile(r"^(?:[GTM]\d+)|T-1$", re.I)
 
 
 class _G:
     """Base class for all gcode commands"""
 
+    lineno: int
     empty_prefix: list[str]  # any empty lines preceeding the actual content
     raw_tokens: list[str]
     comment: tuple[str]
     eol: str = ""  # will be set to /n if the command includes that
 
-    def __init__(self, tokens: list[str]):
+    def __init__(self, tokens: list[str], lineno: int | None):
+        self.lineno = lineno
         tokens = list(tokens)
         if tokens and ("\n" in tokens[-1]):
             self.eol = tokens.pop(-1)
@@ -39,11 +41,13 @@ class _G:
         return "".join(self.empty_prefix + self.raw_tokens + self.comment) + self.eol
 
     def __repr__(self) -> str:
-        return f"<{self.__class__.__name__} {self.raw_tokens=!r} {self.comment=!r}>"
+        return f"<{self.__class__.__name__} {self.raw_tokens=!r} {self.comment=!r} {self.lineno=}>"
 
 
 class EmptyLine(_G):
     """"""
+
+    command = None  # To conform to `GenericCommand` api below
 
 
 @dataclasses.dataclass(slots=True)
@@ -92,8 +96,8 @@ class GenericCommand(_G):
             if isinstance(val, Prop):
                 val._parent_init(name)
 
-    def __init__(self, tokens: list[str]):
-        super().__init__(tokens)
+    def __init__(self, tokens: list[str], lineno: int | None):
+        super().__init__(tokens, lineno)
         normalised_tokens = [
             (idx, el.strip()) for idx, el in enumerate(self.raw_tokens) if el.strip()
         ]

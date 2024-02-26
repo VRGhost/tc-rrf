@@ -1,16 +1,9 @@
 import dataclasses
-import itertools
-import re
 import typing
 
-import tc_gcode
+import rrf_gcode_parser
 
-SKIP_GCODE = re.compile(
-    R"""
-        (G10 \s+ S\d+ \s+ P\d+)
-    """,
-    re.VERBOSE | re.IGNORECASE,
-)
+import tc_gcode
 
 
 @dataclasses.dataclass(kw_only=True, frozen=True)
@@ -22,65 +15,97 @@ class TcState:
     preheat_tools: frozenset[int]
 
 
-def normalise_toolchanges(
-    toolchanges: list["tc_gcode.toolchanges.Toolchange"],
-) -> tuple["tc_gcode.toolchanges.Toolchange"]:
-    """Normalise toolchange sequence:
-
-    - Order by line number
-    - deduplicate any TCs for the matching tool
-    """
-    out = []
-    last_tool = -999
-    for tc in sorted(toolchanges, key=lambda el: el.lineno):
-        if tc.new_tool != last_tool:
-            out.append(tc)
-            last_tool = tc.new_tool
-    return tuple(out)
-
-
-def iter_tool_states(
-    toolchanges: list["tc_gcode.toolchanges.Toolchange"],
-    duration_model: "tc_gcode.duration.PrintDurationModel",
-    preheat_time: float,
-) -> typing.Generator[TcState, None, None]:
-    tool_changes = {tc.lineno: tc.new_tool for tc in normalise_toolchanges(toolchanges)}
-    for key, value in tool_changes.items():
-        # -1 (disengaged tool) is no tool for purposes of this simulation
-        if value < 0:
-            tool_changes[key] = None
-
+class ToolStates:
+    toolchanges: dict[int, int]  # line -> tool id
+    duration_model: "tc_gcode.duration.PrintDurationModel"
+    preheat_time: float
+    last_tc_state: TcState
     NO_NEW_TOOL = object()
-    cur_tool = prev_tool = None
-    for lineno in itertools.count():
-        new_tool = tool_changes.pop(lineno, NO_NEW_TOOL)
-        if new_tool is not NO_NEW_TOOL:
+
+    def __init__(
+        self,
+        toolchanges: list["tc_gcode.toolchanges.Toolchange"],
+        duration_model: "tc_gcode.duration.PrintDurationModel",
+        preheat_time: float,
+    ):
+        self.toolchanges = {
+            tc.lineno: tc.new_tool for tc in self.normalise_toolchanges(toolchanges)
+        }
+        for key, tool_id in self.toolchanges.items():
+            # -1 (disengaged tool) is no tool for purposes of this simulation
+            if tool_id < 0:
+                self.toolchanges[key] = None
+        self.duration_model = duration_model
+        self.preheat_time = preheat_time
+        self.last_tc_state = TcState(
+            lineno=-1,
+            cur_tool=None,
+            prev_tool=None,
+            all_future_tools={el.new_tool for el in toolchanges if el.new_tool >= 0},
+            preheat_tools=set(),
+        )
+
+    def normalise_toolchanges(
+        self,
+        toolchanges: list["tc_gcode.toolchanges.Toolchange"],
+    ) -> tuple["tc_gcode.toolchanges.Toolchange"]:
+        """Normalise toolchange sequence:
+
+        - Order by line number
+        - deduplicate any TCs for the matching tool
+        """
+        out = []
+        last_tool = -999
+        for tc in sorted(toolchanges, key=lambda el: el.lineno):
+            if tc.new_tool != last_tool:
+                out.append(tc)
+                last_tool = tc.new_tool
+        return tuple(out)
+
+    def get(self, lineno: int) -> TcState:
+        assert lineno - self.last_tc_state.lineno in (
+            0,
+            1,
+        ), f"either same or prev line: {self.last_tc_state}, {lineno=}"
+        if lineno == self.last_tc_state.lineno:
+            return self.last_tc_state
+
+        assert lineno == self.last_tc_state.lineno + 1
+
+        prev_tool = self.last_tc_state.prev_tool
+        cur_tool = self.last_tc_state.cur_tool
+        new_tool = self.toolchanges.get(lineno, self.NO_NEW_TOOL)
+        if new_tool is not self.NO_NEW_TOOL:
             prev_tool = cur_tool
             cur_tool = new_tool
+        future_tc = {
+            tc_lineno: tool_id
+            for (tc_lineno, tool_id) in self.toolchanges.items()
+            if tc_lineno > lineno
+        }
         next_tc_times = {}  # tool id -> tc TIME
-        for future_line, future_tool in tool_changes.items():
+        for future_line, future_tool in future_tc.items():
             if (future_tool is not None) and future_tool not in next_tc_times:
-                next_tc_times[future_tool] = duration_model.get_time(future_line)
+                next_tc_times[future_tool] = self.duration_model.get_time(future_line)
 
-        cur_time = duration_model.get_time(lineno)
+        cur_time = self.duration_model.get_time(lineno)
         should_be_preheating = frozenset(
             tool_id
             for (tool_id, tool_time) in next_tc_times.items()
-            if ((tool_time - cur_time) <= preheat_time) and (tool_id != cur_tool)
+            if ((tool_time - cur_time) <= self.preheat_time) and (tool_id != cur_tool)
         )
 
-        future_tools = frozenset(
-            val for val in tool_changes.values() if val is not None
-        )
+        future_tools = frozenset(val for val in future_tc.values() if val is not None)
         if (cur_tool is not None) and (cur_tool < 0):
             cur_tool = None
-        yield TcState(
+        self.last_tc_state = TcState(
             lineno=lineno,
             cur_tool=cur_tool,
             prev_tool=prev_tool,
             all_future_tools=future_tools,
             preheat_tools=should_be_preheating,
         )
+        return self.last_tc_state
 
 
 def emit_off_commands(
@@ -108,11 +133,10 @@ def convert(
     all_tools = frozenset(el.new_tool for el in tc if el.new_tool >= 0)
     fully_disengaged_tools = set()
     preheating_tools = set()
-    for (lineno, line), tool_state in zip(
-        input(), iter_tool_states(tc, duration_model, preheat_time)
-    ):
-        assert tool_state.lineno == lineno
-        is_m116 = line.startswith("M116 ") or (line == "M116")
+    tool_states = ToolStates(tc, duration_model, preheat_time)
+    for cmd in input():
+        tool_state = tool_states.get(cmd.lineno)
+        is_m116 = isinstance(cmd, rrf_gcode_parser.gcode_commands.M116)
         if tool_state.cur_tool is not None or is_m116:
             print_active = True
 
@@ -132,15 +156,15 @@ def convert(
         if new_preheat_tools:
             yield from emit_preheat_commands(new_preheat_tools)
 
-        if SKIP_GCODE.match(line):
-            yield f";; {line.strip()} ; gc-gcode - line removed"
+        if isinstance(cmd, rrf_gcode_parser.gcode_commands.G10Temperature):
+            yield f";; {cmd.to_gcode().strip()} ; gc-gcode - line removed"
         elif is_m116:
             if tool_state.cur_tool is None:
-                yield f";; {line.strip()} ; gc-gcode :: m116 removed"
+                yield f";; {cmd.to_gcode().strip()} ; gc-gcode :: m116 removed"
             else:
                 yield f"M116 P{tool_state.cur_tool} C0 ; gc-gcode :: m116 override"
         else:
-            yield line.strip()
+            yield cmd.to_gcode().strip()
 
         if new_disengaged_tools:
             yield from emit_off_commands(new_disengaged_tools)

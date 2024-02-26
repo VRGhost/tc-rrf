@@ -4,6 +4,7 @@ import re
 import typing
 
 import numpy as np
+import rrf_gcode_parser
 
 import tc_gcode
 
@@ -59,12 +60,12 @@ def parse_m73(line: str) -> int | None:
 def get_model(input: "tc_gcode.typ.LineReader") -> PrintDurationModel:
     data: list[M73] = []
     last_remaining = None
-    for lineno, line in input():
-        line = line.strip()
-        if (remaining_time := parse_m73(line)) is not None:
-            m73 = M73(lineno=lineno, remaining_min=remaining_time)
-            if last_remaining != m73.remaining_min:
-                data.append(m73)
-                last_remaining = m73.remaining_min
+    for cmd in input():
+        if isinstance(cmd, rrf_gcode_parser.gcode_commands.M73):
+            if (remaining_time := cmd.R) is not None:
+                m73 = M73(lineno=cmd.lineno, remaining_min=remaining_time)
+                if last_remaining != m73.remaining_min:
+                    data.append(m73)
+                    last_remaining = m73.remaining_min
 
     return PrintDurationModel(data)

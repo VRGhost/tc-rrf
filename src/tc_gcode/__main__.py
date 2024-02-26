@@ -2,6 +2,7 @@ import logging
 import pathlib
 import typing
 
+import rrf_gcode_parser
 import typer
 
 import tc_gcode
@@ -10,9 +11,14 @@ cli_app = typer.Typer()
 
 
 def mk_reader(input: pathlib.Path) -> tc_gcode.typ.LineReader:
+    cached_out = []
+
     def _reader():
-        with input.open("r") as fin:
-            yield from enumerate(fin.readlines())
+        nonlocal cached_out
+        if not cached_out:
+            with input.open("r") as fin:
+                cached_out = list(rrf_gcode_parser.parse(fin))
+        yield from cached_out
 
     return _reader
 
