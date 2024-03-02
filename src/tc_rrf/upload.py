@@ -25,7 +25,11 @@ class Action:
         self.description = description
 
     def __repr__(self):
-        return f"<{self.__class__.__name__} typ={self.typ} remote_path={self.remote_path!r} local_path={self.local_path!r} ({self.description})>"
+        return (
+            f"<{self.__class__.__name__} typ={self.typ}"
+            f" remote_path={self.remote_path!r} local_path={self.local_path!r}"
+            f" ({self.description})>"
+        )
 
 
 class ActionLedger:
@@ -308,9 +312,9 @@ def main(
             ("sys", sync_sys),
             ("macros", sync_macros),
         ]:
-            user_dir = os.path.join(user_output_root, dirname)
-            if os.path.exists(user_dir):
-                assert os.path.isdir(user_dir), user_dir
+            user_dir = user_output_root / dirname
+            if user_dir.exists():
+                assert user_dir.isdir(), user_dir
                 dir_ledger = handler(printer, user_dir)
                 ledger.extend(dir_ledger)
         if ledger:

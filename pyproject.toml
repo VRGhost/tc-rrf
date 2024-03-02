@@ -74,6 +74,21 @@ line-length = 120
     "E402",
 ]
 
+"src/tc_rrf/upload.py" = [
+    # Allow print() in this specific script
+    "T201",
+    # Pathlib
+    "PTH",
+]
+
+"src/tc_rrf/render.py" = [
+    # Allow print() in this specific script
+    "T201",
+    # Pathlib
+    "PTH",
+]
+
+
 
 [tool.ruff.isort]
 order-by-type = true
