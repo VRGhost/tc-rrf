@@ -166,6 +166,9 @@ def convert(
         else:
             yield cmd.to_gcode().strip()
 
+        if new_preheat_tools:
+            yield from emit_preheat_commands(new_preheat_tools)
+
         if new_disengaged_tools:
             yield from emit_off_commands(new_disengaged_tools)
 
