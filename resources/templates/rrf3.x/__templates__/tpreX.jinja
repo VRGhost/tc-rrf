@@ -6,6 +6,12 @@
 
 var orig_z_pos = move.axes[{{ py.g.axis.Z.index }}].userPosition
 
+; lower the bed -- otherwise the z probe might run into the printed object,
+;   as it extends down a bit below its actuation point (that is configured to be z=0 at the moment)
+{% call move.rel_move() %}
+G1 H2 Z3 F5000                  ; Lower the bed
+{% endcall %}
+
 {{ move.avoid_tc_clash() }}
 
 ;Unlock Coupler

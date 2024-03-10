@@ -6,6 +6,19 @@
 
 var orig_z_pos = move.axes[2].userPosition
 
+; lower the bed -- otherwise the z probe might run into the printed object,
+;   as it extends down a bit below its actuation point (that is configured to be z=0 at the moment)
+
+
+; ---- rel_move()
+M400 ; wait for any pending moves to complete
+G91
+G1 H2 Z3 F5000                  ; Lower the bed
+M400 ; wait for relative moves to complete
+G90
+; ---- rel_move() END
+
+
 ; ----- AVOID clashing with the TC walls
 if move.axes[1].homed && move.axes[1].machinePosition > 140 ; if Y > ~184 (user position, somewhere in the TC docking area)
     G53 G0 Y140 F99999 ; slowly back out

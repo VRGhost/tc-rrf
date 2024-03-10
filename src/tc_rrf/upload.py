@@ -314,7 +314,7 @@ def main(
         ]:
             user_dir = user_output_root / dirname
             if user_dir.exists():
-                assert user_dir.isdir(), user_dir
+                assert user_dir.is_dir(), user_dir
                 dir_ledger = handler(printer, user_dir)
                 ledger.extend(dir_ledger)
         if ledger:
